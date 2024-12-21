@@ -13,7 +13,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body
+        className="bg-cover bg-center h-screen"
+        style={{
+          backgroundImage:
+            "url('https://i.postimg.cc/d0WNTk0Y/Screenshot-from-2024-12-19-16-34-07.png')",
+        }}>
+        {children}
+      </body>
     </html>
   );
 }
