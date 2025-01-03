@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const hostname = request.headers.get("host");
@@ -18,6 +18,10 @@ export function middleware(request: NextRequest) {
   // Rewrite to /test path only if the hostname matches
   if (hostname === "test.localhost:3000") {
     return NextResponse.rewrite(new URL("/test", request.url));
+  }
+
+  if (hostname === "app.localhost:3000") {
+    return NextResponse.rewrite(new URL("/app", request.url));
   }
 
   // Allow other requests to continue normally
