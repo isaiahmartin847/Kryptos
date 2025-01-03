@@ -1,9 +1,10 @@
+import Navbar from "@/components/landingPage/navbar";
 import Image from "next/image";
 
 export default function Home() {
   return (
     <div>
-      <p>this is the home page</p>
+      <Navbar />
     </div>
   );
 }

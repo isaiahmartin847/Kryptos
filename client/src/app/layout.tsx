@@ -20,7 +20,9 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1"
         />
       </head>
-      <body className="bg-cover bg-center h-screen">{children}</body>
+      <body className="bg-cover bg-center h-screen bg-primaryColor text-textColor">
+        {children}
+      </body>
     </html>
   );
 }
