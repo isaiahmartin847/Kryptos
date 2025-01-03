@@ -1,7 +1,7 @@
 const Main = () => {
   console.log("subdomain");
   return (
-    <div>
+    <div className="bg-white">
       <div>test dashboard subdomain</div>
     </div>
   );

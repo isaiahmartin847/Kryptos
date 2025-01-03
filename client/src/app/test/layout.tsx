@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
-
+import "@/app/globals.css";
 export const metadata: Metadata = {
   title: "Reg-Maps",
   description: "This is an app for getting regulations for hunting",
@@ -13,7 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-cover bg-center h-screen">{children}</body>
+      <body className="bg-cover bg-center h-screen bg-white">{children}</body>
     </html>
   );
 }
