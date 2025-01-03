@@ -15,11 +15,6 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Rewrite to /test path only if the hostname matches
-  if (hostname === "test.localhost:3000") {
-    return NextResponse.rewrite(new URL("/test", request.url));
-  }
-
   if (hostname === "app.localhost:3000") {
     return NextResponse.rewrite(new URL("/app", request.url));
   }
