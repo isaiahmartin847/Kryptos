@@ -1,6 +1,6 @@
 const Main = () => {
   return (
-    <div className="bg-white">
+    <div className="">
       <div>this is the app and account side</div>
     </div>
   );
