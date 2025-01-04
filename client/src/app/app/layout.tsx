@@ -25,9 +25,6 @@ export default function RootLayout({
           />
         </head>
         <body className="bg-cover bg-center h-screen bg-primaryColor text-textColor">
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
           <SignedIn>
             <UserButton />
           </SignedIn>

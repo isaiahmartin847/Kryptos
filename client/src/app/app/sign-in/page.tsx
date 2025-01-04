@@ -16,7 +16,6 @@ export default function LandingPage() {
   useEffect(() => {
     (async () => {
       try {
-        // Load Clerk
         await clerk.load();
 
         const user = await clerk.user;
