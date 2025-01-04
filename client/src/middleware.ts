@@ -1,29 +1,51 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
+import { NextFetchEvent } from "next/server";
 
-export function middleware(request: NextRequest) {
+// Run Clerk middleware first
+const clerkAuth = clerkMiddleware();
+
+export async function middleware(request: NextRequest, event: NextFetchEvent) {
   const hostname = request.headers.get("host");
+  const pathname = request.nextUrl.pathname;
 
-  // Exclude Next.js internals and static files
-  const pathname = request.nextUrl.pathname || "";
-
-  if (
-    pathname.startsWith("/_next") || // Exclude internal Next.js requests
-    pathname.startsWith("/favicon.ico") || // Exclude favicon requests
-    pathname.startsWith("/static") // Exclude static files
-  ) {
-    return NextResponse.next();
+  // Handle app subdomain routing first
+  if (hostname === "app.localhost:3000") {
+    // Create a new URL for the rewrite
+    const url = new URL(request.url);
+    // Only prepend /app if it's not already there
+    if (!pathname.startsWith("/app")) {
+      url.pathname = `/app${pathname === "/" ? "" : pathname}`;
+      return NextResponse.rewrite(url);
+    }
   }
 
-  if (hostname === "app.localhost:3000") {
-    return NextResponse.rewrite(new URL("/app", request.url));
+  // Run Clerk authentication after routing
+  const clerkResponse = await clerkAuth(request, event);
+  if (clerkResponse) {
+    return clerkResponse;
+  }
+
+  // Exclude Next.js internals and static files
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon.ico") ||
+    pathname.startsWith("/static")
+  ) {
+    return NextResponse.next();
   }
 
   // Allow other requests to continue normally
   return NextResponse.next();
 }
 
-// Narrow matcher to apply only to relevant routes
+// Combined matcher configuration that satisfies both Clerk and custom routing needs
 export const config = {
-  matcher: "/:path((?!api|static|_next).*)", // Exclude APIs and static assets
+  matcher: [
+    // Skip Next.js internals and static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
 };
