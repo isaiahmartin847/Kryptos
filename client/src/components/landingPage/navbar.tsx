@@ -12,7 +12,11 @@ const Navbar = () => {
       {/* this is for the nav links */}
       <div>
         {/* more */}
-        <Link href="http://app.localhost:3000/sign-in">Sign In</Link>
+        <Link
+          className="text-lg underline italic hover:text-primaryAccentColor"
+          href="http://app.localhost:3000/sign-in">
+          Sign In
+        </Link>
       </div>
     </div>
   );
