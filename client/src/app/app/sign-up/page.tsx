@@ -16,7 +16,7 @@ const clerk = new Clerk(clerkPublicKey);
 
 const SignUpPage = () => {
   const router = useRouter();
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     const clerkRedirection = async () => {
@@ -30,13 +30,11 @@ const SignUpPage = () => {
         setProgress(80);
 
         if (user) {
-          console.log("User is logged in");
           setProgress(90);
           router.push("http://app.localhost:3000");
         } else {
-          console.log("User is not logged in");
           setProgress(90);
-          // clerk.redirectToSignUp();
+          clerk.redirectToSignUp();
         }
 
         setProgress(100);
