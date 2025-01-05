@@ -15,7 +15,9 @@ export default function Home() {
           of a new day. The grass glistened with dew, and the sky slowly turned
         </p>
       </div>
-      <Button variant="secondary">Get started</Button>
+      <div className="flex w-full justify-center mt-8 ">
+        <Button variant="secondary">Get Started</Button>
+      </div>
     </div>
   );
 }
