@@ -1,5 +1,6 @@
 import Navbar from "@/components/landingPage/navbar";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,7 +17,9 @@ export default function Home() {
         </p>
       </div>
       <div className="flex w-full justify-center mt-8 ">
-        <Button variant="secondary">Get Started</Button>
+        <Link href="http://app.localhost:3000/sign-up">
+          <Button variant="secondary">Get Started</Button>
+        </Link>
       </div>
     </div>
   );
