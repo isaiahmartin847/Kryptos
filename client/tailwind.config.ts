@@ -55,7 +55,7 @@ export default {
         textColor: "#E0E0E0",
         mutedColor: "#B0B0B0",
         primaryAccentColor: "#FF6F00",
-        boarderColor: "#333333",
+        borderColor: "#333333",
         inputColor: "#1F1F1F",
         inputTextColor: "#E0E0E0",
         buttonHoverColor: "#FF8C00",

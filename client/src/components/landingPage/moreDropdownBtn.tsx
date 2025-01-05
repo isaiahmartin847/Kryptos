@@ -12,9 +12,9 @@ const MoreDropdownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button>Open</Button>
+        <Button className="text-lg">More</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-44">
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <BookText />
