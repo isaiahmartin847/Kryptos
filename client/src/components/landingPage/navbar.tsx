@@ -8,7 +8,7 @@ const Navbar = () => {
       <div></div>
       {/* this is for the brand name */}
       <div>
-        <h1 className="text-5xl font-semibold">Hunt Reg Maps</h1>
+        <h1 className="text-5xl font-semibold">Hunt Regs</h1>
       </div>
       {/* this is for the nav links */}
       <div>
