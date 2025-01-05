@@ -1,4 +1,5 @@
 import Navbar from "@/components/landingPage/navbar";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
           of a new day. The grass glistened with dew, and the sky slowly turned
         </p>
       </div>
+      <Button variant="secondary">Get started</Button>
     </div>
   );
 }

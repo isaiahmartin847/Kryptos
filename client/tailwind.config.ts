@@ -54,7 +54,7 @@ export default {
         secondaryColor: "#1E1E1E",
         textColor: "#E0E0E0",
         mutedColor: "#B0B0B0",
-        primaryAccentColor: "#FF6F00",
+        primaryAccentColor: "#e36300",
         borderColor: "#333333",
         inputColor: "#1F1F1F",
         inputTextColor: "#E0E0E0",
