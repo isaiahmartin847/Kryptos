@@ -11,10 +11,10 @@ const Navbar = () => {
         <h1 className="text-5xl font-semibold">Hunt Regs</h1>
       </div>
       {/* this is for the nav links */}
-      <div>
+      <div className="space-x-3">
         <MoreDropdownMenu />
         <Link
-          className="text-lg underline italic hover:text-primaryAccentColor"
+          className="text-lg underline italic hover:text-primaryAccentColor cursor-pointer"
           href="http://app.localhost:3000/sign-in">
           Sign In
         </Link>
