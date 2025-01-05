@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
 import "../globals.css";
 
 export default function RootLayout({
@@ -18,7 +12,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <head>
-          {/* You can add custom <head> tags here if needed */}
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1"

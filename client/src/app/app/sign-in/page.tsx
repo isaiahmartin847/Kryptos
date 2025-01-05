@@ -12,7 +12,7 @@ if (!frontendApi) {
 
 const clerk = new Clerk(frontendApi);
 
-export default function LandingPage() {
+export default function signInPage() {
   useEffect(() => {
     (async () => {
       try {
