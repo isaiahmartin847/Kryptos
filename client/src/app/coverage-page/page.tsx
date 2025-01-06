@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/components/landingPage/navbar";
+import { MousePointer2 } from "lucide-react";
 import { useState } from "react";
 import { MapCustomizations, USAMap } from "react-usa-map-fc";
 
@@ -14,9 +15,9 @@ const CoveragePage = () => {
   };
 
   return (
-    <div className="border-2 ">
+    <div className="flex flex-col items-center justify-center ">
       <Navbar />
-      <div className="border-2 mt-8 flex flex-col">
+      <div className="mt-8 flex flex-col justify-center items-center">
         <h1 className="text-[40px]">Hunt Regs Coverage</h1>
         <div className="flex space-x-2">
           <div className="flex space-x-2">
@@ -27,7 +28,10 @@ const CoveragePage = () => {
             <span className="h-5 w-5 bg-[#d3d3d3] inline-block"></span>
             <p className="text-xl">No Coverage</p>
           </div>
-          <div className="flex space-x-2"></div>
+          <div className="flex space-x-2">
+            <MousePointer2 className="inline-block" />
+            <p className="text-xl">Click on state for more info</p>
+          </div>
         </div>
       </div>
       <div className="flex justify-center mt-10">
