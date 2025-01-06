@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { BookText, Globe, Wallet } from "lucide-react";
+import Link from "next/link";
 
 const MoreDropdownMenu = () => {
   return (
@@ -24,10 +25,12 @@ const MoreDropdownMenu = () => {
             <Wallet />
             <span>Pricing</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Globe />
-            <span>Coverage</span>
-          </DropdownMenuItem>
+          <Link href="/coverage-page">
+            <DropdownMenuItem>
+              <Globe />
+              <span>Coverage</span>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

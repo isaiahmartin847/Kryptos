@@ -14,6 +14,10 @@ const CoveragePage = () => {
 
   return (
     <div className="w-full max-w-screen-lg mx-auto p-4">
+      <div>
+        <h1>Hunt Regs Coverage</h1>
+        <div></div>
+      </div>
       <USAMap
         title="USA Map"
         width={960}
