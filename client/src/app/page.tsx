@@ -6,7 +6,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div>
-      <Navbar />
       <div className="flex flex-col items-center space-y-4 mt-40">
         <h1 className="text-5xl text-textColor font-bold">
           Welcome to Hunt Regs

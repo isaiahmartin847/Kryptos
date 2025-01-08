@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LandingPageFooter from "@/components/landingPage/footer";
+import Navbar from "@/components/landingPage/navbar";
 
 export const metadata: Metadata = {
   title: "Reg-Maps",
@@ -26,6 +27,7 @@ export default function RootLayout({
       </head>
 
       <body className="bg-cover bg-center h-screen bg-primaryColor text-textColor">
+        <Navbar />
         <main className="min-h-screen">{children}</main>
         <LandingPageFooter />
       </body>

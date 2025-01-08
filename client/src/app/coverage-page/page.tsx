@@ -16,7 +16,6 @@ const CoveragePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center ">
-      <Navbar />
       <div className="mt-8 flex flex-col justify-center items-center">
         <h1 className="text-[40px]">Hunt Regs Coverage</h1>
         <div className="flex space-x-2">
