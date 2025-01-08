@@ -6,12 +6,14 @@ const Navbar = () => {
   return (
     <div className="flex h-[75px] w-full bg-secondaryColor items-center px-7">
       <div className="w-[200px]">
-        <Image
-          src="/RegMapsLogo.png"
-          alt="Logo"
-          height={52}
-          width={54}
-        />
+        <Link href="/">
+          <Image
+            src="/RegMapsLogo.png"
+            alt="Logo"
+            height={52}
+            width={54}
+          />
+        </Link>
       </div>
 
       <div className="flex-1 flex justify-center">
