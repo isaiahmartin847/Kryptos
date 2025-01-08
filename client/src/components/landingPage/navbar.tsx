@@ -1,16 +1,24 @@
 import Link from "next/link";
 import MoreDropdownMenu from "./moreDropdownBtn";
+import Image from "next/image";
 
 const Navbar = () => {
   return (
-    <div className="flex h-[75px] w-full bg-secondaryColor justify-between items-center px-7">
-      <div className="flex-none"></div>
+    <div className="flex h-[75px] w-full bg-secondaryColor items-center px-7">
+      <div className="w-[200px]">
+        <Image
+          src="/RegMapsLogo.png"
+          alt="Logo"
+          height={52}
+          width={54}
+        />
+      </div>
 
-      <div className="flex-1 text-center">
+      <div className="flex-1 flex justify-center">
         <h1 className="text-5xl font-semibold">Hunt Regs</h1>
       </div>
 
-      <div className="flex items-center space-x-3">
+      <div className="w-[200px] flex items-center space-x-3 justify-end">
         <MoreDropdownMenu />
         <Link
           className="text-lg underline italic hover:text-primaryAccentColor cursor-pointer"
