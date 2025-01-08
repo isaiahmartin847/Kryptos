@@ -1,3 +1,4 @@
+import LandingPageFooter from "@/components/landingPage/footer";
 import Navbar from "@/components/landingPage/navbar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
