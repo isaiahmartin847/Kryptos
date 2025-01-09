@@ -14,19 +14,50 @@ const LandingPageFooter = () => {
         {/* company div */}
         <div>
           <h1 className="text-xl font-semibold">Company</h1>
-          <div className="text-[12px]">
-            <Link href={"/about-us"}>About us</Link>
+          <div className="text-[12px] flex flex-col">
+            <Link
+              className="hover:underline"
+              href={"/about-us"}>
+              About us
+            </Link>
           </div>
         </div>
         {/* Policies div */}
         <div>
           <h1 className="text-xl font-semibold">Policies</h1>
-          <div className="text-[12px]"></div>
+          <div className="text-[12px] flex flex-col">
+            <Link
+              className="hover:underline"
+              href={"/terms-of-service"}>
+              Terms of service
+            </Link>
+          </div>
         </div>
         {/* quick links div */}
         <div>
           <h1 className="text-xl font-semibold">Quick links</h1>
-          <div className="text-[12px]"></div>
+          <div className="text-[12px] flex flex-col">
+            <Link
+              className="hover:underline"
+              href={"/coverage-page"}>
+              Coverage
+            </Link>
+            <Link
+              className="hover:underline"
+              href={"/pricing"}>
+              Pricing
+            </Link>
+            <Link
+              className="hover:underline"
+              href={"/about-page"}>
+              About
+            </Link>
+            <Link
+              className="hover:underline"
+              href={"/"}>
+              Home
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
