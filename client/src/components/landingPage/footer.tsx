@@ -1,10 +1,11 @@
+import { Copyright } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const LandingPageFooter = () => {
   return (
     <footer className="w-full h-[200px] py-[39px] px-[18px] bg-secondaryColor border-t-[1px] border-mutedColor">
-      <div className="border-2 flex space-x-28">
+      <div className="flex space-x-28">
         <Image
           src={"/RegMapsLogo.png"}
           alt={"Logo"}
@@ -59,6 +60,15 @@ const LandingPageFooter = () => {
             </Link>
           </div>
         </div>
+      </div>
+      {/* this is the copyright div */}
+      <div className="flex justify-end">
+        <Copyright
+          height={10}
+          width={10}
+          color="white"
+        />
+        <span className="text-[10px]">2024 HUNT REGS. ALL RIGHTS RESERVED</span>
       </div>
     </footer>
   );
