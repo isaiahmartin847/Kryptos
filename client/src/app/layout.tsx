@@ -1,3 +1,4 @@
+// app/layout.tsx (root layout)
 import type { Metadata } from "next";
 import "./globals.css";
 import LandingPageFooter from "@/components/landingPage/footer";
@@ -27,9 +28,9 @@ export default function RootLayout({
       </head>
 
       <body className="bg-cover bg-center h-screen bg-primaryColor text-textColor">
-        <Navbar />
+        {/* <Navbar /> */}
         <main className="min-h-screen">{children}</main>
-        <LandingPageFooter />
+        {/* <LandingPageFooter /> */}
       </body>
     </html>
   );
