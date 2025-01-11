@@ -21,7 +21,7 @@ func (h *Handler) Stripe_transaction(c echo.Context) error {
 
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{
-		"amount": transaction.Amount,
+		"amount": 90,
 	})
 
 }
