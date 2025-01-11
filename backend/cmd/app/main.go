@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/isaiahmartin847/Reg-Maps/internal/stripe" // Import the stripe package
+	// "github.com/isaiahmartin847/Reg-Maps/internal/stripe" // Import the stripe package
+
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	// "github.com/stripe/stripe-go/v74"
 )
 
 func main() {
@@ -14,14 +16,18 @@ func main() {
 	if err != nil {
 		log.Fatal("Unable to load dotenv")
 	}
-	// gets the stripe key 
-	// key := os.Getenv("STRIPE_KEY")
+
+	// stripeAPIKey := os.Getenv("STRIPE_API_KEY")
 
 	e := echo.New()
 
-	handler := &stripe.Handler{}
+	// stripeClient := &stripe.Client{
+	// 	APIKey: "your-secret-key",
+	// }
 
-	e.POST("/payment-intent", handler.Stripe_transaction)
+	// handler := &stripe.Handler{}
+
+	// e.POST("/payment-intent", handler.Stripe_transaction)
 
 	// Start the Echo server
 	e.Logger.Fatal(e.Start(":8080"))
