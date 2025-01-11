@@ -15,9 +15,18 @@ type Handler struct {}
 func (h *Handler) Stripe_transaction(c echo.Context) error {
 	transaction := &model.Stripe{}
 
+
+	
+
 	if err := c.Bind(transaction); err != nil {
 		return err
 	}
+
+
+	if transaction.Amount <= 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "Amount must be a positive number")
+	}
+
 
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{
