@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	handler "github.com/isaiahmartin847/Reg-Maps/internal/transport/stripe"
+	handler "github.com/isaiahmartin847/Reg-Maps/internal/transport"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
