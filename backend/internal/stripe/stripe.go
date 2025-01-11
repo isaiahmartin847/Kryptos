@@ -22,7 +22,7 @@ func (h *Handler) Stripe_transaction(c echo.Context) error {
 		return err
 	}
 
-
+//	handles the case that the value is 0 or negative
 	if transaction.Amount <= 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, "Amount must be a positive number")
 	}
