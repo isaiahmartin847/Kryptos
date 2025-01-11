@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/stripe" // Import the stripe package
 	"github.com/joho/godotenv"
@@ -16,10 +14,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Unable to load dotenv")
 	}
-
-	key := os.Getenv("KEY")
-
-	fmt.Println(key)
+	// gets the stripe key 
+	// key := os.Getenv("STRIPE_KEY")
 
 	e := echo.New()
 
