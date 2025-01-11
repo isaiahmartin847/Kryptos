@@ -13,7 +13,7 @@ type Handler struct {}
 
 
 func (h *Handler) Stripe_transaction(c echo.Context) error {
-	transaction := &model.Strip{}
+	transaction := &model.Stripe{}
 
 	if err := c.Bind(transaction); err != nil {
 		return err
@@ -21,7 +21,7 @@ func (h *Handler) Stripe_transaction(c echo.Context) error {
 
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{
-		"amount": 90,
+		"amount": transaction.Amount,
 	})
 
 }

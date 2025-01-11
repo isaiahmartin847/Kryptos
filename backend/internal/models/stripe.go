@@ -1,7 +1,7 @@
 package model
 
 type (
-	Strip struct {
+	Stripe struct {
 		Amount float64 `json:"amount"`
 	}
 )
