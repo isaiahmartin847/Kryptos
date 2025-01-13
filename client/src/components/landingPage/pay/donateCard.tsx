@@ -2,9 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
-import { Dialog } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import DonateProps from "@/types/props";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 
 const DonateCard = ({ Price }: DonateProps) => {
   return (
@@ -23,11 +27,14 @@ const DonateCard = ({ Price }: DonateProps) => {
           keep our product running and continue adding more features.
         </p>
       </CardHeader>
-      <CardFooter>
+      <CardFooter className="flex justify-center">
         <Dialog>
           <DialogTrigger>
             <Button variant={"secondary"}>Donate ${Price}</Button>
           </DialogTrigger>
+          <DialogContent className="w-[200vw] h-[700px]">
+            <DialogTitle>Payment</DialogTitle>
+          </DialogContent>
         </Dialog>
       </CardFooter>
     </Card>
