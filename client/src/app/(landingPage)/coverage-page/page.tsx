@@ -1,5 +1,4 @@
 "use client";
-import Navbar from "@/components/landingPage/navbar";
 import { MousePointer2 } from "lucide-react";
 import { useState } from "react";
 import { MapCustomizations, USAMap } from "react-usa-map-fc";
