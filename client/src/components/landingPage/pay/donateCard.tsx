@@ -11,6 +11,13 @@ const DonateCard = ({ Price }: DonateProps) => {
           <p className="text-xs ">one time payment</p>
         </div>
       </CardHeader>
+      <CardHeader className="py-0">
+        <p>
+          Our product is 100% free, but maintaining this service costs a lot of
+          money. If you enjoy the service, please consider donating so we can
+          keep our product running and continue adding more features.
+        </p>
+      </CardHeader>
     </Card>
   );
 };
