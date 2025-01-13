@@ -5,6 +5,7 @@ import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -29,11 +30,14 @@ const DonateCard = ({ Price }: DonateProps) => {
       </CardHeader>
       <CardFooter className="flex justify-center">
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button variant={"secondary"}>Donate ${Price}</Button>
           </DialogTrigger>
           <DialogContent className="w-[200vw] h-[700px]">
-            <DialogTitle>Payment</DialogTitle>
+            <DialogHeader>
+              <DialogTitle>Payment</DialogTitle>
+            </DialogHeader>
+            <div></div>
           </DialogContent>
         </Dialog>
       </CardFooter>
