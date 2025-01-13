@@ -21,10 +21,12 @@ const MoreDropdownMenu = () => {
             <BookText />
             <span>About Page</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Wallet />
-            <span>Pricing</span>
-          </DropdownMenuItem>
+          <Link href={"/pricing"}>
+            <DropdownMenuItem>
+              <Wallet />
+              <span>Pricing</span>
+            </DropdownMenuItem>
+          </Link>
           <Link href="/coverage-page">
             <DropdownMenuItem>
               <Globe />
