@@ -7,12 +7,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -25,27 +27,36 @@ const PaymentForm = () => {
     setErrorMessage(null);
 
     // when the payment is success
-    // try {
-    //   const { error } = await stripe.confirmPayment({
-    //     elements,
-    //     confirmParams: {
-    //       return_url: `${window.location.origin}/payment-success`,
-    //     },
-    //   });
+    try {
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {},
+        redirect: "if_required",
+      });
 
-    //   if (error) {
-    //     setErrorMessage(
-    //       error.message ?? "An error occurred while processing your payment."
-    //     );
-    //     setIsProcessing(false);
-    //   }
-    // } catch (err) {
-    //   setErrorMessage("An unexpected error occurred. Please try again.");
-    //   setIsProcessing(false);
-    // }
+      if (error) {
+        setErrorMessage(
+          error.message ?? "An error occurred while processing your payment."
+        );
+        setIsProcessing(false);
+      } else if (paymentIntent?.status === "succeeded") {
+        // Handle successful payment
+        console.log("Payment succeeded:", paymentIntent);
+        setIsSuccess(true);
+      }
+    } catch (err) {
+      setErrorMessage("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
-  return (
+  return isSuccess ? (
+    <div className="flex flex-col items-center h-[400px]">
+      <h1 className="text-2xl font-semibold">Payment Success</h1>
+      <p className="text-[13px]">Thank you for your support!</p>
+    </div>
+  ) : (
     <form
       onSubmit={handleSubmit}
       className="space-y-6">
