@@ -45,7 +45,7 @@ const createPaymentIntent = async (
   return response.json();
 };
 
-const DonateDialog = ({ Price }: DonateProps) => {
+const DonateDialog = ({ price }: DonateProps) => {
   const [stripeOptions, setStripeOptions] = useState<any>({});
 
   const { mutate, isPending } = useMutation({
@@ -78,7 +78,7 @@ const DonateDialog = ({ Price }: DonateProps) => {
   });
 
   const handleOpenDialog = () => {
-    mutate(Price);
+    mutate(price);
   };
 
   return (
@@ -87,7 +87,7 @@ const DonateDialog = ({ Price }: DonateProps) => {
         <Button
           onClick={handleOpenDialog}
           variant={"secondary"}>
-          Donate ${Price}
+          Donate ${price}
         </Button>
       </DialogTrigger>
       <DialogContent

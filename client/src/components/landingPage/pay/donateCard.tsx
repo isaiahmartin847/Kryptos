@@ -5,13 +5,13 @@ import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import DonateProps from "@/types/props";
 import DonateDialog from "./donateDialog";
 
-const DonateCard = ({ Price }: DonateProps) => {
+const DonateCard = ({ price }: DonateProps) => {
   return (
     <Card className="w-[325] h-[400]">
       <CardHeader>
         <h1 className="text-2xl font-semibold">Donate</h1>
         <div>
-          <h1 className="text-[32px] font-semibold">${Price}</h1>
+          <h1 className="text-[32px] font-semibold">${price}</h1>
           <p className="text-xs ">one time payment</p>
         </div>
       </CardHeader>
@@ -23,7 +23,7 @@ const DonateCard = ({ Price }: DonateProps) => {
         </p>
       </CardHeader>
       <CardFooter className="flex justify-center">
-        <DonateDialog Price={5} />
+        <DonateDialog price={price} />
       </CardFooter>
     </Card>
   );

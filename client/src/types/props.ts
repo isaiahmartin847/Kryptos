@@ -1,5 +1,5 @@
 interface DonateProps {
-  Price: number;
+  price: number;
 }
 
 export default DonateProps;
