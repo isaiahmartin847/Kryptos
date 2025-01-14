@@ -34,7 +34,7 @@ func (h *Handler) Stripe_transaction(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "Amount must be a positive number")
 	}
 
-	pi, err := paymentintent.New(&stripe.PaymentIntentParams{
+	paymentIntent, err := paymentintent.New(&stripe.PaymentIntentParams{
 		Amount:   stripe.Int64(transaction.Amount),  
 		Currency: stripe.String("usd"),
 	})
@@ -44,8 +44,7 @@ func (h *Handler) Stripe_transaction(c echo.Context) error {
 
 
 
-	return c.JSON(http.StatusCreated, map[string]interface{}{
-		"payment-intent": pi,
-	})
+	return c.JSON(http.StatusCreated, paymentIntent)
+
 
 }
