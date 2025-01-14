@@ -45,36 +45,32 @@ const PaymentForm = () => {
   };
 
   return (
-    <div className="w-full">
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6">
-        <div className=" rounded-lg p-4">
-          <PaymentElement />
-        </div>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6">
+      <PaymentElement />
 
-        {errorMessage && (
-          <Alert variant="destructive">
-            <AlertDescription>{errorMessage}</AlertDescription>
-          </Alert>
+      {errorMessage && (
+        <Alert variant="destructive">
+          <AlertDescription>{errorMessage}</AlertDescription>
+        </Alert>
+      )}
+
+      <Button
+        variant={"secondary"}
+        type="submit"
+        disabled={!stripe || isProcessing}
+        className="w-full">
+        {isProcessing ? (
+          <div className="flex items-center justify-center">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Processing...
+          </div>
+        ) : (
+          "Pay Now"
         )}
-
-        <Button
-          variant={"secondary"}
-          type="submit"
-          disabled={!stripe || isProcessing}
-          className="w-full">
-          {isProcessing ? (
-            <div className="flex items-center justify-center">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
-            </div>
-          ) : (
-            "Pay Now"
-          )}
-        </Button>
-      </form>
-    </div>
+      </Button>
+    </form>
   );
 };
 
