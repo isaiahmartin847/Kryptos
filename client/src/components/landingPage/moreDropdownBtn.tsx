@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { BookText, Globe, Wallet } from "lucide-react";
+import { BookText, Globe, House, Wallet } from "lucide-react";
 import Link from "next/link";
 
 const MoreDropdownMenu = () => {
@@ -17,10 +17,12 @@ const MoreDropdownMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-44">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <BookText />
-            <span>About Page</span>
-          </DropdownMenuItem>
+          <Link href={"/"}>
+            <DropdownMenuItem>
+              <House />
+              <span>Home Page</span>
+            </DropdownMenuItem>
+          </Link>
           <Link href={"/pricing"}>
             <DropdownMenuItem>
               <Wallet />
