@@ -45,16 +45,29 @@ const createPaymentIntent = async (
 };
 
 const DonateDialog = ({ Price }: DonateProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<string | null>(null);
-
   const [stripeOptions, setStripeOptions] = useState<any>({});
 
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: createPaymentIntent,
     onSuccess: (data) => {
       console.log(data.client_secret);
       setStripeOptions({
         clientSecret: data.client_secret,
+        appearance: {
+          theme: "flat",
+          variables: {
+            colorBackground: "#1E1E1E",
+            colorText: "#E0E0E0",
+            colorInputBackground: "#1F1F1F",
+            colorPrimary: "#E0E0E0",
+          },
+          rules: {
+            ".Input": {
+              padding: "12px",
+              borderRadius: "4px",
+            },
+          },
+        },
       });
       console.log(stripeOptions);
     },
@@ -77,7 +90,7 @@ const DonateDialog = ({ Price }: DonateProps) => {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="w-4/5 h-[700px]"
+        className="w-4/5 min-w-80 h-[700px]"
         aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Payment</DialogTitle>
@@ -85,7 +98,7 @@ const DonateDialog = ({ Price }: DonateProps) => {
         {isPending ? (
           <div>Loading...</div>
         ) : (
-          stripeOptions?.clientSecret && ( // Render only when clientSecret is available
+          stripeOptions?.clientSecret && (
             <Elements
               stripe={StripePromise}
               options={stripeOptions}>
