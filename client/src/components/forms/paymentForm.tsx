@@ -24,24 +24,25 @@ const PaymentForm = () => {
     setIsProcessing(true);
     setErrorMessage(null);
 
-    try {
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/payment-success`,
-        },
-      });
+    // when the payment is success
+    // try {
+    //   const { error } = await stripe.confirmPayment({
+    //     elements,
+    //     confirmParams: {
+    //       return_url: `${window.location.origin}/payment-success`,
+    //     },
+    //   });
 
-      if (error) {
-        setErrorMessage(
-          error.message ?? "An error occurred while processing your payment."
-        );
-        setIsProcessing(false);
-      }
-    } catch (err) {
-      setErrorMessage("An unexpected error occurred. Please try again.");
-      setIsProcessing(false);
-    }
+    //   if (error) {
+    //     setErrorMessage(
+    //       error.message ?? "An error occurred while processing your payment."
+    //     );
+    //     setIsProcessing(false);
+    //   }
+    // } catch (err) {
+    //   setErrorMessage("An unexpected error occurred. Please try again.");
+    //   setIsProcessing(false);
+    // }
   };
 
   return (

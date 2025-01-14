@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import DonateProps from "@/types/props";
 import { useState } from "react";
 import PaymentForm from "@/components/forms/paymentForm";
+import { Loader2 } from "lucide-react";
 
 const stripePublicKey =
   "pk_test_51Pm0egLqplUDffhZq85VRxffA4T0tJF8SrMCi6q2pQ8NYiduY7IwNF7htGMhIRM81BmLlnREskpfypASFm5xnUsi00Bl550s7Z";
@@ -92,11 +93,14 @@ const DonateDialog = ({ Price }: DonateProps) => {
       <DialogContent
         className="w-4/5 min-w-80 h-[700px]"
         aria-describedby={undefined}>
-        <DialogHeader>
+        <DialogHeader className="h-fit">
           <DialogTitle>Payment</DialogTitle>
         </DialogHeader>
         {isPending ? (
-          <div>Loading...</div>
+          <div className="flex flex-col items-center h-[100px]">
+            <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+            Processing...
+          </div>
         ) : (
           stripeOptions?.clientSecret && (
             <Elements
