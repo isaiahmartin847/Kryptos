@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import DonateProps from "@/types/props";
+import { useState } from "react";
 
 const stripePublicKey = process.env.STRIPE_PUBLIC_KEY_TEST;
 
@@ -21,7 +22,26 @@ if (!stripePublicKey) {
 
 const StripePromise = loadStripe(stripePublicKey);
 
+const createPaymentIntent = async (price: number) => {
+  const response = await fetch("http://localhost:8080/payment-intent", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ amount: price * 100 }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Unable to create payment intent`);
+  }
+
+  return response.json();
+};
+
 const DonateDialog = ({ Price }: DonateProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState<string | null>(null);
+  const [paymentIntent, setPaymentIntent] = useState<string | null>(null);
+
   const stripeOptions = {
     clientSecret: "put the payment intent here",
   };
