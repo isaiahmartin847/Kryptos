@@ -2,6 +2,7 @@
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useMutation } from "@tanstack/react-query";
 
 import {
   Dialog,
@@ -12,9 +13,10 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import DonateProps from "@/types/props";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const stripePublicKey = process.env.STRIPE_PUBLIC_KEY_TEST;
+const stripePublicKey =
+  "pk_test_51Pm0egLqplUDffhZq85VRxffA4T0tJF8SrMCi6q2pQ8NYiduY7IwNF7htGMhIRM81BmLlnREskpfypASFm5xnUsi00Bl550s7Z";
 
 if (!stripePublicKey) {
   throw new Error("Stripe public key is missing");
@@ -40,7 +42,21 @@ const createPaymentIntent = async (price: number) => {
 
 const DonateDialog = ({ Price }: DonateProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState<string | null>(null);
-  const [paymentIntent, setPaymentIntent] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+
+  const { mutate, data, isPending, isSuccess } = useMutation({
+    mutationFn: createPaymentIntent,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error("Error creating user:", error);
+    },
+  });
+
+  const handleOpenDialog = () => {
+    mutate(Price);
+  };
 
   const stripeOptions = {
     clientSecret: "put the payment intent here",
@@ -49,7 +65,11 @@ const DonateDialog = ({ Price }: DonateProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"secondary"}>Donate ${Price}</Button>
+        <Button
+          onClick={handleOpenDialog}
+          variant={"secondary"}>
+          Donate ${Price}
+        </Button>
       </DialogTrigger>
       <DialogContent className="w-[200vw] h-[700px]">
         <DialogHeader>

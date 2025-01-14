@@ -3,6 +3,7 @@
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 
 import DonateProps from "@/types/props";
+import DonateDialog from "./donateDialog";
 
 const DonateCard = ({ Price }: DonateProps) => {
   return (
@@ -21,7 +22,9 @@ const DonateCard = ({ Price }: DonateProps) => {
           keep our product running and continue adding more features.
         </p>
       </CardHeader>
-      <CardFooter className="flex justify-center"></CardFooter>
+      <CardFooter className="flex justify-center">
+        <DonateDialog Price={5} />
+      </CardFooter>
     </Card>
   );
 };
