@@ -1,14 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import DonateProps from "@/types/props";
 
 const DonateCard = ({ Price }: DonateProps) => {
@@ -28,19 +21,7 @@ const DonateCard = ({ Price }: DonateProps) => {
           keep our product running and continue adding more features.
         </p>
       </CardHeader>
-      <CardFooter className="flex justify-center">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant={"secondary"}>Donate ${Price}</Button>
-          </DialogTrigger>
-          <DialogContent className="w-[200vw] h-[700px]">
-            <DialogHeader>
-              <DialogTitle>Payment</DialogTitle>
-            </DialogHeader>
-            <div></div>
-          </DialogContent>
-        </Dialog>
-      </CardFooter>
+      <CardFooter className="flex justify-center"></CardFooter>
     </Card>
   );
 };
