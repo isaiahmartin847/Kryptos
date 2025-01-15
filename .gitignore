@@ -129,5 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# air 
-tmp/
+# air (Go Live Reload)
+.air
