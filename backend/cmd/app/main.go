@@ -13,8 +13,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-
-
 func main() {
 	// Load environment variables
 	err := godotenv.Load(".env")
@@ -29,7 +27,6 @@ func main() {
 	userRepo := &repositories.UserRepositories{DB: config.DB}
 	userService := service.NewUserService(userRepo)
 	handler := &handler.Handler{UserService: userService}
-	
 
 	// Initialize Echo
 	e := echo.New()

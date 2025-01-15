@@ -5,14 +5,13 @@ import (
 	"gorm.io/gorm"
 )
 
-
 type UserRepositories struct {
-    DB *gorm.DB
+	DB *gorm.DB
 }
 
 func (r *UserRepositories) CreateUser(user *models.User) (*models.User, error) {
-    if err := r.DB.Create(user).Error; err != nil {
-        return nil, err
-    }
-    return user, nil
+	if err := r.DB.Create(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
 }
