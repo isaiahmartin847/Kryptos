@@ -1,6 +1,9 @@
 package handler
 
+import (
+	"github.com/isaiahmartin847/Reg-Maps/internal/service"
+)
 
 type Handler struct {
-    // You can add dependencies here, like a service or a database connection
+	UserService *service.UserService
 }

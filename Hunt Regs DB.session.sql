@@ -18,4 +18,14 @@ INSERT INTO test (test) VALUES
 
 
 --@block 
-SELECT * FROM test
+SELECT * FROM users
+
+
+--@block 
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public';
+
+
+--@block
+DROP TABLE "user"

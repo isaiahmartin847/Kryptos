@@ -2,13 +2,13 @@ package models
 
 
 type User struct {
-	user_id string `gorm:"primary_key"`
-	first_name string 
-	last_name string 
-	email string 
-	created_at uint64
+	UserID    string `gorm:"primary_key"`
+	FirstName string
+	LastName  string
+	Email     string
+	CreatedAt uint64
 }
 
 func (User) TableName() string {
-	return "user"
+	return "users"
 }

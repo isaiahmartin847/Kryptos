@@ -7,17 +7,12 @@ import (
 
 
 type UserRepositories struct {
-	db *gorm.DB
+    DB *gorm.DB
 }
 
-
-func (r *UserRepositories) GetAllUsers () ([]*models.User, error) {
-	var users []*models.User
-
-	if err := r.db.Find(&users).Error; err != nil {
-		return nil, err 
-	}
-
-	return users, nil 
-
+func (r *UserRepositories) CreateUser(user *models.User) (*models.User, error) {
+    if err := r.DB.Create(user).Error; err != nil {
+        return nil, err
+    }
+    return user, nil
 }
