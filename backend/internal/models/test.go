@@ -5,9 +5,9 @@ import (
 )
 
 type Test struct {
-	ID            int64     `gorm:"primary_key;autoIncrement"`       // matches SERIAL type
-	TestValue     bool      `gorm:"column:test"`                     // BOOLEAN column
-	AutoTimestamp time.Time `gorm:"column:auto_timestamp;default:CURRENT_TIMESTAMP"` // TIMESTAMP column with default value
+	ID            int64     `gorm:"primary_key;autoIncrement"`       
+	TestValue     bool      `gorm:"column:test"`                
+	AutoTimestamp time.Time `gorm:"column:auto_timestamp;default:CURRENT_TIMESTAMP"` 
 }
 
 // TableName specifies the custom table name for the Test model

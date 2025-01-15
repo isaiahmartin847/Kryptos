@@ -11,8 +11,6 @@ import (
 	"github.com/stripe/stripe-go/v75/paymentintent"
 )
 
-type Handler struct {}
-
 
 
 func (h *Handler) Stripe_transaction(c echo.Context) error {

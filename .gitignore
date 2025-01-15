@@ -131,3 +131,4 @@ dist
 
 # air (Go Live Reload)
 .air
+backend/tmp/
