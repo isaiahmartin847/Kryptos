@@ -36,6 +36,7 @@ func main() {
 	// Set up handlers
 	handler := &handler.Handler{}
 	e.POST("/payment-intent", handler.Stripe_transaction)
+	e.POST("/user-created-payload", handler.UserWebhookPayload)
 	e.GET("/", handler.Details)
 
 	// Start the Echo server

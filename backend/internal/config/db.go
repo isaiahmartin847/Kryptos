@@ -23,7 +23,7 @@ func ConnectDatabase() {
 	
 	fmt.Println("Connected to the database successfully!")
 
-	err = DB.AutoMigrate(&models.Test{})
+	err = DB.AutoMigrate(&models.Test{}, &models.User{})
 	if err != nil {
 		log.Fatal("Error running migrations: ", err)
 	}
