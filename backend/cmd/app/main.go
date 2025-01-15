@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/config"
-	models "github.com/isaiahmartin847/Reg-Maps/internal/models"
 	handler "github.com/isaiahmartin847/Reg-Maps/internal/transport"
 
 	"github.com/joho/godotenv"
@@ -24,16 +22,6 @@ func main() {
 
 	config.ConnectDatabase()
 
-
-	var tests []models.Test
-	if err := config.DB.Find(&tests).Error; err != nil {
-		log.Fatalf("Error retrieving data from database: %v", err)
-	}
-
-	fmt.Println("All records from the test table:")
-	for _, test := range tests {
-		fmt.Printf("ID: %d, Test: %v, Timestamp: %s\n", test.ID, test.TestValue, test.AutoTimestamp)
-	}
 
 	// Initialize Echo
 	e := echo.New()
