@@ -6,16 +6,17 @@ import (
 )
 
 type SessionRepository struct {
-	*Repository
+	db *gorm.DB
 }
 
 func NewSessionRepository(db *gorm.DB) *SessionRepository {
-	repo := NewRepository(db)
-	return &SessionRepository{Repository: repo}
+	return &SessionRepository{
+		db: db,
+	}
 }
 
-func (r *Repository) CreateSession(session *models.Session) (*models.Session, error) {
-	if err := r.DB.Create(session).Error; err != nil {
+func (r *SessionRepository) CreateSession(session *models.Session) (*models.Session, error) {
+	if err := r.db.Create(session).Error; err != nil {
 		return nil, err
 	}
 

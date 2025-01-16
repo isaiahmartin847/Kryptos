@@ -5,17 +5,18 @@ import (
 	"gorm.io/gorm"
 )
 
-// Rename from UserRepositories to UserRepository
 type UserRepository struct {
-	*Repository
+	db *gorm.DB
 }
 
 func NewUserRepository(db *gorm.DB) *UserRepository {
-	repo := NewRepository(db)
-	return &UserRepository{Repository: repo}
+	return &UserRepository{
+		db: db,
+	}
 }
-func (r *Repository) CreateUser(user *models.User) (*models.User, error) {
-	if err := r.DB.Create(user).Error; err != nil {
+
+func (r *UserRepository) CreateUser(user *models.User) (*models.User, error) {
+	if err := r.db.Create(user).Error; err != nil {
 		return nil, err
 	}
 	return user, nil

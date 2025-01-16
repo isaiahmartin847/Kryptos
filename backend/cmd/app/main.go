@@ -26,9 +26,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Initialize base repository
-	// baseRepo := repositories.NewRepository(db)
-
 	// Initialize specific repositories
 	userRepo := repositories.NewUserRepository(db)
 	sessionRepo := repositories.NewSessionRepository(db)
