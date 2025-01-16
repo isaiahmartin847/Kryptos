@@ -1,13 +1,16 @@
 package repositories
 
-import "github.com/isaiahmartin847/Reg-Maps/internal/models"
+import (
+	"github.com/isaiahmartin847/Reg-Maps/internal/models"
+	"gorm.io/gorm"
+)
 
 type SessionRepository struct {
 	*Repository
 }
 
-// Update constructor name to match
-func NewSessionRepository(repo *Repository) *SessionRepository {
+func NewSessionRepository(db *gorm.DB) *SessionRepository {
+	repo := NewRepository(db)
 	return &SessionRepository{Repository: repo}
 }
 

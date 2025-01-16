@@ -21,14 +21,17 @@ func main() {
 	}
 
 	// Connect to the database
-	config.ConnectDatabase()
+	db, err := config.ConnectDatabase()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Initialize base repository
-	baseRepo := &repositories.Repository{DB: config.DB}
+	// baseRepo := repositories.NewRepository(db)
 
 	// Initialize specific repositories
-	userRepo := repositories.NewUserRepository(baseRepo)
-	sessionRepo := repositories.NewSessionRepository(baseRepo)
+	userRepo := repositories.NewUserRepository(db)
+	sessionRepo := repositories.NewSessionRepository(db)
 
 	// Initialize services
 	userService := service.NewUserService(userRepo)

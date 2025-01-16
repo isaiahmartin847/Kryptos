@@ -2,32 +2,34 @@ package config
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+// Remove global DB variable
 
-func ConnectDatabase() {
+func ConnectDatabase() (*gorm.DB, error) {
 	var err error
 	dsn := "host=localhost port=5432 user=postgres dbname=postgres sslmode=disable password=Developer*1"
 
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// Open the database connection
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Error connecting to the database: ", err)
+		return nil, fmt.Errorf("error connecting to the database: %w", err)
 	}
 
 	fmt.Println("Connected to the database successfully!")
 
-	err = DB.AutoMigrate(&models.Test{}, &models.User{}, &models.Session{})
+	// Run migrations
+	err = db.AutoMigrate(&models.Test{}, &models.User{}, &models.Session{})
 	if err != nil {
-		log.Fatal("Error running migrations: ", err)
+		return nil, fmt.Errorf("error running migrations: %w", err)
 	}
 
 	fmt.Println("migration success")
 
+	// Return the database connection
+	return db, nil
 }
