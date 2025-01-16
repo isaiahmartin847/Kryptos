@@ -33,3 +33,13 @@ func (s *SessionService) GetSessions() ([]models.Session, error) {
 
 	return sessions, nil
 }
+
+func (s *SessionService) GetByID(userID string) ([]models.Session, error) {
+
+	sessions, err := s.SessionRepo.GetById(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	return sessions, nil
+}

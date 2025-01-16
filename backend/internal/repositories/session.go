@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"fmt"
+
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"gorm.io/gorm"
 )
@@ -33,4 +35,17 @@ func (r *SessionRepository) Get() ([]models.Session, error) {
 
 	return sessions, nil
 
+}
+
+func (r *SessionRepository) GetById(userID string) ([]models.Session, error) {
+	var sessions []models.Session
+
+	result := r.db.Find(&sessions, "user_id", userID)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	fmt.Print(result.RowsAffected)
+
+	return sessions, nil
 }

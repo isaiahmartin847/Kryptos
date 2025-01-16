@@ -34,3 +34,19 @@ func (h *Handler) GetSessions(c echo.Context) error {
 	return c.JSON(http.StatusCreated, sessions)
 
 }
+
+func (h *Handler) GetSessionsByID(c echo.Context) error {
+	userID := c.QueryParam("userID")
+
+	if userID == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": `Param userID is missing`})
+	}
+
+	sessions, err := h.SessionService.GetByID(userID)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Unable to fetch the sessions"})
+	}
+
+	return c.JSON(http.StatusCreated, sessions)
+
+}
