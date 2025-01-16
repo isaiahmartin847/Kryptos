@@ -14,7 +14,8 @@ export default function SubdomainLayout({
     <ClerkProvider
       appearance={{
         baseTheme: dark,
-      }}>
+      }}
+      afterSignOutUrl={"http://localhost:3000/"}>
       <div className="bg-cover bg-center h-screen bg-primaryColor text-textColor">
         <Navbar />
         {children}
