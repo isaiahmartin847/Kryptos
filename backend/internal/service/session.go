@@ -23,3 +23,13 @@ func (s *SessionService) CreateSession(session *models.Session) (*models.Session
 
 	return createdSession, nil
 }
+
+func (s *SessionService) GetSessions() ([]models.Session, error) {
+
+	sessions, err := s.SessionRepo.GetSessions()
+	if err != nil {
+		return nil, err
+	}
+
+	return sessions, nil
+}

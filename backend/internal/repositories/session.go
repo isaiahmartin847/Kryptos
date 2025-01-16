@@ -22,3 +22,15 @@ func (r *SessionRepository) CreateSession(session *models.Session) (*models.Sess
 
 	return session, nil
 }
+
+func (r *SessionRepository) GetSessions() ([]models.Session, error) {
+	var sessions []models.Session
+
+	result := r.db.Find(&sessions)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return sessions, nil
+
+}

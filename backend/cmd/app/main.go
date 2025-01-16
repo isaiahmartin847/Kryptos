@@ -54,6 +54,7 @@ func main() {
 	e.POST("/user-created-payload", handler.UserWebhookPayload())
 	e.POST("/payment-intent", handler.Stripe_transaction)
 	e.POST("/create-session", handler.CreateSession)
+	e.GET("/sessions", handler.GetSessions)
 	e.GET("/", handler.Details)
 
 	// Start the Echo server

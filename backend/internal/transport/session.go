@@ -23,3 +23,14 @@ func (h *Handler) CreateSession(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, createdSession)
 }
+
+func (h *Handler) GetSessions(c echo.Context) error {
+
+	sessions, err := h.SessionService.GetSessions()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Unable to get sessions"})
+	}
+
+	return c.JSON(http.StatusCreated, sessions)
+
+}
