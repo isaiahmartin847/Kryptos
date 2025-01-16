@@ -1,15 +1,16 @@
 package repositories
 
-import (
-	"github.com/isaiahmartin847/Reg-Maps/internal/models"
-	"gorm.io/gorm"
-)
+import "github.com/isaiahmartin847/Reg-Maps/internal/models"
 
-type UserRepositories struct {
-	DB *gorm.DB
+// Rename from UserRepositories to UserRepository
+type UserRepository struct {
+	*Repository
 }
 
-func (r *UserRepositories) CreateUser(user *models.User) (*models.User, error) {
+func NewUserRepository(repo *Repository) *UserRepository {
+	return &UserRepository{Repository: repo}
+}
+func (r *Repository) CreateUser(user *models.User) (*models.User, error) {
 	if err := r.DB.Create(user).Error; err != nil {
 		return nil, err
 	}

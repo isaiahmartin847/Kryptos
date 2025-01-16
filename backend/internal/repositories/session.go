@@ -1,15 +1,17 @@
 package repositories
 
-import (
-	"github.com/isaiahmartin847/Reg-Maps/internal/models"
-	"gorm.io/gorm"
-)
+import "github.com/isaiahmartin847/Reg-Maps/internal/models"
 
-type SessionRepositories struct {
-	DB *gorm.DB
+type SessionRepository struct {
+	*Repository
 }
 
-func (r *SessionRepositories) CreateSession(session *models.Session) (*models.Session, error) {
+// Update constructor name to match
+func NewSessionRepository(repo *Repository) *SessionRepository {
+	return &SessionRepository{Repository: repo}
+}
+
+func (r *Repository) CreateSession(session *models.Session) (*models.Session, error) {
 	if err := r.DB.Create(session).Error; err != nil {
 		return nil, err
 	}

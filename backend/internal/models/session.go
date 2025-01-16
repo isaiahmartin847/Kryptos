@@ -9,3 +9,7 @@ type Session struct {
 	HuntingUnit string    `gorm:"not null"`
 	CreatedAt   time.Time `gorm:"autoCreateTime"`
 }
+
+func (Session) TableName() string {
+	return "sessions"
+}

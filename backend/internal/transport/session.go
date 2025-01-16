@@ -16,9 +16,9 @@ func (h *Handler) CreateSession(c echo.Context) error {
 		return err
 	}
 
-	createdSession, err := h.SessionService.CreateSession(&models.Session{})
+	createdSession, err := h.SessionService.CreateSession(session)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to create a season"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to create a session"})
 	}
 
 	return c.JSON(http.StatusCreated, createdSession)

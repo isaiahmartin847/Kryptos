@@ -23,10 +23,22 @@ func main() {
 	// Connect to the database
 	config.ConnectDatabase()
 
-	// Initialize repository, service, and handler
-	userRepo := &repositories.UserRepositories{DB: config.DB}
+	// Initialize base repository
+	baseRepo := &repositories.Repository{DB: config.DB}
+
+	// Initialize specific repositories
+	userRepo := repositories.NewUserRepository(baseRepo)
+	sessionRepo := repositories.NewSessionRepository(baseRepo)
+
+	// Initialize services
 	userService := service.NewUserService(userRepo)
-	handler := &handler.Handler{UserService: userService}
+	sessionService := service.NewSessionService(sessionRepo)
+
+	// Initialize handler
+	handler := &handler.Handler{
+		UserService:    userService,
+		SessionService: sessionService,
+	}
 
 	// Initialize Echo
 	e := echo.New()
@@ -41,6 +53,7 @@ func main() {
 	// Define routes
 	e.POST("/user-created-payload", handler.UserWebhookPayload())
 	e.POST("/payment-intent", handler.Stripe_transaction)
+	e.POST("/create-session", handler.CreateSession)
 	e.GET("/", handler.Details)
 
 	// Start the Echo server

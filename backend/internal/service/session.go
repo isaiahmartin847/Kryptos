@@ -6,10 +6,10 @@ import (
 )
 
 type SessionService struct {
-	SessionRepo *repositories.SessionRepositories
+	SessionRepo *repositories.SessionRepository
 }
 
-func NewSessionService(sessionRepo *repositories.SessionRepositories) *SessionService {
+func NewSessionService(sessionRepo *repositories.SessionRepository) *SessionService {
 	return &SessionService{SessionRepo: sessionRepo}
 }
 

@@ -4,14 +4,14 @@ import (
 	"fmt"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
-	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
+	repository "github.com/isaiahmartin847/Reg-Maps/internal/repositories"
 )
 
 type UserService struct {
-	UserRepo *repositories.UserRepositories
+	UserRepo *repository.UserRepository
 }
 
-func NewUserService(userRepo *repositories.UserRepositories) *UserService {
+func NewUserService(userRepo *repository.UserRepository) *UserService {
 	return &UserService{UserRepo: userRepo}
 }
 

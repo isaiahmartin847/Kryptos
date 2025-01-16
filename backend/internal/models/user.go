@@ -1,6 +1,5 @@
 package models
 
-
 type User struct {
 	UserID    string `gorm:"primary_key"`
 	FirstName string
