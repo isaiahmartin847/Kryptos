@@ -11,9 +11,9 @@ const Main = () => {
   });
   return (
     <SignedIn>
-      <div>
+      {/* <div>
         <div>this is the app and account side</div>
-      </div>
+      </div> */}
     </SignedIn>
   );
 };
