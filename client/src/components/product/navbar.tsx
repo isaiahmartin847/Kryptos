@@ -21,7 +21,13 @@ const Navbar = () => {
       </div>
 
       <div className="w-[200px] flex items-center space-x-3 justify-end">
-        <UserButton />
+        <UserButton
+          appearance={{
+            elements: {
+              userButtonAvatarBox: "w-[40px] h-[40px]",
+            },
+          }}
+        />
       </div>
     </div>
   );

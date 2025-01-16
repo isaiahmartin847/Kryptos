@@ -1,5 +1,5 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
+import { SignedIn, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
 const Main = () => {
@@ -10,9 +10,11 @@ const Main = () => {
     }
   });
   return (
-    <div className="">
-      <div>this is the app and account side</div>
-    </div>
+    <SignedIn>
+      <div>
+        <div>this is the app and account side</div>
+      </div>
+    </SignedIn>
   );
 };
 
