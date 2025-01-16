@@ -28,4 +28,4 @@ WHERE table_schema = 'public';
 
 
 --@block
-DROP TABLE "user"
+DROP TABLE "users"

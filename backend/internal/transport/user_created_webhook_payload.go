@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -26,12 +25,10 @@ func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 			CreatedAt: uint64(payload.Data.CreatedAt),
 		}
 
-		createdUser, err := h.UserService.CreateUser(&user)
+		_, err := h.UserService.CreateUser(&user)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to create user"})
 		}
-
-		fmt.Print(createdUser)
 
 		return c.JSON(http.StatusCreated, "success")
 	}
