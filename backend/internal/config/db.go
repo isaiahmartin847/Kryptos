@@ -14,13 +14,13 @@ var DB *gorm.DB
 
 func ConnectDatabase() {
 	var err error
-	dsn := "host=localhost port=5432 user=postgres dbname=postgres sslmode=disable password="
+	dsn := "host=localhost port=5432 user=postgres dbname=postgres sslmode=disable password=Developer*1"
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Error connecting to the database: ", err)
 	}
-	
+
 	fmt.Println("Connected to the database successfully!")
 
 	err = DB.AutoMigrate(&models.Test{}, &models.User{})

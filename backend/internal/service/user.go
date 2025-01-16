@@ -11,11 +11,9 @@ type UserService struct {
 	UserRepo *repositories.UserRepositories
 }
 
-
-
-func NewUserService (userRepo *repositories.UserRepositories) *UserService {
+func NewUserService(userRepo *repositories.UserRepositories) *UserService {
 	return &UserService{UserRepo: userRepo}
-} 
+}
 
 func (s *UserService) CreateUser(user *models.User) (*models.User, error) {
 
