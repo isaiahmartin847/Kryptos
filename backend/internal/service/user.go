@@ -21,7 +21,7 @@ func (s *UserService) CreateUser(user *models.User) (*models.User, error) {
 		return nil, fmt.Errorf("missing required fields")
 	}
 
-	createdUser, err := s.UserRepo.CreateUser(user)
+	createdUser, err := s.UserRepo.Create(user)
 	if err != nil {
 		return nil, err
 	}

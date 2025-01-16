@@ -15,7 +15,7 @@ func NewSessionRepository(db *gorm.DB) *SessionRepository {
 	}
 }
 
-func (r *SessionRepository) CreateSession(session *models.Session) (*models.Session, error) {
+func (r *SessionRepository) Create(session *models.Session) (*models.Session, error) {
 	if err := r.db.Create(session).Error; err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func (r *SessionRepository) CreateSession(session *models.Session) (*models.Sess
 	return session, nil
 }
 
-func (r *SessionRepository) GetSessions() ([]models.Session, error) {
+func (r *SessionRepository) Get() ([]models.Session, error) {
 	var sessions []models.Session
 
 	result := r.db.Find(&sessions)

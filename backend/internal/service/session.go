@@ -16,7 +16,7 @@ func NewSessionService(sessionRepo *repositories.SessionRepository) *SessionServ
 func (s *SessionService) CreateSession(session *models.Session) (*models.Session, error) {
 	// handle all the checks and services
 
-	createdSession, err := s.SessionRepo.CreateSession(session)
+	createdSession, err := s.SessionRepo.Create(session)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func (s *SessionService) CreateSession(session *models.Session) (*models.Session
 
 func (s *SessionService) GetSessions() ([]models.Session, error) {
 
-	sessions, err := s.SessionRepo.GetSessions()
+	sessions, err := s.SessionRepo.Get()
 	if err != nil {
 		return nil, err
 	}
