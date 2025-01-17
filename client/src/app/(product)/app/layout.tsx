@@ -4,6 +4,8 @@ import { ClerkProvider, SignedIn } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import "@/app/globals.css";
 import Navbar from "@/components/product/navbar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import SessionSideBar from "@/components/product/sessionSIdeBar";
 
 export default function SubdomainLayout({
   children,
@@ -16,10 +18,13 @@ export default function SubdomainLayout({
         baseTheme: dark,
       }}
       afterSignOutUrl={"http://localhost:3000/"}>
-      <div className="bg-cover bg-center h-screen bg-primaryColor text-textColor">
-        <Navbar />
-        {children}
-      </div>
+      <SidebarProvider color="black">
+        <SessionSideBar />
+        <main className="bg-cover bg-center h-screen bg-primaryColor text-textColor w-screen">
+          <Navbar />
+          {children}
+        </main>
+      </SidebarProvider>
     </ClerkProvider>
   );
 }
