@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import DonateProps from "@/types/props";
 import { useState } from "react";
-import PaymentForm from "@/components/forms/paymentForm";
+import PaymentForm from "@/components/landingPage/forms/paymentForm";
 import { Loader2 } from "lucide-react";
 
 const stripePublicKey =

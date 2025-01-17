@@ -3,19 +3,19 @@ import { SignedIn, useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
 const Main = () => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser(); // isLoaded helps avoid checking before the user is fetched
+
   useEffect(() => {
-    if (user) {
-      console.log(user.id);
+    if (isLoaded) {
+      if (user) {
+        console.log(user.id); // Log user ID if logged in
+      } else {
+        console.log("not logged in");
+      }
     }
-  });
-  return (
-    <SignedIn>
-      {/* <div>
-        <div>this is the app and account side</div>
-      </div> */}
-    </SignedIn>
-  );
+  }, [isLoaded, user]); // Only run effect when user state is loaded
+
+  return <div>hello</div>;
 };
 
 export default Main;
