@@ -18,7 +18,7 @@ INSERT INTO test (test) VALUES
 
 
 --@block 
-SELECT * FROM users
+SELECT * FROM sessions
 
 
 --@block 
@@ -29,3 +29,6 @@ WHERE table_schema = 'public';
 
 --@block
 DROP TABLE "users"
+
+--@block 
+DROP TABLE "sessions"
