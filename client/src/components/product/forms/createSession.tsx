@@ -19,7 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DialogFooter } from "@/components/ui/dialog";
 
 interface Props {
   children?: React.ReactNode;
@@ -60,9 +59,17 @@ const CreateSessionForm = ({ children }: Props) => {
     330: "330",
   };
 
+  const onSubmit = (values: z.infer<typeof schema>) => {
+    console.log({
+      State: values.State,
+      Species: values.Species,
+      HuntingUnit: values.HuntingUnit,
+    });
+  };
+
   return (
     <Form {...form}>
-      <form>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="State"
@@ -71,8 +78,8 @@ const CreateSessionForm = ({ children }: Props) => {
               <FormLabel>Select a state.</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}>
+                  onValueChange={(value) => field.onChange(value)}
+                  value={field.value || ""}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a state" />
                   </SelectTrigger>
@@ -100,8 +107,8 @@ const CreateSessionForm = ({ children }: Props) => {
               <FormLabel>Select a hunting unit.</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}>
+                  onValueChange={(value) => field.onChange(value)}
+                  value={field.value || ""}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a hunting unit" />
                   </SelectTrigger>
@@ -122,11 +129,7 @@ const CreateSessionForm = ({ children }: Props) => {
         />
         <div>
           {children}
-          <Button
-            type="submit"
-            variant={"secondary"}>
-            Create
-          </Button>
+          <button type="submit">Create</button>
         </div>
       </form>
     </Form>
