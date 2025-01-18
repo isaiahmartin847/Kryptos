@@ -1,4 +1,5 @@
 "use client";
+import CreateSessionModal from "@/components/product/modal/createSessionModal";
 import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
@@ -15,7 +16,11 @@ const Main = () => {
     }
   }, [isLoaded, user]); // Only run effect when user state is loaded
 
-  return <div></div>;
+  return (
+    <div>
+      <CreateSessionModal />
+    </div>
+  );
 };
 
 export default Main;
