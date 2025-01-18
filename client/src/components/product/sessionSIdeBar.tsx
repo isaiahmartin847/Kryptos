@@ -11,15 +11,7 @@ const SessionSideBar = () => {
       <SidebarHeader className="items-center text-xl border-b-[1px] border-b-borderColor p-[22px] font-semibold">
         Sessions
       </SidebarHeader>
-      <SidebarContent className="overflow-y-auto">
-        <SessionCard
-          HuntingUnit="320"
-          State="MT"
-          Species="ELK"
-          CreatedAt={"2025-01-17T12:34:56"}
-        />
-        <SessionSkeletonCard />
-      </SidebarContent>
+      <SidebarContent className="overflow-y-auto"></SidebarContent>
     </Sidebar>
   );
 };
