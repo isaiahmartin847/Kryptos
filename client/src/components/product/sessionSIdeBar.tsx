@@ -16,6 +16,7 @@ const SessionSideBar = () => {
           HuntingUnit="320"
           State="MT"
           Species="ELK"
+          CreatedAt={"2025-01-17T12:34:56"}
         />
       </SidebarContent>
     </Sidebar>
