@@ -12,9 +12,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DialogFooter } from "@/components/ui/dialog";
 
 interface Props {
-  handleSubmit: () => void;
   children?: React.ReactNode;
 }
 
@@ -24,7 +31,7 @@ interface CreateBrandForm {
   HuntingUnit: string;
 }
 
-const DeleteBrandForm = ({ handleSubmit, children }: Props) => {
+const CreateSessionForm = ({ children }: Props) => {
   const schema = z.object({
     State: z.string().nonempty("State cannot be empty"),
     Species: z.string().nonempty("Species cannot be empty"),
@@ -40,9 +47,13 @@ const DeleteBrandForm = ({ handleSubmit, children }: Props) => {
     },
   });
 
+  const openStates = {
+    MT: "Montana",
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form>
         <FormField
           control={form.control}
           name="State"
@@ -50,22 +61,38 @@ const DeleteBrandForm = ({ handleSubmit, children }: Props) => {
             <FormItem>
               <FormLabel>Select a state.</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
-                  placeholder=""
-                />
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(openStates).map(([value, label]) => (
+                      <SelectItem
+                        key={value}
+                        value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="flex justify-end items-center gap-2">
+        <DialogFooter>
           {children}
-          <Button type="submit">Create</Button>
-        </div>
+          <Button
+            type="submit"
+            variant={"secondary"}>
+            Create
+          </Button>
+        </DialogFooter>
       </form>
     </Form>
   );
 };
 
-export default DeleteBrandForm;
+export default CreateSessionForm;

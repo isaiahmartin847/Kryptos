@@ -6,26 +6,26 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
-// import { DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 import { Plus } from "lucide-react";
+import CreateSessionForm from "../forms/createSession";
 
 const CreateSessionModal = () => {
   return (
-    <div className="flex justify-center items-center w-ful h-[88vh]">
+    <div className="flex justify-center items-center w-ful h-[87vh]">
       <Dialog>
         <DialogTrigger asChild>
           <Button variant={"secondary"}>
             <Plus
               strokeWidth={4}
               className="p-0 m-0"
-            />{" "}
+            />
             Create Session
           </Button>
         </DialogTrigger>
 
         <DialogContent>
           <DialogTitle>Create a session</DialogTitle>
-          <div>form here</div>
+          <CreateSessionForm />
         </DialogContent>
       </Dialog>
     </div>
