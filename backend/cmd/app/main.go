@@ -43,6 +43,8 @@ func main() {
 	// Initialize Echo
 	e := echo.New()
 
+	sessionGroup := e.Group("/session")
+
 	// Configure CORS
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
@@ -50,11 +52,15 @@ func main() {
 		AllowHeaders: []string{"Content-Type", "Authorization"},
 	}))
 
-	// Define routes
+	// session group
+	//get requests
+	sessionGroup.GET("/all", handler.GetSessionsByID)
+	// post requests
+	sessionGroup.POST("/create", handler.CreateSession)
+
+	// general groups
 	e.POST("/user-created-payload", handler.UserWebhookPayload())
 	e.POST("/payment-intent", handler.Stripe_transaction)
-	e.POST("/create-session", handler.CreateSession)
-	e.GET("/sessions", handler.GetSessionsByID)
 	e.GET("/", handler.Details)
 
 	// Start the Echo server

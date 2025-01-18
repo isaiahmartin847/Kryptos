@@ -18,7 +18,7 @@ func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 		}
 
 		user := models.User{
-			UserID:    payload.Data.ID,
+			ID:        payload.Data.ID,
 			FirstName: payload.Data.FirstName,
 			LastName:  payload.Data.LastName,
 			Email:     payload.Data.EmailAddresses[0].EmailAddress,
