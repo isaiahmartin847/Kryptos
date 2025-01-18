@@ -1,5 +1,5 @@
 "use client";
-import { SignedIn, useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 
 const Main = () => {
@@ -15,7 +15,7 @@ const Main = () => {
     }
   }, [isLoaded, user]); // Only run effect when user state is loaded
 
-  return <div>hello</div>;
+  return <div></div>;
 };
 
 export default Main;

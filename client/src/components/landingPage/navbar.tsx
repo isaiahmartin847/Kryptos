@@ -24,7 +24,7 @@ const Navbar = () => {
         <MoreDropdownMenu />
         <Link
           className="text-lg underline italic hover:text-primaryAccentColor cursor-pointer"
-          href="http://app.localhost:3000/sign-in">
+          href="http://app.localhost:3000">
           Sign In
         </Link>
       </div>

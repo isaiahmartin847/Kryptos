@@ -11,6 +11,7 @@ import "@/app/globals.css";
 import Navbar from "@/components/product/navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import SessionSideBar from "@/components/product/sessionSIdeBar";
+import { ReactQueryProvider } from "@/providers/reactQueryProvider";
 
 export default function SubdomainLayout({
   children,
@@ -26,14 +27,17 @@ export default function SubdomainLayout({
       <SignedOut>
         <RedirectToSignIn />
       </SignedOut>
+
       <SignedIn>
-        <SidebarProvider>
-          <SessionSideBar />
-          <main className="bg-cover bg-center h-screen bg-primaryColor text-textColor w-screen">
-            <Navbar />
-            {children}
-          </main>
-        </SidebarProvider>
+        <ReactQueryProvider>
+          <SidebarProvider>
+            <SessionSideBar />
+            <main className="bg-cover bg-center h-screen bg-primaryColor text-textColor w-screen">
+              <Navbar />
+              {children}
+            </main>
+          </SidebarProvider>
+        </ReactQueryProvider>
       </SignedIn>
     </ClerkProvider>
   );
