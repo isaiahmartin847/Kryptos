@@ -13,6 +13,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const SessionCard = ({
   HuntingUnit,
@@ -65,4 +66,19 @@ const SessionCard = ({
   );
 };
 
-export default SessionCard;
+const SessionSkeletonCard = () => {
+  return (
+    <Card className="bg-primaryColor border-0 m-2 h-40">
+      <CardHeader className="pb-0 flex justify-center items-center">
+        <Skeleton className="w-9/12 h-7 rounded-md bg-mutedColor" />
+      </CardHeader>
+      <CardContent className="py-0 px-1 mt-4 flex justify-center">
+        <Skeleton className="w-10/12 h-4 rounded-lg bg-mutedColor" />
+      </CardContent>
+      <CardFooter className="flex justify-center mt-10">
+        <Skeleton className="w-7/12 h-3 rounded-lg bg-mutedColor" />
+      </CardFooter>
+    </Card>
+  );
+};
+export { SessionCard, SessionSkeletonCard };

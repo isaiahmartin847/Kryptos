@@ -3,7 +3,7 @@ import {
   SidebarContent,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import SessionCard from "./cards/sessionCard";
+import { SessionCard, SessionSkeletonCard } from "./cards/sessionCard";
 
 const SessionSideBar = () => {
   return (
@@ -18,6 +18,7 @@ const SessionSideBar = () => {
           Species="ELK"
           CreatedAt={"2025-01-17T12:34:56"}
         />
+        <SessionSkeletonCard />
       </SidebarContent>
     </Sidebar>
   );

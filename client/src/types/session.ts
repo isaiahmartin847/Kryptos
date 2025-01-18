@@ -3,5 +3,5 @@ interface Session {
   State: string;
   Species: string;
   HuntingUnit: string;
-  CreatedAt: Date;
+  CreatedAt: string;
 }
