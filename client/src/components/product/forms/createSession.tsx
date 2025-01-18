@@ -181,6 +181,7 @@ const CreateSessionForm = ({ children }: Props) => {
                   <SelectContent>
                     {Object.entries(states).map(([value, label]) => (
                       <SelectItem
+                        // className="border-red-500 border-2 data-[highlighted]:bg-red-500"
                         key={value}
                         value={value}>
                         {label}
