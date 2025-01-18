@@ -47,8 +47,17 @@ const CreateSessionForm = ({ children }: Props) => {
     },
   });
 
-  const openStates = {
+  const states = {
     MT: "Montana",
+  };
+
+  const huntingUnits = {
+    200: "200",
+    220: "220",
+    230: "230",
+    300: "300",
+    320: "320",
+    330: "330",
   };
 
   return (
@@ -68,7 +77,7 @@ const CreateSessionForm = ({ children }: Props) => {
                     <SelectValue placeholder="Select a state" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(openStates).map(([value, label]) => (
+                    {Object.entries(states).map(([value, label]) => (
                       <SelectItem
                         key={value}
                         value={value}>
@@ -82,14 +91,43 @@ const CreateSessionForm = ({ children }: Props) => {
             </FormItem>
           )}
         />
-        <DialogFooter>
+
+        <FormField
+          control={form.control}
+          name="HuntingUnit"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Select a hunting unit.</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a hunting unit" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(huntingUnits).map(([value, label]) => (
+                      <SelectItem
+                        key={value}
+                        value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div>
           {children}
           <Button
             type="submit"
             variant={"secondary"}>
             Create
           </Button>
-        </DialogFooter>
+        </div>
       </form>
     </Form>
   );
