@@ -4,9 +4,9 @@ import (
 	"log"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/config"
+	handler "github.com/isaiahmartin847/Reg-Maps/internal/hanlders"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
 	"github.com/isaiahmartin847/Reg-Maps/internal/service"
-	handler "github.com/isaiahmartin847/Reg-Maps/internal/transport"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -30,11 +30,13 @@ func main() {
 	userRepo := repositories.NewUserRepository(db)
 	sessionRepo := repositories.NewSessionRepository(db)
 	stateRepo := repositories.NewStateRepository(db)
+	speciesRepo := repositories.NewSpeciesRepository(db)
 
 	// Initialize services
 	userService := service.NewUserService(userRepo)
 	sessionService := service.NewSessionService(sessionRepo)
 	stateService := service.NewStateService(stateRepo)
+	speciesService := service.NewSpeciesService(speciesRepo)
 
 	// Initialize handler
 	// Note make sure you put the new service inside the handler struct
@@ -42,6 +44,7 @@ func main() {
 		UserService:    userService,
 		SessionService: sessionService,
 		StateService:   stateService,
+		SpeciesService: speciesService,
 	}
 
 	// Initialize Echo
@@ -67,6 +70,7 @@ func main() {
 	e.POST("/payment-intent", handler.Stripe_transaction)
 	e.GET("/", handler.Details)
 	e.GET("/states", handler.AllStates)
+	e.GET("/species", handler.GetAllSpecies)
 	// Start the Echo server
 	e.Logger.Fatal(e.Start(":8080"))
 }
