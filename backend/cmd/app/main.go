@@ -29,15 +29,19 @@ func main() {
 	// Initialize specific repositories
 	userRepo := repositories.NewUserRepository(db)
 	sessionRepo := repositories.NewSessionRepository(db)
+	stateRepo := repositories.NewStateRepository(db)
 
 	// Initialize services
 	userService := service.NewUserService(userRepo)
 	sessionService := service.NewSessionService(sessionRepo)
+	stateService := service.NewStateService(stateRepo)
 
 	// Initialize handler
+	// Note make sure you put the new service inside the handler struct
 	handler := &handler.Handler{
 		UserService:    userService,
 		SessionService: sessionService,
+		StateService:   stateService,
 	}
 
 	// Initialize Echo
@@ -62,7 +66,7 @@ func main() {
 	e.POST("/user-created-payload", handler.UserWebhookPayload())
 	e.POST("/payment-intent", handler.Stripe_transaction)
 	e.GET("/", handler.Details)
-
+	e.GET("/states", handler.AllStates)
 	// Start the Echo server
 	e.Logger.Fatal(e.Start(":8080"))
 }

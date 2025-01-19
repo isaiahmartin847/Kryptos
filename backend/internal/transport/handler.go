@@ -7,4 +7,5 @@ import (
 type Handler struct {
 	UserService    *service.UserService
 	SessionService *service.SessionService
+	StateService   *service.StateService
 }
