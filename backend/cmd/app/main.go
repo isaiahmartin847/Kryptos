@@ -70,7 +70,8 @@ func main() {
 	e.POST("/payment-intent", handler.Stripe_transaction)
 	e.GET("/", handler.Details)
 	e.GET("/states", handler.AllStates)
-	e.GET("/species", handler.GetAllSpecies)
+	e.GET("/species", handler.GetAllByStateID)
+
 	// Start the Echo server
 	e.Logger.Fatal(e.Start(":8080"))
 }

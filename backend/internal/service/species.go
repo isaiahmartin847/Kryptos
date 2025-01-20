@@ -21,3 +21,13 @@ func (s *SpeciesService) GetAll() ([]models.Species, error) {
 
 	return species, nil
 }
+
+func (s *SpeciesService) GetAllByState(stateID int64) ([]models.Species, error) {
+	species, err := s.SpeciesRepo.GetALLByState(stateID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return species, nil
+}

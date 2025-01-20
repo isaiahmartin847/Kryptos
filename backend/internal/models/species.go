@@ -3,7 +3,7 @@ package models
 type Species struct {
 	ID      uint   `gorm:"primaryKey;autoIncrement"`
 	Name    string `gorm:"not null"`
-	StateID string `gorm:"not null; index"`
+	StateID int64  `gorm:"not null; index"` // Change from string to int64
 
 	State State `gorm:"foreignKey:StateID;references:ID"`
 }
