@@ -17,33 +17,9 @@ import {
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-
-// Define literal types for valid values
-type State = "MT" | "WY" | "ID";
-type Species = "elk" | "deer" | "antelope" | "moose";
-
-// Define type-safe interfaces for the data structures
-type SpeciesData = {
-  MT: Record<string, string>;
-  WY: Record<string, string>;
-  ID: Record<string, string>;
-};
-
-type UnitsData = {
-  MT: {
-    [K in Species]?: Record<string, string>;
-  };
-  WY: {
-    [K in Species]?: Record<string, string>;
-  };
-  ID: {
-    [K in Species]?: Record<string, string>;
-  };
-};
-
-interface Props {
-  children?: React.ReactNode;
-}
+import { useQuery } from "@tanstack/react-query";
+import State from "@/types/state";
+import { stat } from "fs";
 
 interface CreateSessionForm {
   State: string;
@@ -51,17 +27,34 @@ interface CreateSessionForm {
   HuntingUnit: string;
 }
 
-const CreateSessionForm = ({ children }: Props) => {
-  const [loadingSpecies, setLoadingSpecies] = useState(false);
-  const [loadingUnits, setLoadingUnits] = useState(false);
-  const [availableSpecies, setAvailableSpecies] = useState<
-    Record<string, string>
-  >({});
+const fetchStates = async (): Promise<State[]> => {
+  const response = await fetch("http://localhost:8080/states");
 
-  const [availableUnits, setAvailableUnits] = useState<Record<string, string>>(
-    {}
-  );
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
 
+  return response.json();
+};
+
+const CreateSessionForm = () => {
+  // const [species, setSpecies] = useState<>();
+
+  const {
+    data: states,
+    isLoading: isStatesLoading,
+    isError: isStateError,
+    error,
+  } = useQuery<State[], Error>({
+    queryKey: ["states"],
+    queryFn: fetchStates,
+  });
+
+  useEffect(() => {
+    console.log(states);
+  }, [isStateError, states, isStatesLoading]);
+
+  // this is the form
   const form = useForm<CreateSessionForm>({
     defaultValues: {
       State: "",
@@ -69,87 +62,6 @@ const CreateSessionForm = ({ children }: Props) => {
       HuntingUnit: "",
     },
   });
-
-  const states: Record<State, string> = {
-    MT: "Montana",
-    WY: "Wyoming",
-    ID: "Idaho",
-  };
-
-  const selectedState = form.watch("State");
-  const selectedSpecies = form.watch("Species");
-
-  useEffect(() => {
-    if (selectedState && selectedState in states) {
-      fetchSpeciesForState(selectedState as State);
-    } else {
-      setAvailableSpecies({});
-      setAvailableUnits({});
-      form.setValue("Species", "");
-      form.setValue("HuntingUnit", "");
-    }
-  }, [selectedState]);
-
-  useEffect(() => {
-    if (selectedState && selectedSpecies && selectedState in states) {
-      fetchHuntingUnits(selectedState as State, selectedSpecies);
-    } else {
-      setAvailableUnits({});
-      form.setValue("HuntingUnit", "");
-    }
-  }, [selectedSpecies]);
-
-  const fetchSpeciesForState = async (state: State) => {
-    setLoadingSpecies(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const speciesData: SpeciesData = {
-        MT: { elk: "Elk", deer: "Deer", antelope: "Antelope" },
-        WY: { elk: "Elk", moose: "Moose" },
-        ID: { elk: "Elk", deer: "Deer" },
-      };
-
-      const stateSpecies = speciesData[state] ?? {};
-      setAvailableSpecies(stateSpecies);
-    } catch (error) {
-      console.error("Error fetching species:", error);
-      setAvailableSpecies({});
-    } finally {
-      setLoadingSpecies(false);
-    }
-  };
-
-  const fetchHuntingUnits = async (state: State, species: string) => {
-    setLoadingUnits(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const unitsData: UnitsData = {
-        MT: {
-          elk: { "200": "200", "220": "220", "230": "230" },
-          deer: { "300": "300", "320": "320" },
-          antelope: { "400": "400", "420": "420" },
-        },
-        WY: {
-          elk: { "500": "500", "520": "520" },
-          moose: { "600": "600" },
-        },
-        ID: {
-          elk: { "700": "700" },
-          deer: { "800": "800" },
-        },
-      };
-
-      const stateUnits = unitsData[state]?.[species as Species] ?? {};
-      setAvailableUnits(stateUnits);
-    } catch (error) {
-      console.error("Error fetching hunting units:", error);
-      setAvailableUnits({});
-    } finally {
-      setLoadingUnits(false);
-    }
-  };
 
   const onSubmit = (values: CreateSessionForm) => {
     console.group("Form Submission Data");
@@ -176,17 +88,25 @@ const CreateSessionForm = ({ children }: Props) => {
                   onValueChange={field.onChange}
                   value={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a state" />
+                    {isStatesLoading ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Loading species...</span>
+                      </div>
+                    ) : (
+                      <SelectValue placeholder="Select a State" />
+                    )}
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(states).map(([value, label]) => (
-                      <SelectItem
-                        // className="border-red-500 border-2 data-[highlighted]:bg-red-500"
-                        key={value}
-                        value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
+                    {states?.map((state) => {
+                      return (
+                        <SelectItem
+                          value={state.ID.toString()}
+                          key={state.ID}>
+                          {state.FullName}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -205,25 +125,26 @@ const CreateSessionForm = ({ children }: Props) => {
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
-                  disabled={!selectedState || loadingSpecies}>
+                  // disabled={!selectedState || loadingSpecies}
+                >
                   <SelectTrigger>
-                    {loadingSpecies ? (
+                    {/* {loadingSpecies ? (
                       <div className="flex items-center gap-2">
                         <Loader2 className="h-4 w-4 animate-spin" />
                         <span>Loading species...</span>
                       </div>
                     ) : (
                       <SelectValue placeholder="Select a species" />
-                    )}
+                    )} */}
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(availableSpecies).map(([value, label]) => (
+                    {/* {Object.entries(availableSpecies).map(([value, label]) => (
                       <SelectItem
                         key={value}
                         value={value}>
                         {label}
                       </SelectItem>
-                    ))}
+                    ))} */}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -241,28 +162,7 @@ const CreateSessionForm = ({ children }: Props) => {
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
-                  value={field.value}
-                  disabled={!selectedSpecies || loadingUnits}>
-                  <SelectTrigger>
-                    {loadingUnits ? (
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Loading units...</span>
-                      </div>
-                    ) : (
-                      <SelectValue placeholder="Select a hunting unit" />
-                    )}
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.entries(availableUnits).map(([value, label]) => (
-                      <SelectItem
-                        key={value}
-                        value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  value={field.value}></Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -270,13 +170,14 @@ const CreateSessionForm = ({ children }: Props) => {
         />
 
         <div className="flex justify-end space-x-4 pt-4">
-          {children}
+          {/* {children} */}
           <Button
             type="submit"
             variant={"secondary"}
-            disabled={
-              !selectedState || !selectedSpecies || !form.watch("HuntingUnit")
-            }>
+            // disabled={
+            // !selectedState || !selectedSpecies || !form.watch("HuntingUnit")
+            // }
+          >
             Create
           </Button>
         </div>
