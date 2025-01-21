@@ -13,7 +13,7 @@ func NewHuntingUnitService(huntingUnitRepo *repositories.HuntingUnitRepository) 
 	return &HuntingUnitService{HuntingUnitRepo: huntingUnitRepo}
 }
 
-func (s *HuntingUnitService) GetAllUnitsBySpecies(speciesID int64) ([]models.HuntingUnit, error) {
+func (s *HuntingUnitService) GetAllUnitsBySpecies(speciesID int64) ([]models.HuntingUnitResponse, error) {
 	huntingUnits, err := s.HuntingUnitRepo.GetBySpeciesID(speciesID)
 
 	if err != nil {

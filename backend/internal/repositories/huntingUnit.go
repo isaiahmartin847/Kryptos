@@ -15,10 +15,14 @@ func NewHuntingUnitRepository(db *gorm.DB) *HuntingUnitRepository {
 	}
 }
 
-func (r *HuntingUnitRepository) GetBySpeciesID(speciesID int64) ([]models.HuntingUnit, error) {
-	var units []models.HuntingUnit
+func (r *HuntingUnitRepository) GetBySpeciesID(speciesID int64) ([]models.HuntingUnitResponse, error) {
+	var units []models.HuntingUnitResponse
 
-	result := r.db.Where("species_id = ?", speciesID).Preload("Species").Find(&units)
+	result := r.db.Select("id, name").
+		Where("species_id = ?", speciesID).
+		Order("name").
+		Find(&units)
+
 	if result.Error != nil {
 		return nil, result.Error
 	}

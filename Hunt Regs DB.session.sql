@@ -38,6 +38,14 @@ DROP TABLE "users"
 DROP TABLE "sessions"
 
 
+
+--@block 
+-- DROP TABLE IF EXISTS "states" CASCADE;
+-- DROP TABLE IF EXISTS "species" CASCADE;
+-- DROP TABLE IF EXISTS "hunting_units" CASCADE;
+
+
+
 --@block 
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
@@ -59,18 +67,10 @@ INSERT INTO species (name, state_id) VALUES
 --@block 
 INSERT INTO hunting_units (name, species_id) VALUES
 ('300', 1),
-('300', 1),
-('300', 2),
 ('300', 2),
 ('400', 1),
-('400', 1),
-('400', 2),
 ('400', 2),
 ('50', 3),
-('50', 3),
-('50', 4),
 ('50', 4),
 ('65', 3),
-('65', 3),
-('65', 4),
 ('65', 4);
