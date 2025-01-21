@@ -25,7 +25,7 @@ import {
   fetchHuntingUnitBySpeciesID,
   fetchSpeciesByStateID,
   fetchStates,
-} from "../api/dataFetcher";
+} from "../api/getData";
 
 // const baseAPI = process.env.BASE_API;
 const baseAPI = "http://localhost:8080";
