@@ -21,6 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import State from "@/types/state";
 import { stat } from "fs";
 import Species from "@/types/species";
+import HuntingUnit from "@/types/huntingUnit";
 
 interface CreateSessionForm {
   State: string;
@@ -50,8 +51,23 @@ const fetchSpeciesByStateID = async (stateID: string): Promise<Species[]> => {
   return response.json();
 };
 
+const fetchHuntingUnitBySpeciesID = async (
+  speciesID: string
+): Promise<HuntingUnit[]> => {
+  const response = await fetch(
+    `http://localhost:8080/hunting-units?speciesID=${speciesID}`
+  );
+
+  if (!response) {
+    throw new Error("Unable to fetch the hunting units");
+  }
+
+  return response.json();
+};
+
 const CreateSessionForm = () => {
-  const [stateId, setStateID] = useState<string>("");
+  const [stateID, setStateID] = useState<string>("");
+  const [speciesID, setSpeciesID] = useState<string>("");
 
   const {
     data: states,
@@ -67,9 +83,19 @@ const CreateSessionForm = () => {
     isLoading: isSpeciesLoading,
     isError: isSpeciesError,
   } = useQuery<Species[], Error>({
-    queryKey: ["species", stateId],
-    queryFn: () => fetchSpeciesByStateID(stateId),
-    enabled: !!stateId,
+    queryKey: ["species", stateID],
+    queryFn: () => fetchSpeciesByStateID(stateID),
+    enabled: !!stateID,
+  });
+
+  const {
+    data: units,
+    isLoading: isUnitsLoading,
+    isError: isUnitError,
+  } = useQuery<HuntingUnit[], Error>({
+    queryKey: ["huntingUnits", speciesID],
+    queryFn: () => fetchHuntingUnitBySpeciesID(speciesID),
+    enabled: !!speciesID,
   });
 
   // this is the form
@@ -144,9 +170,12 @@ const CreateSessionForm = () => {
               <FormLabel>Select a species</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setSpeciesID(value);
+                  }}
                   value={field.value}
-                  disabled={!stateId || isSpeciesLoading}>
+                  disabled={!stateID || isSpeciesLoading}>
                   <SelectTrigger>
                     {isSpeciesLoading ? (
                       <div className="flex items-center gap-2">
@@ -184,7 +213,28 @@ const CreateSessionForm = () => {
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
-                  value={field.value}></Select>
+                  disabled={!speciesID || isUnitsLoading}
+                  value={field.value}>
+                  <SelectTrigger>
+                    {isUnitsLoading ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Loading units...</span>
+                      </div>
+                    ) : (
+                      <SelectValue placeholder="Select a unit" />
+                    )}
+                  </SelectTrigger>
+                  <SelectContent>
+                    {units?.map((unit) => {
+                      return (
+                        <SelectItem value={unit.ID.toString()}>
+                          {unit.Name}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
