@@ -9,9 +9,9 @@ import (
 type Session struct {
 	ID            uuid.UUID `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	UserID        string    `gorm:"not null;index"`
-	StateID       string    `gorm:"not null;index"`
-	SpeciesID     string    `gorm:"not null;index"`
-	HuntingUnitID string    `gorm:"not null;index"`
+	StateID       uint      `gorm:"not null;index"` //change this back to uint
+	SpeciesID     uint      `gorm:"not null;index"` //change this back to uint
+	HuntingUnitID uint      `gorm:"not null;index"` //change this back to uint
 	CreatedAt     time.Time `gorm:"not null;autoCreateTime"`
 	ExpiresAt     time.Time `gorm:"not null"`
 
@@ -24,9 +24,9 @@ type Session struct {
 
 type SessionPostBody struct {
 	UserID        string `gorm:"not null;index"`
-	StateID       string `gorm:"not null;index"`
-	SpeciesID     string `gorm:"not null;index"`
-	HuntingUnitID string `gorm:"not null;index"`
+	StateID       uint   `gorm:"not null;index"`
+	SpeciesID     uint   `gorm:"not null;index"`
+	HuntingUnitID uint   `gorm:"not null;index"`
 }
 
 func (Session) TableName() string {

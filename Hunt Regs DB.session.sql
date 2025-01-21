@@ -32,6 +32,9 @@ SELECT * FROM species;
 SELECT * FROM hunting_units;
 
 --@block
+SELECT * FROM users
+
+--@block
 DROP TABLE "users"
 
 --@block 
