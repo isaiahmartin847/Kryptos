@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -18,6 +19,7 @@ func (h *Handler) CreateSession(c echo.Context) error {
 
 	createdSession, err := h.SessionService.CreateSession(session)
 	if err != nil {
+		fmt.Print(err.Error())
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to create a session"})
 	}
 

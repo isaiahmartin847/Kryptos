@@ -1,8 +1,10 @@
 package service
 
 import (
+	"log"
 	"time"
 
+	"github.com/gofrs/uuid"
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
 )
@@ -17,9 +19,15 @@ func NewSessionService(sessionRepo *repositories.SessionRepository) *SessionServ
 
 func (s *SessionService) CreateSession(sessionPostBody *models.SessionPostBody) (*models.Session, error) {
 	// handle all the checks and services
+	sessionID, err := uuid.NewV4()
+	if err != nil {
+		// Handle error (e.g., log it or return an error response)
+		log.Fatalf("Failed to generate UUID: %v", err)
+	}
 
 	// init the session
 	session := models.Session{
+		ID:            sessionID,
 		UserID:        sessionPostBody.UserID,
 		StateID:       sessionPostBody.StateID,
 		SpeciesID:     sessionPostBody.SpeciesID,
