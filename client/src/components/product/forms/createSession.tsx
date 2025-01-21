@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import State from "@/types/state";
 import { stat } from "fs";
-import StateSpeciesAPI from "@/types/api/stateSpecies";
+import Species from "@/types/species";
 
 interface CreateSessionForm {
   State: string;
@@ -38,9 +38,7 @@ const fetchStates = async (): Promise<State[]> => {
   return response.json();
 };
 
-const fetchSpeciesByStateID = async (
-  stateID: string
-): Promise<StateSpeciesAPI[]> => {
+const fetchSpeciesByStateID = async (stateID: string): Promise<Species[]> => {
   const response = await fetch(
     `http://localhost:8080/species?stateID=${stateID}`
   );
@@ -68,7 +66,7 @@ const CreateSessionForm = () => {
     data: species,
     isLoading: isSpeciesLoading,
     isError: isSpeciesError,
-  } = useQuery<StateSpeciesAPI[], Error>({
+  } = useQuery<Species[], Error>({
     queryKey: ["species", stateId],
     queryFn: () => fetchSpeciesByStateID(stateId),
     enabled: !!stateId,
