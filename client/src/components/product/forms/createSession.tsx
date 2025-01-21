@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -19,27 +19,35 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import State from "@/types/state";
+import { stat } from "fs";
 import Species from "@/types/species";
 import HuntingUnit from "@/types/huntingUnit";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
-
-interface CreateSessionFormValues {
+interface CreateSessionForm {
   State: string;
   Species: string;
   HuntingUnit: string;
 }
 
 const fetchStates = async (): Promise<State[]> => {
-  const response = await fetch(`${API_BASE_URL}/states`);
-  if (!response.ok) throw new Error("Failed to fetch states");
+  const response = await fetch("http://localhost:8080/states");
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
   return response.json();
 };
 
 const fetchSpeciesByStateID = async (stateID: string): Promise<Species[]> => {
-  const response = await fetch(`${API_BASE_URL}/species?stateID=${stateID}`);
-  if (!response.ok) throw new Error("Failed to fetch species");
+  const response = await fetch(
+    `http://localhost:8080/species?stateID=${stateID}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
   return response.json();
 };
 
@@ -47,30 +55,26 @@ const fetchHuntingUnitBySpeciesID = async (
   speciesID: string
 ): Promise<HuntingUnit[]> => {
   const response = await fetch(
-    `${API_BASE_URL}/hunting-units?speciesID=${speciesID}`
+    `http://localhost:8080/hunting-units?speciesID=${speciesID}`
   );
-  if (!response.ok) throw new Error("Failed to fetch hunting units");
+
+  if (!response) {
+    throw new Error("Unable to fetch the hunting units");
+  }
+
   return response.json();
 };
 
-const CreateSession = () => {
-  const form = useForm<CreateSessionFormValues>({
-    defaultValues: {
-      State: "",
-      Species: "",
-      HuntingUnit: "",
-    },
-  });
-
-  const stateID = form.watch("State");
-  const speciesID = form.watch("Species");
+const CreateSessionForm = () => {
+  const [stateID, setStateID] = useState<string>("");
+  const [speciesID, setSpeciesID] = useState<string>("");
 
   const {
     data: states,
     isLoading: isStatesLoading,
     isError: isStatesError,
-    refetch: refetchStates,
-  } = useQuery({
+    error: StatesError,
+  } = useQuery<State[], Error>({
     queryKey: ["states"],
     queryFn: fetchStates,
   });
@@ -79,7 +83,7 @@ const CreateSession = () => {
     data: species,
     isLoading: isSpeciesLoading,
     isError: isSpeciesError,
-    refetch: refetchSpecies,
+    error: SpeciesError,
   } = useQuery<Species[], Error>({
     queryKey: ["species", stateID],
     queryFn: () => fetchSpeciesByStateID(stateID),
@@ -90,44 +94,48 @@ const CreateSession = () => {
     data: units,
     isLoading: isUnitsLoading,
     isError: isUnitError,
-    refetch: refetchUnits,
+    error: UnitError,
   } = useQuery<HuntingUnit[], Error>({
     queryKey: ["huntingUnits", speciesID],
     queryFn: () => fetchHuntingUnitBySpeciesID(speciesID),
     enabled: !!speciesID,
   });
 
-  const onSubmit = (values: CreateSessionFormValues) => {
+  // this is the form
+  const form = useForm<CreateSessionForm>({
+    defaultValues: {
+      State: "",
+      Species: "",
+      HuntingUnit: "",
+    },
+  });
+
+  const onSubmit = (values: CreateSessionForm) => {
     console.group("Form Submission Data");
-    console.log(values);
+    console.log("State:", values.State);
+    console.log("Species:", values.Species);
+    console.log("Hunting Unit:", values.HuntingUnit);
+    console.log("Full form data:", values);
     console.groupEnd();
-    alert("Form submitted successfully!");
   };
 
-  const renderError = () => (
-    <div>
-      <h1>Error Occurred</h1>
-      {isStatesError && <p>State Error: Failed to fetch states.</p>}
-      {isSpeciesError && <p>Species Error: Failed to fetch species.</p>}
-      {isUnitError && <p>Unit Error: Failed to fetch units.</p>}
-      <Button
-        onClick={() => {
-          refetchStates();
-          refetchSpecies();
-          refetchUnits();
-        }}>
-        Retry
-      </Button>
-    </div>
-  );
-
-  if (isStatesError || isSpeciesError || isUnitError) return renderError();
+  if (isStatesError || isSpeciesError || isUnitError) {
+    return (
+      <div>
+        <h1>Error Occurred</h1>
+        {StatesError && <p>State Error: {StatesError.message}</p>}
+        {SpeciesError && <p>Species Error: {SpeciesError.message}</p>}
+        {UnitError && <p>Unit Error: {UnitError.message}</p>}
+      </div>
+    );
+  }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4">
+        {/* State Selector */}
         <FormField
           control={form.control}
           name="State"
@@ -136,7 +144,13 @@ const CreateSession = () => {
               <FormLabel>Select a state</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setStateID(value);
+                    setSpeciesID("");
+                    form.setValue("Species", "");
+                    form.setValue("HuntingUnit", "");
+                  }}
                   value={field.value}>
                   <SelectTrigger>
                     {isStatesLoading ? (
@@ -151,8 +165,8 @@ const CreateSession = () => {
                   <SelectContent>
                     {states?.map((state) => (
                       <SelectItem
-                        key={state.ID}
-                        value={state.ID.toString()}>
+                        value={state.ID.toString()}
+                        key={state.ID}>
                         {state.FullName}
                       </SelectItem>
                     ))}
@@ -164,7 +178,7 @@ const CreateSession = () => {
           )}
         />
 
-        {/* Species Field */}
+        {/* Species Selector */}
         <FormField
           control={form.control}
           name="Species"
@@ -173,18 +187,29 @@ const CreateSession = () => {
               <FormLabel>Select a species</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={field.onChange}
-                  value={field.value}>
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setSpeciesID(value);
+                    form.setValue("HuntingUnit", "");
+                  }}
+                  value={field.value}
+                  disabled={!stateID || isSpeciesLoading}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a Species" />
+                    {isSpeciesLoading ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Loading species...</span>
+                      </div>
+                    ) : (
+                      <SelectValue placeholder="Select a species" />
+                    )}
                   </SelectTrigger>
                   <SelectContent>
-                    {/* Assuming species data is available */}
-                    {species?.map((speciesItem) => (
+                    {species?.map((species) => (
                       <SelectItem
-                        key={speciesItem.ID}
-                        value={speciesItem.ID.toString()}>
-                        {speciesItem.Name}
+                        value={species.ID.toString()}
+                        key={species.ID}>
+                        {species.Name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -195,7 +220,7 @@ const CreateSession = () => {
           )}
         />
 
-        {/* Hunting Unit Field */}
+        {/* Hunting Unit Selector */}
         <FormField
           control={form.control}
           name="HuntingUnit"
@@ -205,16 +230,23 @@ const CreateSession = () => {
               <FormControl>
                 <Select
                   onValueChange={field.onChange}
+                  disabled={!speciesID || isUnitsLoading}
                   value={field.value}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a Hunting Unit" />
+                    {isUnitsLoading ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Loading units...</span>
+                      </div>
+                    ) : (
+                      <SelectValue placeholder="Select a unit" />
+                    )}
                   </SelectTrigger>
                   <SelectContent>
-                    {/* Assuming hunting unit data is available */}
                     {units?.map((unit) => (
                       <SelectItem
-                        key={unit.ID}
-                        value={unit.ID.toString()}>
+                        value={unit.ID.toString()}
+                        key={unit.ID}>
                         {unit.Name}
                       </SelectItem>
                     ))}
@@ -226,19 +258,18 @@ const CreateSession = () => {
           )}
         />
 
-        <Button
-          type="submit"
-          variant="secondary"
-          disabled={
-            !form.watch("State") ||
-            !form.watch("Species") ||
-            !form.watch("HuntingUnit")
-          }>
-          Create
-        </Button>
+        {/* Submit Button */}
+        <div className="flex justify-end space-x-4 pt-4">
+          <Button
+            type="submit"
+            variant={"secondary"}
+            disabled={!stateID || !speciesID || !form.watch("HuntingUnit")}>
+            Create
+          </Button>
+        </div>
       </form>
     </Form>
   );
 };
 
-export default CreateSession;
+export default CreateSessionForm;
