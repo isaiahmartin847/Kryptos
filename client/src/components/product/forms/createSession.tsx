@@ -72,7 +72,8 @@ const CreateSessionForm = () => {
   const {
     data: states,
     isLoading: isStatesLoading,
-    isError: isStateError,
+    isError: isStatesError,
+    error: StatesError,
   } = useQuery<State[], Error>({
     queryKey: ["states"],
     queryFn: fetchStates,
@@ -82,6 +83,7 @@ const CreateSessionForm = () => {
     data: species,
     isLoading: isSpeciesLoading,
     isError: isSpeciesError,
+    error: SpeciesError,
   } = useQuery<Species[], Error>({
     queryKey: ["species", stateID],
     queryFn: () => fetchSpeciesByStateID(stateID),
@@ -92,6 +94,7 @@ const CreateSessionForm = () => {
     data: units,
     isLoading: isUnitsLoading,
     isError: isUnitError,
+    error: UnitError,
   } = useQuery<HuntingUnit[], Error>({
     queryKey: ["huntingUnits", speciesID],
     queryFn: () => fetchHuntingUnitBySpeciesID(speciesID),
@@ -116,11 +119,23 @@ const CreateSessionForm = () => {
     console.groupEnd();
   };
 
+  if (isStatesError || isSpeciesError || isUnitError) {
+    return (
+      <div>
+        <h1>Error Occurred</h1>
+        {StatesError && <p>State Error: {StatesError.message}</p>}
+        {SpeciesError && <p>Species Error: {SpeciesError.message}</p>}
+        {UnitError && <p>Unit Error: {UnitError.message}</p>}
+      </div>
+    );
+  }
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4">
+        {/* State Selector */}
         <FormField
           control={form.control}
           name="State"
@@ -132,28 +147,29 @@ const CreateSessionForm = () => {
                   onValueChange={(value) => {
                     field.onChange(value);
                     setStateID(value);
+                    setSpeciesID("");
+                    form.setValue("Species", "");
+                    form.setValue("HuntingUnit", "");
                   }}
                   value={field.value}>
                   <SelectTrigger>
                     {isStatesLoading ? (
                       <div className="flex items-center gap-2">
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>Loading species...</span>
+                        <span>Loading states...</span>
                       </div>
                     ) : (
                       <SelectValue placeholder="Select a State" />
                     )}
                   </SelectTrigger>
                   <SelectContent>
-                    {states?.map((state) => {
-                      return (
-                        <SelectItem
-                          value={state.ID.toString()}
-                          key={state.ID}>
-                          {state.FullName}
-                        </SelectItem>
-                      );
-                    })}
+                    {states?.map((state) => (
+                      <SelectItem
+                        value={state.ID.toString()}
+                        key={state.ID}>
+                        {state.FullName}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -162,6 +178,7 @@ const CreateSessionForm = () => {
           )}
         />
 
+        {/* Species Selector */}
         <FormField
           control={form.control}
           name="Species"
@@ -173,6 +190,7 @@ const CreateSessionForm = () => {
                   onValueChange={(value) => {
                     field.onChange(value);
                     setSpeciesID(value);
+                    form.setValue("HuntingUnit", "");
                   }}
                   value={field.value}
                   disabled={!stateID || isSpeciesLoading}>
@@ -187,15 +205,13 @@ const CreateSessionForm = () => {
                     )}
                   </SelectTrigger>
                   <SelectContent>
-                    {species?.map((species) => {
-                      return (
-                        <SelectItem
-                          value={species.ID.toString()}
-                          key={species.ID}>
-                          {species.Name}
-                        </SelectItem>
-                      );
-                    })}
+                    {species?.map((species) => (
+                      <SelectItem
+                        value={species.ID.toString()}
+                        key={species.ID}>
+                        {species.Name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -204,6 +220,7 @@ const CreateSessionForm = () => {
           )}
         />
 
+        {/* Hunting Unit Selector */}
         <FormField
           control={form.control}
           name="HuntingUnit"
@@ -226,13 +243,13 @@ const CreateSessionForm = () => {
                     )}
                   </SelectTrigger>
                   <SelectContent>
-                    {units?.map((unit) => {
-                      return (
-                        <SelectItem value={unit.ID.toString()}>
-                          {unit.Name}
-                        </SelectItem>
-                      );
-                    })}
+                    {units?.map((unit) => (
+                      <SelectItem
+                        value={unit.ID.toString()}
+                        key={unit.ID}>
+                        {unit.Name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -241,15 +258,12 @@ const CreateSessionForm = () => {
           )}
         />
 
+        {/* Submit Button */}
         <div className="flex justify-end space-x-4 pt-4">
-          {/* {children} */}
           <Button
             type="submit"
             variant={"secondary"}
-            // disabled={
-            // !selectedState || !selectedSpecies || !form.watch("HuntingUnit")
-            // }
-          >
+            disabled={!stateID || !speciesID || !form.watch("HuntingUnit")}>
             Create
           </Button>
         </div>
