@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Form,
   FormControl,
@@ -22,57 +22,52 @@ import State from "@/types/state";
 import Species from "@/types/species";
 import HuntingUnit from "@/types/huntingUnit";
 
-const baseAPI = process.env.NEXT_PUBLIC_BASE_API;
+// const baseAPI = process.env.BASE_API;
+const baseAPI = "http://localhost:8080";
 
 if (!baseAPI) {
   throw new Error("BASE_API is not defined in your environment variables.");
 }
 
 interface CreateSessionForm {
-  State: string;
-  Species: string;
-  HuntingUnit: string;
+  State: number;
+  Species: number;
+  HuntingUnit: number;
 }
 
 const fetchStates = async (): Promise<State[]> => {
   const response = await fetch("http://localhost:8080/states");
-
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-
   return response.json();
 };
 
-const fetchSpeciesByStateID = async (stateID: string): Promise<Species[]> => {
+const fetchSpeciesByStateID = async (stateID: number): Promise<Species[]> => {
   const response = await fetch(
     `http://localhost:8080/species?stateID=${stateID}`
   );
-
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-
   return response.json();
 };
 
 const fetchHuntingUnitBySpeciesID = async (
-  speciesID: string
+  speciesID: number
 ): Promise<HuntingUnit[]> => {
   const response = await fetch(
     `http://localhost:8080/hunting-units?speciesID=${speciesID}`
   );
-
-  if (!response) {
+  if (!response.ok) {
     throw new Error("Unable to fetch the hunting units");
   }
-
   return response.json();
 };
 
 const CreateSessionForm = () => {
-  const [stateID, setStateID] = useState<string>("");
-  const [speciesID, setSpeciesID] = useState<string>("");
+  const [stateID, setStateID] = useState<number | null>(null);
+  const [speciesID, setSpeciesID] = useState<number | null>(null);
 
   const {
     data: states,
@@ -91,7 +86,7 @@ const CreateSessionForm = () => {
     error: SpeciesError,
   } = useQuery<Species[], Error>({
     queryKey: ["species", stateID],
-    queryFn: () => fetchSpeciesByStateID(stateID),
+    queryFn: () => fetchSpeciesByStateID(stateID!),
     enabled: !!stateID,
   });
 
@@ -102,16 +97,15 @@ const CreateSessionForm = () => {
     error: UnitError,
   } = useQuery<HuntingUnit[], Error>({
     queryKey: ["huntingUnits", speciesID],
-    queryFn: () => fetchHuntingUnitBySpeciesID(speciesID),
+    queryFn: () => fetchHuntingUnitBySpeciesID(speciesID!),
     enabled: !!speciesID,
   });
 
-  // this is the form
   const form = useForm<CreateSessionForm>({
     defaultValues: {
-      State: "",
-      Species: "",
-      HuntingUnit: "",
+      State: 0,
+      Species: 0,
+      HuntingUnit: 0,
     },
   });
 
@@ -150,13 +144,14 @@ const CreateSessionForm = () => {
               <FormControl>
                 <Select
                   onValueChange={(value) => {
-                    field.onChange(value);
-                    setStateID(value);
-                    setSpeciesID("");
-                    form.setValue("Species", "");
-                    form.setValue("HuntingUnit", "");
+                    const numericValue = parseInt(value, 10);
+                    field.onChange(numericValue);
+                    setStateID(numericValue);
+                    setSpeciesID(null);
+                    form.setValue("Species", 0);
+                    form.setValue("HuntingUnit", 0);
                   }}
-                  value={field.value}>
+                  value={field.value.toString()}>
                   <SelectTrigger>
                     {isStatesLoading ? (
                       <div className="flex items-center gap-2">
@@ -193,11 +188,12 @@ const CreateSessionForm = () => {
               <FormControl>
                 <Select
                   onValueChange={(value) => {
-                    field.onChange(value);
-                    setSpeciesID(value);
-                    form.setValue("HuntingUnit", "");
+                    const numericValue = parseInt(value, 10);
+                    field.onChange(numericValue);
+                    setSpeciesID(numericValue);
+                    form.setValue("HuntingUnit", 0);
                   }}
-                  value={field.value}
+                  value={field.value.toString()}
                   disabled={!stateID || isSpeciesLoading}>
                   <SelectTrigger>
                     {isSpeciesLoading ? (
@@ -234,9 +230,11 @@ const CreateSessionForm = () => {
               <FormLabel>Select a hunting unit</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(parseInt(value, 10));
+                  }}
                   disabled={!speciesID || isUnitsLoading}
-                  value={field.value}>
+                  value={field.value.toString()}>
                   <SelectTrigger>
                     {isUnitsLoading ? (
                       <div className="flex items-center gap-2">
