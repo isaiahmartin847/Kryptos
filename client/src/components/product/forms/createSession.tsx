@@ -59,7 +59,6 @@ const CreateSessionForm = () => {
     data: states,
     isLoading: isStatesLoading,
     isError: isStateError,
-    // error,
   } = useQuery<State[], Error>({
     queryKey: ["states"],
     queryFn: fetchStates,
