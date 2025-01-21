@@ -40,6 +40,15 @@ DROP TABLE "users"
 --@block 
 DROP TABLE "sessions"
 
+--@block
+-- Add a new UUID column with a default value
+ALTER TABLE sessions ADD COLUMN new_id UUID DEFAULT gen_random_uuid();
+
+-- Drop the old BIGINT column
+ALTER TABLE sessions DROP COLUMN id;
+
+-- Rename the new UUID column to 'id'
+ALTER TABLE sessions RENAME COLUMN new_id TO id;
 
 
 --@block 
