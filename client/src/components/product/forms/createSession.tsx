@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import State from "@/types/state";
 import { stat } from "fs";
+import StateSpeciesAPI from "@/types/api/stateSpecies";
 
 interface CreateSessionForm {
   State: string;
@@ -37,22 +38,42 @@ const fetchStates = async (): Promise<State[]> => {
   return response.json();
 };
 
+const fetchSpeciesByStateID = async (
+  stateID: string
+): Promise<StateSpeciesAPI[]> => {
+  const response = await fetch(
+    `http://localhost:8080/species?stateID=${stateID}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
 const CreateSessionForm = () => {
-  // const [species, setSpecies] = useState<>();
+  const [stateId, setStateID] = useState<string>("");
 
   const {
     data: states,
     isLoading: isStatesLoading,
     isError: isStateError,
-    error,
+    // error,
   } = useQuery<State[], Error>({
     queryKey: ["states"],
     queryFn: fetchStates,
   });
 
-  useEffect(() => {
-    console.log(states);
-  }, [isStateError, states, isStatesLoading]);
+  const {
+    data: species,
+    isLoading: isSpeciesLoading,
+    isError: isSpeciesError,
+  } = useQuery<StateSpeciesAPI[], Error>({
+    queryKey: ["species", stateId],
+    queryFn: () => fetchSpeciesByStateID(stateId),
+    enabled: !!stateId,
+  });
 
   // this is the form
   const form = useForm<CreateSessionForm>({
@@ -85,7 +106,10 @@ const CreateSessionForm = () => {
               <FormLabel>Select a state</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setStateID(value);
+                  }}
                   value={field.value}>
                   <SelectTrigger>
                     {isStatesLoading ? (
@@ -125,26 +149,27 @@ const CreateSessionForm = () => {
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
-                  // disabled={!selectedState || loadingSpecies}
-                >
+                  disabled={!stateId || isSpeciesLoading}>
                   <SelectTrigger>
-                    {/* {loadingSpecies ? (
+                    {isSpeciesLoading ? (
                       <div className="flex items-center gap-2">
                         <Loader2 className="h-4 w-4 animate-spin" />
                         <span>Loading species...</span>
                       </div>
                     ) : (
                       <SelectValue placeholder="Select a species" />
-                    )} */}
+                    )}
                   </SelectTrigger>
                   <SelectContent>
-                    {/* {Object.entries(availableSpecies).map(([value, label]) => (
-                      <SelectItem
-                        key={value}
-                        value={value}>
-                        {label}
-                      </SelectItem>
-                    ))} */}
+                    {species?.map((species) => {
+                      return (
+                        <SelectItem
+                          value={species.ID.toString()}
+                          key={species.ID}>
+                          {species.Name}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </FormControl>
