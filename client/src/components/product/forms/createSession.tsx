@@ -19,9 +19,14 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import State from "@/types/state";
-import { stat } from "fs";
 import Species from "@/types/species";
 import HuntingUnit from "@/types/huntingUnit";
+
+const baseAPI = process.env.NEXT_PUBLIC_BASE_API;
+
+if (!baseAPI) {
+  throw new Error("BASE_API is not defined in your environment variables.");
+}
 
 interface CreateSessionForm {
   State: string;

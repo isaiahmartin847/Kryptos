@@ -9,7 +9,7 @@ import (
 )
 
 func (h *Handler) CreateSession(c echo.Context) error {
-	session := &models.Session{}
+	session := &models.SessionPostBody{}
 
 	if err := c.Bind(session); err != nil {
 		log.Printf("Error binding the session %v", err)

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"time"
+
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
 )
@@ -13,10 +15,19 @@ func NewSessionService(sessionRepo *repositories.SessionRepository) *SessionServ
 	return &SessionService{SessionRepo: sessionRepo}
 }
 
-func (s *SessionService) CreateSession(session *models.Session) (*models.Session, error) {
+func (s *SessionService) CreateSession(sessionPostBody *models.SessionPostBody) (*models.Session, error) {
 	// handle all the checks and services
 
-	createdSession, err := s.SessionRepo.Create(session)
+	// init the session
+	session := models.Session{
+		UserID:        sessionPostBody.UserID,
+		StateID:       sessionPostBody.StateID,
+		SpeciesID:     sessionPostBody.SpeciesID,
+		HuntingUnitID: sessionPostBody.HuntingUnitID,
+		ExpiresAt:     time.Now().Add(10 * 24 * time.Hour),
+	}
+
+	createdSession, err := s.SessionRepo.Create(&session)
 	if err != nil {
 		return nil, err
 	}
