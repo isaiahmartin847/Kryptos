@@ -1,11 +1,10 @@
 package models
 
 type HuntingUnit struct {
-	ID        uint   `gorm:"primaryKey;autoIncrement"`
-	Name      string `gorm:"not null"`
-	SpeciesID uint   `gorm:"not null; index"` // Change from string to uint
-
-	Species Species `gorm:"foreignKey:SpeciesID;references:ID"`
+	ID        uint `gorm:"primaryKey"`
+	Name      string
+	SpeciesID uint
+	Species   Species `gorm:"foreignKey:SpeciesID"`
 }
 
 func (HuntingUnit) TableName() string {

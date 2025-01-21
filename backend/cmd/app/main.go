@@ -31,20 +31,23 @@ func main() {
 	sessionRepo := repositories.NewSessionRepository(db)
 	stateRepo := repositories.NewStateRepository(db)
 	speciesRepo := repositories.NewSpeciesRepository(db)
+	huntingUnitRepo := repositories.NewHuntingUnitRepository(db)
 
 	// Initialize services
 	userService := service.NewUserService(userRepo)
 	sessionService := service.NewSessionService(sessionRepo)
 	stateService := service.NewStateService(stateRepo)
 	speciesService := service.NewSpeciesService(speciesRepo)
+	huntingUnitService := service.NewHuntingUnitService(huntingUnitRepo)
 
 	// Initialize handler
 	// Note make sure you put the new service inside the handler struct
 	handler := &handler.Handler{
-		UserService:    userService,
-		SessionService: sessionService,
-		StateService:   stateService,
-		SpeciesService: speciesService,
+		UserService:        userService,
+		SessionService:     sessionService,
+		StateService:       stateService,
+		SpeciesService:     speciesService,
+		HuntingUnitService: huntingUnitService,
 	}
 
 	// Initialize Echo
@@ -71,6 +74,7 @@ func main() {
 	e.GET("/", handler.Details)
 	e.GET("/states", handler.AllStates)
 	e.GET("/species", handler.GetAllByStateID)
+	e.GET("/hunting-units", handler.GetAllBySpeciesID)
 
 	// Start the Echo server
 	e.Logger.Fatal(e.Start(":8080"))
