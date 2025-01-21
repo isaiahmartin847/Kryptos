@@ -27,11 +27,11 @@ func (r *SpeciesRepository) GetAll() ([]models.Species, error) {
 	return species, nil
 }
 
-func (r *SpeciesRepository) GetALLByState(stateID int64) ([]models.Species, error) {
-	var species []models.Species
+func (r *SpeciesRepository) GetALLByState(stateID int64) ([]models.SpeciesResponse, error) {
+	var species []models.SpeciesResponse
 
-	// Query for species where the state_id matches and optionally preload State data
-	result := r.db.Where("state_id = ?", stateID).Preload("State").Find(&species)
+	result := r.db.Select("id, name").Where("state_id = ?", stateID).Order("name").Find(&species)
+
 	if result.Error != nil {
 		return nil, result.Error
 	}

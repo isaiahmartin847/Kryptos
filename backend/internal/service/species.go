@@ -22,7 +22,7 @@ func (s *SpeciesService) GetAll() ([]models.Species, error) {
 	return species, nil
 }
 
-func (s *SpeciesService) GetAllByState(stateID int64) ([]models.Species, error) {
+func (s *SpeciesService) GetAllByState(stateID int64) ([]models.SpeciesResponse, error) {
 	species, err := s.SpeciesRepo.GetALLByState(stateID)
 
 	if err != nil {
