@@ -23,10 +23,10 @@ type Session struct {
 }
 
 type SessionPostBody struct {
-	UserID        string `gorm:"not null;index"`
-	StateID       uint   `gorm:"not null;index"`
-	SpeciesID     uint   `gorm:"not null;index"`
-	HuntingUnitID uint   `gorm:"not null;index"`
+	UserID        string `json:"userId" validate:"required"`
+	StateID       uint   `json:"stateId" validate:"required,gt=0"`
+	SpeciesID     uint   `json:"speciesId" validate:"required,gt=0"`
+	HuntingUnitID uint   `json:"huntingUnitId" validate:"required,gt=0"`
 }
 
 type SessionResponse struct {

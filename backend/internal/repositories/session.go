@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"gorm.io/gorm"
 )
@@ -15,31 +18,37 @@ func NewSessionRepository(db *gorm.DB) *SessionRepository {
 	}
 }
 
-func (r *SessionRepository) Create(session *models.Session) (*models.Session, error) {
-	if err := r.db.Omit("User", "State", "Species", "HuntingUnit").Create(session).Error; err != nil {
-		return nil, err
+func (r *SessionRepository) Create(ctx context.Context, session *models.Session) (*models.Session, error) {
+	if err := r.db.WithContext(ctx).
+		Omit("User", "State", "Species", "HuntingUnit").
+		Create(session).Error; err != nil {
+		return nil, fmt.Errorf("failed to create session: %w", err)
 	}
 
 	return session, nil
 }
 
-func (r *SessionRepository) Get() ([]models.Session, error) {
+func (r *SessionRepository) Get(ctx context.Context) ([]models.Session, error) {
 	var sessions []models.Session
 
-	result := r.db.Omit("User", "State", "Species", "HuntingUnit").Find(&sessions)
+	result := r.db.WithContext(ctx).
+		Omit("User", "State", "Species", "HuntingUnit").
+		Find(&sessions)
 	if result.Error != nil {
-		return nil, result.Error
+		return nil, fmt.Errorf("failed to fetch sessions: %w", result.Error)
 	}
 
 	return sessions, nil
 }
 
-func (r *SessionRepository) GetById(userID string) ([]models.Session, error) {
+func (r *SessionRepository) GetById(ctx context.Context, userID string) ([]models.Session, error) {
 	var sessions []models.Session
 
-	result := r.db.Omit("User", "State", "Species", "HuntingUnit").Find(&sessions, "user_id = ?", userID)
+	result := r.db.WithContext(ctx).
+		Omit("User", "State", "Species", "HuntingUnit").
+		Find(&sessions, "user_id = ?", userID)
 	if result.Error != nil {
-		return nil, result.Error
+		return nil, fmt.Errorf("failed to fetch sessions: %w", result.Error)
 	}
 
 	return sessions, nil

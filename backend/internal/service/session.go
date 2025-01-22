@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -17,14 +18,12 @@ func NewSessionService(sessionRepo *repositories.SessionRepository) *SessionServ
 	return &SessionService{SessionRepo: sessionRepo}
 }
 
-func (s *SessionService) CreateSession(sessionPostBody *models.SessionPostBody) (*models.Session, error) {
-	// handle all the checks and services
+func (s *SessionService) CreateSession(ctx context.Context, sessionPostBody *models.SessionPostBody) (*models.Session, error) {
 	sessionID, err := uuid.NewV4()
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate UUID: %w", err)
 	}
 
-	// init the session
 	session := models.Session{
 		ID:            sessionID,
 		UserID:        sessionPostBody.UserID,
@@ -34,7 +33,7 @@ func (s *SessionService) CreateSession(sessionPostBody *models.SessionPostBody) 
 		ExpiresAt:     time.Now().Add(10 * 24 * time.Hour),
 	}
 
-	createdSession, err := s.SessionRepo.Create(&session)
+	createdSession, err := s.SessionRepo.Create(ctx, &session)
 	if err != nil {
 		return nil, err
 	}
@@ -42,9 +41,8 @@ func (s *SessionService) CreateSession(sessionPostBody *models.SessionPostBody) 
 	return createdSession, nil
 }
 
-func (s *SessionService) GetSessions() ([]models.Session, error) {
-
-	sessions, err := s.SessionRepo.Get()
+func (s *SessionService) GetSessions(ctx context.Context) ([]models.Session, error) {
+	sessions, err := s.SessionRepo.Get(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -52,9 +50,8 @@ func (s *SessionService) GetSessions() ([]models.Session, error) {
 	return sessions, nil
 }
 
-func (s *SessionService) GetByID(userID string) ([]models.Session, error) {
-
-	sessions, err := s.SessionRepo.GetById(userID)
+func (s *SessionService) GetByID(ctx context.Context, userID string) ([]models.Session, error) {
+	sessions, err := s.SessionRepo.GetById(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
