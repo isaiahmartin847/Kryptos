@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Session } from "@/types/session";
 
 const SessionCard = ({
   HuntingUnit,
