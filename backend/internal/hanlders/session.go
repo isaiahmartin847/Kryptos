@@ -23,25 +23,23 @@ func (h *Handler) CreateSession(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to create a session"})
 	}
 
-	return c.JSON(http.StatusCreated, createdSession)
+	return c.JSON(http.StatusCreated, createdSession.ToResponse())
 }
 
 func (h *Handler) GetSessions(c echo.Context) error {
-
 	sessions, err := h.SessionService.GetSessions()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Unable to get sessions"})
 	}
 
-	return c.JSON(http.StatusCreated, sessions)
-
+	return c.JSON(http.StatusOK, models.ToResponseList(sessions))
 }
 
 func (h *Handler) GetSessionsByID(c echo.Context) error {
 	userID := c.QueryParam("userID")
 
 	if userID == "" {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": `Param userID is missing`})
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Param userID is missing"})
 	}
 
 	sessions, err := h.SessionService.GetByID(userID)
@@ -49,6 +47,5 @@ func (h *Handler) GetSessionsByID(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Unable to fetch the sessions"})
 	}
 
-	return c.JSON(http.StatusCreated, sessions)
-
+	return c.JSON(http.StatusOK, models.ToResponseList(sessions))
 }

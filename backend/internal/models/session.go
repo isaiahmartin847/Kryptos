@@ -29,6 +29,38 @@ type SessionPostBody struct {
 	HuntingUnitID uint   `gorm:"not null;index"`
 }
 
+type SessionResponse struct {
+	ID            uuid.UUID `json:"id"`
+	UserID        string    `json:"userId"`
+	StateID       uint      `json:"stateId"`
+	SpeciesID     uint      `json:"speciesId"`
+	HuntingUnitID uint      `json:"huntingUnitId"`
+	CreatedAt     time.Time `json:"createdAt"`
+	ExpiresAt     time.Time `json:"expiresAt"`
+}
+
+// ToResponse converts a Session model to a SessionResponse
+func (s *Session) ToResponse() *SessionResponse {
+	return &SessionResponse{
+		ID:            s.ID,
+		UserID:        s.UserID,
+		StateID:       s.StateID,
+		SpeciesID:     s.SpeciesID,
+		HuntingUnitID: s.HuntingUnitID,
+		CreatedAt:     s.CreatedAt,
+		ExpiresAt:     s.ExpiresAt,
+	}
+}
+
+// ToResponseList converts a slice of Sessions to SessionResponses
+func ToResponseList(sessions []Session) []SessionResponse {
+	responses := make([]SessionResponse, len(sessions))
+	for i, session := range sessions {
+		responses[i] = *session.ToResponse()
+	}
+	return responses
+}
+
 func (Session) TableName() string {
 	return "sessions"
 }
