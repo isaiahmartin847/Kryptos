@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"context"
+
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"gorm.io/gorm"
 )
@@ -15,10 +17,10 @@ func NewHuntingUnitRepository(db *gorm.DB) *HuntingUnitRepository {
 	}
 }
 
-func (r *HuntingUnitRepository) GetBySpeciesID(speciesID int64) ([]models.HuntingUnitResponse, error) {
+func (r *HuntingUnitRepository) GetBySpeciesID(ctx context.Context, speciesID int64) ([]models.HuntingUnitResponse, error) {
 	var units []models.HuntingUnitResponse
 
-	result := r.db.Select("id, name").
+	result := r.db.WithContext(ctx).Select("id, name").
 		Where("species_id = ?", speciesID).
 		Order("name").
 		Find(&units)

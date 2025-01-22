@@ -9,6 +9,7 @@ import (
 )
 
 func (h *Handler) GetAllBySpeciesID(c echo.Context) error {
+	ctx := c.Request().Context()
 	queriedID := c.QueryParam("speciesID")
 
 	speciesID, err := strconv.ParseInt(queriedID, 10, 64)
@@ -18,7 +19,7 @@ func (h *Handler) GetAllBySpeciesID(c echo.Context) error {
 		})
 	}
 
-	huntingUnits, err := h.HuntingUnitService.GetAllUnitsBySpecies(speciesID)
+	huntingUnits, err := h.HuntingUnitService.GetAllUnitsBySpecies(ctx, speciesID)
 	if err != nil {
 		fmt.Print(err)
 		return c.JSON(http.StatusBadRequest, map[string]string{
