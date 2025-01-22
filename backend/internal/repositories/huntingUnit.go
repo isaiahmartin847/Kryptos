@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"gorm.io/gorm"
@@ -26,7 +27,7 @@ func (r *HuntingUnitRepository) GetBySpeciesID(ctx context.Context, speciesID in
 		Find(&units)
 
 	if result.Error != nil {
-		return nil, result.Error
+		return nil, fmt.Errorf("unable to get species by ID: %d error: %w", speciesID, result.Error)
 	}
 
 	return units, nil

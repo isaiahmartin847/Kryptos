@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
@@ -15,13 +16,13 @@ func NewUserService(userRepo *repository.UserRepository) *UserService {
 	return &UserService{UserRepo: userRepo}
 }
 
-func (s *UserService) CreateUser(user *models.User) (*models.User, error) {
+func (s *UserService) CreateUser(ctx context.Context, user *models.User) (*models.User, error) {
 
 	if user.FirstName == "" || user.LastName == "" || user.Email == "" {
 		return nil, fmt.Errorf("missing required fields")
 	}
 
-	createdUser, err := s.UserRepo.Create(user)
+	createdUser, err := s.UserRepo.Create(ctx, user)
 	if err != nil {
 		return nil, err
 	}

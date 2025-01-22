@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"gorm.io/gorm"
 )
@@ -15,9 +18,9 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 	}
 }
 
-func (r *UserRepository) Create(user *models.User) (*models.User, error) {
-	if err := r.db.Create(user).Error; err != nil {
-		return nil, err
+func (r *UserRepository) Create(ctx context.Context, user *models.User) (*models.User, error) {
+	if err := r.db.WithContext(ctx).Create(user).Error; err != nil {
+		return nil, fmt.Errorf("failed to create a user %w", err)
 	}
 	return user, nil
 }

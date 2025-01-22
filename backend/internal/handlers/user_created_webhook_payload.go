@@ -10,6 +10,8 @@ import (
 
 func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 	return func(c echo.Context) error {
+		ctx := c.Request().Context()
+
 		payload := &models.WebhookLoginPayload{}
 
 		if err := c.Bind(payload); err != nil {
@@ -25,7 +27,7 @@ func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 			CreatedAt: uint64(payload.Data.CreatedAt),
 		}
 
-		_, err := h.UserService.CreateUser(&user)
+		_, err := h.UserService.CreateUser(ctx, &user)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to create user"})
 		}
