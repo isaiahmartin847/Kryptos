@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/isaiahmartin847/Reg-Maps/internal/config"
+	// "github.com/isaiahmartin847/Reg-Maps/config"
 	handler "github.com/isaiahmartin847/Reg-Maps/internal/handlers"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
 	"github.com/isaiahmartin847/Reg-Maps/internal/service"
@@ -21,7 +21,7 @@ func main() {
 	}
 
 	// Connect to the database
-	db, err := config.ConnectDatabase()
+	db, err := repositories.ConnectDatabase()
 	if err != nil {
 		log.Fatal(err)
 	}
