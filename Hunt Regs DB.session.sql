@@ -27,12 +27,14 @@ FROM information_schema.tables
 WHERE table_schema = 'public';
 
 --@block 
+SELECT * FROM users;
+SELECT * FROM sessions;
 SELECT * FROM states;
 SELECT * FROM species;
 SELECT * FROM hunting_units;
 
 --@block
-SELECT * FROM users
+TRUNCATE sessions;
 
 --@block
 DROP TABLE "users"

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -17,7 +18,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import State from "@/types/state";
 import Species from "@/types/species";
 import HuntingUnit from "@/types/huntingUnit";
@@ -26,6 +27,9 @@ import {
   fetchSpeciesByStateID,
   fetchStates,
 } from "@/apiFunctions/getFunctions";
+import { createSession } from "@/apiFunctions/postFunctions";
+import { SessionPostBody } from "@/types/session";
+import { useUser } from "@clerk/nextjs";
 
 // const baseAPI = process.env.BASE_API;
 const baseAPI = "http://localhost:8080";
@@ -41,8 +45,10 @@ interface CreateSessionForm {
 }
 
 const CreateSessionForm = () => {
+  const { user } = useUser();
   const [stateID, setStateID] = useState<number | null>(null);
   const [speciesID, setSpeciesID] = useState<number | null>(null);
+  const router = useRouter();
 
   const {
     data: states,
@@ -76,6 +82,21 @@ const CreateSessionForm = () => {
     enabled: !!speciesID,
   });
 
+  const {
+    mutate,
+    isPending,
+    isError: isCreateError,
+  } = useMutation({
+    mutationFn: (data: SessionPostBody) => createSession(data),
+    onSuccess: (data) => {
+      router.push(`/${data.id}`);
+    },
+    onError: (error) => {
+      // Handle error
+      console.error("Error creating session:", error);
+    },
+  });
+
   const form = useForm<CreateSessionForm>({
     defaultValues: {
       State: 0,
@@ -85,15 +106,23 @@ const CreateSessionForm = () => {
   });
 
   const onSubmit = (values: CreateSessionForm) => {
-    console.group("Form Submission Data");
-    console.log("State:", values.State);
-    console.log("Species:", values.Species);
-    console.log("Hunting Unit:", values.HuntingUnit);
-    console.log("Full form data:", values);
-    console.groupEnd();
+    if (!user) {
+      throw new Error(
+        "User does not exist. Please ensure the user is logged in."
+      );
+    }
+
+    const postData: SessionPostBody = {
+      UserID: user.id,
+      StateID: values.State,
+      SpeciesID: values.Species,
+      HuntingUnitID: values.HuntingUnit,
+    };
+
+    mutate(postData);
   };
 
-  if (isStatesError || isSpeciesError || isUnitError) {
+  if (isStatesError || isSpeciesError || isUnitError || isCreateError) {
     return (
       <div>
         <h1>Error Occurred</h1>
@@ -239,10 +268,15 @@ const CreateSessionForm = () => {
         {/* Submit Button */}
         <div className="flex justify-end space-x-4 pt-4">
           <Button
+            className="w-20"
             type="submit"
             variant={"secondary"}
             disabled={!stateID || !speciesID || !form.watch("HuntingUnit")}>
-            Create
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              "Create"
+            )}
           </Button>
         </div>
       </form>

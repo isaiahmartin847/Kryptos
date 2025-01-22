@@ -14,10 +14,10 @@ export interface SessionPostBody {
 }
 
 export interface SessionResponse {
-  ID: string;
-  StateID: number;
-  SpeciesID: number;
-  HuntingUnitID: number;
-  CreatedAt: Date;
-  ExpiresAt: Date;
+  id: string;
+  stateID: number;
+  speciesID: number;
+  huntingUnitID: number;
+  createdAt: Date;
+  expiresAt: Date;
 }
