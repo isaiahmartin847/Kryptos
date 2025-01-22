@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"gorm.io/gorm"
 )
@@ -15,12 +18,12 @@ func NewStateRepository(db *gorm.DB) *StateRepository {
 	}
 }
 
-func (r *StateRepository) GetAll() ([]models.State, error) {
+func (r *StateRepository) GetAll(ctx context.Context) ([]models.State, error) {
 	var states []models.State
 
-	result := r.db.Find(&states)
-	if result.Error != nil {
-		return nil, result.Error
+	results := r.db.WithContext(ctx).Find(&states)
+	if results.Error != nil {
+		return nil, fmt.Errorf("failed to fetch the states %w", results.Error)
 	}
 
 	return states, nil

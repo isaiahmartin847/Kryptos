@@ -1,6 +1,8 @@
 package service
 
 import (
+	"context"
+
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
 )
@@ -13,9 +15,9 @@ func NewStateService(stateRepo *repositories.StateRepository) *StateService {
 	return &StateService{StateRepo: stateRepo}
 }
 
-func (s *StateService) GetAll() ([]models.State, error) {
+func (s *StateService) GetAll(ctx context.Context) ([]models.State, error) {
 
-	states, err := s.StateRepo.GetAll()
+	states, err := s.StateRepo.GetAll(ctx)
 	if err != nil {
 		return nil, err
 	}

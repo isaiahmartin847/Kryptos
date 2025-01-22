@@ -7,7 +7,9 @@ import (
 )
 
 func (h *Handler) AllStates(c echo.Context) error {
-	states, err := h.StateService.GetAll()
+	ctx := c.Request().Context()
+
+	states, err := h.StateService.GetAll(ctx)
 	if err != nil {
 		return c.JSON(http.StatusBadGateway, map[string]string{"error": err.Error()})
 	}
