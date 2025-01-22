@@ -9,8 +9,9 @@ import (
 )
 
 func (h *Handler) GetAllSpecies(c echo.Context) error {
+	ctx := c.Request().Context()
 
-	species, err := h.SpeciesService.GetAll()
+	species, err := h.SpeciesService.GetAll(ctx)
 	if err != nil {
 		return c.JSON(http.StatusBadGateway, map[string]string{"error": err.Error()})
 	}
@@ -19,6 +20,7 @@ func (h *Handler) GetAllSpecies(c echo.Context) error {
 }
 
 func (h *Handler) GetAllByStateID(c echo.Context) error {
+	ctx := c.Request().Context()
 	queriedID := c.QueryParam("stateID")
 
 	// convert the query param to a int64
@@ -29,7 +31,7 @@ func (h *Handler) GetAllByStateID(c echo.Context) error {
 		})
 	}
 
-	stateSpecies, err := h.SpeciesService.GetAllByState(stateID)
+	stateSpecies, err := h.SpeciesService.GetAllByState(ctx, stateID)
 	if err != nil {
 		fmt.Print(err)
 		return c.JSON(http.StatusBadRequest, map[string]string{
