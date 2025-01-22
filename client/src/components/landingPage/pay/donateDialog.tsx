@@ -16,10 +16,10 @@ import DonateProps from "@/types/props";
 import { useState } from "react";
 import PaymentForm from "@/components/landingPage/forms/paymentForm";
 import { Loader2 } from "lucide-react";
-import createPaymentIntent from "@/apiFunctions/postFunctions";
+import { createPaymentIntent } from "@/apiFunctions/postFunctions";
 
 const stripePublicKey: string =
-  "pk_test_51Pm0egLqplUDffhZq85VRxffA4T0tJF8SrMCi6q2pQ8NYiduY7IwNF7htGMhIRM81BmLlnREskpfypASFm5xnUsi00Bl550s7Z@";
+  "pk_test_51Pm0egLqplUDffhZq85VRxffA4T0tJF8SrMCi6q2pQ8NYiduY7IwNF7htGMhIRM81BmLlnREskpfypASFm5xnUsi00Bl550s7Z";
 
 if (!stripePublicKey) {
   throw new Error("Stripe public key is missing");

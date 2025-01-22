@@ -12,3 +12,12 @@ export interface SessionPostBody {
   SpeciesID: number;
   HuntingUnitID: number;
 }
+
+export interface SessionResponse {
+  ID: string;
+  StateID: number;
+  SpeciesID: number;
+  HuntingUnitID: number;
+  CreatedAt: Date;
+  ExpiresAt: Date;
+}

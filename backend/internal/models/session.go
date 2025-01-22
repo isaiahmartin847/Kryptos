@@ -31,7 +31,6 @@ type SessionPostBody struct {
 
 type SessionResponse struct {
 	ID            uuid.UUID `json:"id"`
-	UserID        string    `json:"userId"`
 	StateID       uint      `json:"stateId"`
 	SpeciesID     uint      `json:"speciesId"`
 	HuntingUnitID uint      `json:"huntingUnitId"`
@@ -43,7 +42,6 @@ type SessionResponse struct {
 func (s *Session) ToResponse() *SessionResponse {
 	return &SessionResponse{
 		ID:            s.ID,
-		UserID:        s.UserID,
 		StateID:       s.StateID,
 		SpeciesID:     s.SpeciesID,
 		HuntingUnitID: s.HuntingUnitID,
