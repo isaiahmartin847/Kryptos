@@ -1,7 +1,7 @@
 package service
 
 import (
-	"log"
+	"fmt"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -21,8 +21,7 @@ func (s *SessionService) CreateSession(sessionPostBody *models.SessionPostBody) 
 	// handle all the checks and services
 	sessionID, err := uuid.NewV4()
 	if err != nil {
-		// Handle error (e.g., log it or return an error response)
-		log.Fatalf("Failed to generate UUID: %v", err)
+		return nil, fmt.Errorf("failed to generate UUID: %w", err)
 	}
 
 	// init the session

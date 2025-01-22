@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/config"
-	handler "github.com/isaiahmartin847/Reg-Maps/internal/hanlders"
+	handler "github.com/isaiahmartin847/Reg-Maps/internal/handlers"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
 	"github.com/isaiahmartin847/Reg-Maps/internal/service"
 
