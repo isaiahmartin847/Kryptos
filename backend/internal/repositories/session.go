@@ -8,6 +8,12 @@ import (
 	"gorm.io/gorm"
 )
 
+type SessionRepositoryInterface interface {
+	Create(ctx context.Context, session *models.Session) (*models.Session, error)
+	Get(ctx context.Context) ([]models.Session, error)
+	GetById(ctx context.Context, userID string) ([]models.Session, error)
+}
+
 type SessionRepository struct {
 	db *gorm.DB
 }
