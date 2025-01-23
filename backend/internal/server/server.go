@@ -2,6 +2,8 @@ package server
 
 import (
 	handler "github.com/isaiahmartin847/Reg-Maps/internal/handlers"
+	websocket "github.com/isaiahmartin847/Reg-Maps/internal/websockets"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -40,6 +42,12 @@ func (s *Server) ConfigureRoutes() {
 	s.echo.GET("/states", s.handler.AllStates)
 	s.echo.GET("/species", s.handler.GetAllByStateID)
 	s.echo.GET("/hunting-units", s.handler.GetAllBySpeciesID)
+
+	// WebSocket route
+	s.echo.GET("/ws", func(c echo.Context) error {
+		websocket.HandleWebSocket(c.Response(), c.Request())
+		return nil
+	})
 }
 
 func (s *Server) Start(addr string) error {
