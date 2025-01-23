@@ -23,6 +23,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin: func(r *http.Request) bool {
+			// In production, implement proper origin checking
 			return true
 		},
 	}
@@ -31,6 +32,25 @@ var (
 	activeConnections = 0
 	connectionsMutex  sync.Mutex
 )
+
+func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Printf("Error upgrading connection: %v", err)
+		return
+	}
+
+	client := &Client{
+		hub:  hub,
+		conn: conn,
+		send: make(chan []byte, 256),
+	}
+	client.hub.register <- client
+
+	// Start goroutines for pumping messages
+	go client.writePump()
+	go client.readPump()
+}
 
 func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	// Check connection limit
