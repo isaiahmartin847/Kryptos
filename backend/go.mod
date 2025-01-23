@@ -6,6 +6,7 @@ toolchain go1.23.0
 
 require (
 	github.com/gofrs/uuid v4.4.0+incompatible
+	github.com/gorilla/websocket v1.5.3
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/stripe/stripe-go/v75 v75.11.0
@@ -13,12 +14,12 @@ require (
 )
 
 require (
-	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.7.2 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
+	github.com/sashabaranov/go-openai v1.36.1 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 )
 
