@@ -2,7 +2,7 @@ package server
 
 import (
 	handler "github.com/isaiahmartin847/Reg-Maps/internal/handlers"
-	websocket "github.com/isaiahmartin847/Reg-Maps/internal/websockets"
+	"github.com/isaiahmartin847/Reg-Maps/internal/websockets"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -45,7 +45,7 @@ func (s *Server) ConfigureRoutes() {
 
 	// WebSocket route
 	s.echo.GET("/ws", func(c echo.Context) error {
-		websocket.HandleWebSocket(c.Response(), c.Request())
+		websockets.ServeWs(s.handler.WebSocketHub, s.handler.AIService, c.Response(), c.Request())
 		return nil
 	})
 }

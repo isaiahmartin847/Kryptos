@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/isaiahmartin847/Reg-Maps/internal/service"
 )
 
 const (
@@ -33,7 +34,7 @@ var (
 	connectionsMutex  sync.Mutex
 )
 
-func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
+func ServeWs(hub *Hub, aiService *service.AIService, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("Error upgrading connection: %v", err)
@@ -41,9 +42,10 @@ func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &Client{
-		hub:  hub,
-		conn: conn,
-		send: make(chan []byte, 256),
+		hub:       hub,
+		conn:      conn,
+		send:      make(chan []byte, 256),
+		aiService: aiService,
 	}
 	client.hub.register <- client
 

@@ -9,6 +9,7 @@ require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.13.3
+	github.com/sashabaranov/go-openai v1.36.1
 	github.com/stripe/stripe-go/v75 v75.11.0
 	gorm.io/gorm v1.25.12
 )
@@ -19,7 +20,6 @@ require (
 	github.com/jackc/pgx/v5 v5.7.2 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/sashabaranov/go-openai v1.36.1 // indirect
 	golang.org/x/sync v0.10.0 // indirect
 )
 
