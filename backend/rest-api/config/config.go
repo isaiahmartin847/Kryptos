@@ -14,11 +14,9 @@ type DatabaseConfig struct {
 }
 
 func Load() (*Config, error) {
-	// Load configuration from environment variables or files
 	return &Config{
 		Server: ServerConfig{
-			Port: ":8080", // You might want to make this configurable
+			Port: ":8080", // Make this configurable
 		},
-		// Add other configuration sections as needed
 	}, nil
 }

@@ -8,10 +8,9 @@ import (
 	"gorm.io/gorm"
 )
 
-// Remove global DB variable
-
 func ConnectDatabase() (*gorm.DB, error) {
 	var err error
+	// pass these in as envs
 	dsn := "host=localhost port=5432 user=postgres dbname=postgres sslmode=disable password=Developer*1"
 
 	// Open the database connection
