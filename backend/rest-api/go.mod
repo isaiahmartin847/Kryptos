@@ -6,10 +6,8 @@ toolchain go1.23.0
 
 require (
 	github.com/gofrs/uuid v4.4.0+incompatible
-	github.com/gorilla/websocket v1.5.3
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.13.3
-	github.com/sashabaranov/go-openai v1.36.1
 	github.com/stripe/stripe-go/v75 v75.11.0
 	gorm.io/gorm v1.25.12
 )
