@@ -16,12 +16,6 @@ func main() {
 		log.Printf("Warning: .env file not found, using environment variables")
 	}
 
-	// Validate required environment variables
-	openaiKey := os.Getenv("OPENAI_KEY")
-	if openaiKey == "" {
-		log.Fatal("OPENAI_KEY environment variable is required")
-	}
-
 	// Connect to the database
 	db, err := config.ConnectDatabase()
 	if err != nil {
