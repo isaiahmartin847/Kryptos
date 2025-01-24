@@ -7,6 +7,7 @@ tmp_dir = "tmp"
   args_bin = []
   bin = "./tmp/main"
   cmd = "go build -o ./tmp/main ./cmd/app"
+  include_dir = ["cmd", "cmd/app"]  # Add these lines to make sure `air` watches these directories.
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []
