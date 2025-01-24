@@ -1,5 +1,7 @@
 package config
 
+import "os"
+
 type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
@@ -16,7 +18,7 @@ type DatabaseConfig struct {
 func Load() (*Config, error) {
 	return &Config{
 		Server: ServerConfig{
-			Port: ":8080", // Make this configurable
+			Port: os.Getenv("HOST_PORT"),
 		},
 	}, nil
 }

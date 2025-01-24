@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/isaiahmartin847/Reg-Maps/config"
-	"github.com/isaiahmartin847/Reg-Maps/internal/ai"
 	"github.com/isaiahmartin847/Reg-Maps/internal/app"
 	"github.com/isaiahmartin847/Reg-Maps/internal/server"
 	"github.com/joho/godotenv"
@@ -29,14 +28,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Initialize AI client
-	aiClient := ai.NewAIClient(openaiKey)
-	if aiClient == nil {
-		log.Fatal("Failed to initialize AI client")
-	}
-
 	// Initialize dependencies with error handling
-	handler, err := app.InitializeDependencies(db, aiClient)
+	handler, err := app.InitializeDependencies(db)
 	if err != nil {
 		log.Fatal("Failed to initialize dependencies:", err)
 	}
@@ -50,7 +43,5 @@ func main() {
 	log.Printf("Server starting on :8080")
 
 	// Start the server
-	if err := srv.Start(":8080"); err != nil {
-		log.Fatal("Server failed to start:", err)
-	}
+	log.Fatal(srv.Start(os.Getenv("HOST_PORT")))
 }

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/isaiahmartin847/Reg-Maps/internal/service"
-	"github.com/isaiahmartin847/Reg-Maps/internal/websockets"
 )
 
 type Handler struct {
@@ -11,6 +10,4 @@ type Handler struct {
 	StateService       *service.StateService
 	SpeciesService     *service.SpeciesService
 	HuntingUnitService *service.HuntingUnitService
-	AIService          *service.AIService
-	WebSocketHub       *websockets.Hub
 }
