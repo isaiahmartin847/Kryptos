@@ -1,9 +1,7 @@
 package handler
 
-type Handler struct {
-	// Add any dependencies here
-}
+import "github.com/isaiahmartin847/realtime-server/internal/service"
 
-func NewHandler() *Handler {
-	return &Handler{}
+type Handler struct {
+	AIService *service.AIService
 }

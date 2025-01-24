@@ -1,0 +1,13 @@
+# Temporary files
+/tmp/
+tmp/
+
+# Common system files to ignore
+.DS_Store
+Thumbs.db
+
+# Common IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo 
