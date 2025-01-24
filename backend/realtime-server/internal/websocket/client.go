@@ -1,6 +1,7 @@
 package websocket
 
 import (
+	"context"
 	"log"
 	"time"
 
@@ -50,7 +51,16 @@ func (c *Client) readPump() {
 			}
 			break
 		}
-		c.hub.broadcast <- message
+
+		// Generate AI response
+		response, err := c.aiService.GenerateResponse(context.Background(), string(message))
+		if err != nil {
+			log.Printf("error generating AI response: %v", err)
+			continue
+		}
+
+		// Send response back to the client
+		c.send <- []byte(response)
 	}
 }
 
