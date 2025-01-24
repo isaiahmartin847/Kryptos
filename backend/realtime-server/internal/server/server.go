@@ -2,14 +2,10 @@ package server
 
 import (
 	"github.com/isaiahmartin847/realtime-server/internal/handler"
+	"github.com/isaiahmartin847/realtime-server/internal/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
-
-// "github.com/isaiahmartin847/Reg-Maps/internal/websockets"
-
-// "github.com/labstack/echo/v4"
-// "github.com/labstack/echo/v4/middleware"
 
 type Server struct {
 	echo    *echo.Echo
@@ -33,6 +29,11 @@ func (s *Server) ConfigureMiddleware() {
 
 func (s *Server) ConfigureRoutes() {
 	s.echo.GET("/", s.handler.About)
+
+	s.echo.GET("/ws", func(c echo.Context) error {
+		websocket.ServeWs(s.handler.WebSocketHub, s.handler.AIService, c.Response(), c.Request())
+		return nil
+	})
 }
 
 func (s *Server) Start(addr string) error {

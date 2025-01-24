@@ -31,7 +31,8 @@ func InitializeDependencies(db *gorm.DB, aiClient *ai.AIClient) (*handler.Handle
 
 	// Initialize services
 	handler := &handler.Handler{
-		AIService: aiService,
+		AIService:    aiService,
+		WebSocketHub: wsHub,
 	}
 
 	return handler, nil
