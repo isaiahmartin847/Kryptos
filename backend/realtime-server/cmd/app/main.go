@@ -30,6 +30,6 @@ func main() {
 	srv.ConfigureMiddleware()
 	srv.ConfigureRoutes()
 
-	log.Fatal(srv.Start(":8080"))
+	log.Fatal(srv.Start(os.Getenv("HOST_PORT")))
 
 }
