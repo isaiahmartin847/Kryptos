@@ -5,7 +5,8 @@ import (
 	"os"
 
 	"github.com/isaiahmartin847/realtime-server/config"
-	"github.com/isaiahmartin847/realtime-server/internal/handler"
+	"github.com/isaiahmartin847/realtime-server/internal/ai"
+	"github.com/isaiahmartin847/realtime-server/internal/app"
 	"github.com/isaiahmartin847/realtime-server/internal/server"
 	"github.com/joho/godotenv"
 )
@@ -20,12 +21,21 @@ func main() {
 		log.Fatal("OPENAI_KEY environment variable is required")
 	}
 
-	_, err := config.ConnectDatabase()
+	db, err := config.ConnectDatabase()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	handler := handler.NewHandler()
+	aiClient := ai.NewAIClient(openaiKey)
+	if aiClient == nil {
+		log.Fatal("Failed to initialize AI client")
+	}
+
+	handler, err := app.InitializeDependencies(db, aiClient)
+	if err != nil {
+		log.Fatal("Failed to initialize dependencies:", err)
+	}
+
 	srv := server.NewServer(handler)
 	srv.ConfigureMiddleware()
 	srv.ConfigureRoutes()

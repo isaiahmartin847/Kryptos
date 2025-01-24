@@ -7,6 +7,7 @@ require gorm.io/driver/postgres v1.5.11
 require golang.org/x/time v0.8.0 // indirect
 
 require (
+	github.com/gorilla/websocket v1.5.3
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.5.5 // indirect

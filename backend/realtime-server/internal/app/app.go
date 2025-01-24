@@ -6,6 +6,7 @@ import (
 	"github.com/isaiahmartin847/realtime-server/internal/ai"
 	"github.com/isaiahmartin847/realtime-server/internal/handler"
 	"github.com/isaiahmartin847/realtime-server/internal/service"
+	"github.com/isaiahmartin847/realtime-server/internal/websocket"
 
 	"gorm.io/gorm"
 )
@@ -25,8 +26,8 @@ func InitializeDependencies(db *gorm.DB, aiClient *ai.AIClient) (*handler.Handle
 	aiService := service.NewAIService(aiClient)
 
 	// Initialize WebSocket hub
-	// wsHub := websockets.NewHub()
-	// go wsHub.Run()
+	wsHub := websocket.NewHub()
+	go wsHub.Run()
 
 	// Initialize services
 	handler := &handler.Handler{
