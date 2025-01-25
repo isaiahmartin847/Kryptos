@@ -2,8 +2,10 @@ import HuntingUnit from "@/types/huntingUnit";
 import Species from "@/types/species";
 import State from "@/types/state";
 
+const apiUrl = process.env.NEXT_PUBLIC_REST_API 
+
 export const fetchStates = async (): Promise<State[]> => {
-  const response = await fetch("http://localhost:8080/states");
+  const response = await fetch(`${apiUrl}/states`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -14,7 +16,7 @@ export const fetchSpeciesByStateID = async (
   stateID: number
 ): Promise<Species[]> => {
   const response = await fetch(
-    `http://localhost:8080/species?stateID=${stateID}`
+    `${apiUrl}/species?stateID=${stateID}`
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -26,7 +28,7 @@ export const fetchHuntingUnitBySpeciesID = async (
   speciesID: number
 ): Promise<HuntingUnit[]> => {
   const response = await fetch(
-    `http://localhost:8080/hunting-units?speciesID=${speciesID}`
+    `${apiUrl}/hunting-units?speciesID=${speciesID}`
   );
   if (!response.ok) {
     throw new Error("Unable to fetch the hunting units");

@@ -1,16 +1,13 @@
 import { SessionPostBody, SessionResponse } from "@/types/session";
 import Stripe from "stripe";
 
-const baseAPI = "http://localhost:8080";
+const apiUrl = process.env.NEXT_PUBLIC_REST_API
 
-if (!baseAPI) {
-  throw new Error("Unable to load API url");
-}
 
 export const createPaymentIntent = async (
   price: number
 ): Promise<Stripe.PaymentIntent> => {
-  const response = await fetch(`${baseAPI}/payment-intent`, {
+  const response = await fetch(`${apiUrl}/payment-intent`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -28,7 +25,7 @@ export const createPaymentIntent = async (
 export const createSession = async (
   sessionBody: SessionPostBody
 ): Promise<SessionResponse> => {
-  const response = await fetch(`${baseAPI}/session/create`, {
+  const response = await fetch(`${apiUrl}/session/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

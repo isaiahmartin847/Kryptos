@@ -89,7 +89,7 @@ const CreateSessionForm = () => {
   } = useMutation({
     mutationFn: (data: SessionPostBody) => createSession(data),
     onSuccess: (data) => {
-      router.push(`/${data.id}`);
+      router.push(`/p/${data.id}`);
     },
     onError: (error) => {
       // Handle error
