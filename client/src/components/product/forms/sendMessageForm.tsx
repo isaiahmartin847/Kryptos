@@ -8,6 +8,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useWebSocketContext } from "@/providers/websocketProvider";
+import { SendMessage } from "@/types/websocket";
 import { Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 
@@ -16,6 +18,8 @@ interface sendMessageForm {
 }
 
 const SendMessageForm = () => {
+  const { sendMessage, isLoading } = useWebSocketContext();
+
   const form = useForm<sendMessageForm>({
     defaultValues: {
       inputMessage: "",
@@ -24,6 +28,17 @@ const SendMessageForm = () => {
 
   const onSubmit = (values: sendMessageForm) => {
     console.log(values.inputMessage);
+
+    const message: SendMessage = {
+      type: "echo",
+      payload: {
+        role: "user",
+        message: values.inputMessage,
+      },
+    };
+
+    sendMessage(JSON.stringify(message));
+    form.reset({ inputMessage: "" });
   };
 
   return (
@@ -38,8 +53,8 @@ const SendMessageForm = () => {
             <FormItem className="w-full">
               <FormControl>
                 <Input
-                  className=""
-                  placeholder="this is the input box"
+                  className="placeholder:text-mutedColor text-wrap"
+                  placeholder="Message"
                   type="text"
                   {...field}
                 />
@@ -53,7 +68,7 @@ const SendMessageForm = () => {
           <Button
             variant={"secondary"}
             type="submit">
-            <Send />
+            {isLoading ? "loading" : <Send />}
           </Button>
         </div>
       </form>

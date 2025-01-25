@@ -1,4 +1,3 @@
-import { error } from "console";
 import React, { createContext, useContext, useState, useMemo } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
@@ -8,6 +7,7 @@ interface WebSocketContextType {
   receivedMessages: string[];
   isConnected: boolean;
   connectionStatus: string;
+  isLoading: boolean; // Added for loading state
 }
 
 // Create the context
@@ -62,14 +62,21 @@ export const WebSocketProvider = ({
     }
   }, [readyState]);
 
+  // Loading state: true when connecting, false otherwise
+  const isLoading = useMemo(
+    () => readyState === ReadyState.CONNECTING,
+    [readyState]
+  );
+
   const value = useMemo(
     () => ({
       sendMessage,
       receivedMessages,
       isConnected: readyState === ReadyState.OPEN,
       connectionStatus,
+      isLoading, // Add loading state to the context value
     }),
-    [sendMessage, receivedMessages, readyState, connectionStatus]
+    [sendMessage, receivedMessages, readyState, connectionStatus, isLoading]
   );
 
   return (
