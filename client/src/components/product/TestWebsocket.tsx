@@ -43,7 +43,7 @@ const TestWebsocket = () => {
               msg.type === "sent" ? "justify-end" : "justify-start"
             }`}>
             <div className="bg-inputColor p-3 mx-4 rounded-xl max-w-[80%]">
-              {msg.payload.role}: {msg.payload.message}
+              {msg.payload.message}
             </div>
           </li>
         ))}

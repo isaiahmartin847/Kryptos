@@ -30,7 +30,7 @@ const SendMessageForm = () => {
     console.log(values.inputMessage);
 
     const message: SendMessage = {
-      type: "echo",
+      type: "chat",
       payload: {
         role: "user",
         message: values.inputMessage,
