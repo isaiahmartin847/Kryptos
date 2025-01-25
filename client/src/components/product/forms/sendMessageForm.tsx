@@ -37,7 +37,7 @@ const SendMessageForm = () => {
       },
     };
 
-    sendMessage(JSON.stringify(message));
+    sendMessage(message);
     form.reset({ inputMessage: "" });
   };
 

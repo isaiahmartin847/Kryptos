@@ -1,13 +1,24 @@
+import { ResponseMessage } from "@/types/websocket";
 import React, { createContext, useContext, useState, useMemo } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 // Define the shape of the context
 interface WebSocketContextType {
-  sendMessage: (message: string) => void;
-  receivedMessages: string[];
+  sendMessage: (message: SendMessage) => void;
+  sentMessages: SendMessage[];
+  receivedMessages: ResponseMessage[];
   isConnected: boolean;
   connectionStatus: string;
-  isLoading: boolean; // Added for loading state
+  isLoading: boolean;
+}
+
+// Define the shape of the `SendMessage` type
+interface SendMessage {
+  type: string;
+  payload: {
+    role: string;
+    message: string;
+  };
 }
 
 // Create the context
@@ -30,23 +41,39 @@ export const WebSocketProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
+  const [receivedMessages, setReceivedMessages] = useState<ResponseMessage[]>(
+    []
+  );
+  const [sentMessages, setSentMessages] = useState<SendMessage[]>([]);
 
-  // const WS_URL = process.env.NEXT_PUBLIC_WS_API_URL;
   const WS_URL = "http://localhost:5000/ws";
 
   if (!WS_URL) {
-    throw new Error("websocket url didn't load in");
+    throw new Error("WebSocket URL is not defined");
   }
 
-  const { sendMessage, readyState } = useWebSocket(WS_URL, {
-    onMessage: (message) => {
-      setReceivedMessages((prev) => [...prev, message.data]);
-    },
-    shouldReconnect: () => true,
-  });
+  const { sendMessage: originalSendMessage, readyState } = useWebSocket(
+    WS_URL,
+    {
+      onMessage: (message) => {
+        try {
+          // Parse the message as ResponseMessage
+          const parsedMessage: ResponseMessage = JSON.parse(message.data);
+          setReceivedMessages((prev) => [...prev, parsedMessage]);
+        } catch (error) {
+          console.error("Failed to parse message:", error);
+        }
+      },
+      shouldReconnect: () => true,
+    }
+  );
 
-  // Connection status
+  // Wrapper for sendMessage to store sent messages
+  const sendMessage = (message: SendMessage) => {
+    setSentMessages((prev) => [...prev, message]);
+    originalSendMessage(JSON.stringify(message));
+  };
+
   const connectionStatus = useMemo(() => {
     switch (readyState) {
       case ReadyState.CONNECTING:
@@ -62,7 +89,6 @@ export const WebSocketProvider = ({
     }
   }, [readyState]);
 
-  // Loading state: true when connecting, false otherwise
   const isLoading = useMemo(
     () => readyState === ReadyState.CONNECTING,
     [readyState]
@@ -71,12 +97,20 @@ export const WebSocketProvider = ({
   const value = useMemo(
     () => ({
       sendMessage,
+      sentMessages,
       receivedMessages,
       isConnected: readyState === ReadyState.OPEN,
       connectionStatus,
-      isLoading, // Add loading state to the context value
+      isLoading,
     }),
-    [sendMessage, receivedMessages, readyState, connectionStatus, isLoading]
+    [
+      sendMessage,
+      sentMessages,
+      receivedMessages,
+      readyState,
+      connectionStatus,
+      isLoading,
+    ]
   );
 
   return (

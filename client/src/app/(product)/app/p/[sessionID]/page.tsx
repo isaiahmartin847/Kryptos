@@ -21,13 +21,19 @@ const SessionPage = () => {
     <div className="h-[calc(100vh-75px)]">
       <ResizablePanelGroup
         direction="horizontal"
-        className="w-screen h-full border-2 border-red-500">
+        className="w-screen h-full">
         <ResizablePanel
           defaultSize={50}
           className="">
           <WebSocketProvider>
-            <TestWebsocket></TestWebsocket>
-            <SendMessageForm />
+            <div className="h-full flex flex-col">
+              <div className="flex-1">
+                <TestWebsocket />
+              </div>
+              <div className="p-4">
+                <SendMessageForm />
+              </div>
+            </div>
           </WebSocketProvider>
         </ResizablePanel>
         <ResizableHandle className="bg-mutedColor w-[.7px]" />
