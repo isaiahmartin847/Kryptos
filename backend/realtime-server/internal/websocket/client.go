@@ -82,11 +82,31 @@ func (c *Client) readPump() {
 			c.send <- responseJSON
 
 		// Add more case statements for different message types
+		case "echo":
+			echoMsg := models.WebSocketMessage{
+				Type: "echo",
+				Payload: models.Input{
+					Role:    "server",
+					Message: msg.Payload.Message,
+				},
+			}
+
+			responseJSON, err := json.Marshal(echoMsg)
+			if err != nil {
+				log.Printf("error marshaling response %v", err)
+				return
+			}
+
+			c.send <- responseJSON
 		default:
 			log.Printf("unknown message type: %s", msg.Type)
 		}
 	}
 }
+
+// test the ws by passing this
+// {"type": "echo", "payload": {"role": "user", "message": "hello" }}
+// {"type": "chat", "payload": {"role": "user", "message": "hello" }}
 
 func (c *Client) writePump() {
 	ticker := time.NewTicker(pingPeriod)
