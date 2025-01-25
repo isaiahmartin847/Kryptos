@@ -31,13 +31,6 @@ import { createSession } from "@/apiFunctions/postFunctions";
 import { SessionPostBody } from "@/types/session";
 import { useUser } from "@clerk/nextjs";
 
-// const baseAPI = process.env.BASE_API;
-const baseAPI = "http://localhost:8080";
-
-if (!baseAPI) {
-  throw new Error("BASE_API is not defined in your environment variables.");
-}
-
 interface CreateSessionForm {
   State: number;
   Species: number;

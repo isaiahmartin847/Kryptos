@@ -1,3 +1,4 @@
+import { error } from "console";
 import React, { createContext, useContext, useState, useMemo } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
@@ -31,8 +32,12 @@ export const WebSocketProvider = ({
 }) => {
   const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
 
-  // Replace with your WebSocket server URL
-  const WS_URL = "ws://localhost:8080";
+  // const WS_URL = process.env.NEXT_PUBLIC_WS_API_URL;
+  const WS_URL = "http://localhost:5000/ws";
+
+  if (!WS_URL) {
+    throw new Error("websocket url didn't load in");
+  }
 
   const { sendMessage, readyState } = useWebSocket(WS_URL, {
     onMessage: (message) => {
