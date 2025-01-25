@@ -2,10 +2,12 @@ package websocket
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/isaiahmartin847/realtime-server/internal/models"
 	"github.com/isaiahmartin847/realtime-server/internal/service"
 )
 
@@ -44,7 +46,8 @@ func (c *Client) readPump() {
 	})
 
 	for {
-		_, message, err := c.conn.ReadMessage()
+		var msg models.WebSocketMessage
+		err := c.conn.ReadJSON(&msg)
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				log.Printf("error: %v", err)
@@ -52,15 +55,36 @@ func (c *Client) readPump() {
 			break
 		}
 
-		// Generate AI response
-		response, err := c.aiService.GenerateResponse(context.Background(), string(message))
-		if err != nil {
-			log.Printf("error generating AI response: %v", err)
-			continue
-		}
+		// Handle different message types
+		switch msg.Type {
+		case "chat":
+			response, err := c.aiService.GenerateResponse(context.Background(), msg.Payload.Message)
+			if err != nil {
+				log.Printf("error generating AI response: %v", err)
+				continue
+			}
 
-		// Send response back to the client
-		c.send <- []byte(response)
+			// Send response with same message structure
+			responseMsg := models.WebSocketMessage{
+				Type: "chat",
+				Payload: models.Input{
+					Role:    "assistant",
+					Message: response,
+				},
+			}
+
+			responseJSON, err := json.Marshal(responseMsg)
+			if err != nil {
+				log.Printf("error marshaling response: %v", err)
+				continue
+			}
+
+			c.send <- responseJSON
+
+		// Add more case statements for different message types
+		default:
+			log.Printf("unknown message type: %s", msg.Type)
+		}
 	}
 }
 

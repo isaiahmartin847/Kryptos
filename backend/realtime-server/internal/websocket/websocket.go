@@ -65,7 +65,6 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 	activeConnections++
 	connectionsMutex.Unlock()
 
-	// Upgrade connection
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		connectionsMutex.Lock()
@@ -75,7 +74,6 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Ensure connection is closed and counted properly
 	defer func() {
 		conn.Close()
 		connectionsMutex.Lock()
@@ -83,7 +81,6 @@ func HandleWebSocket(w http.ResponseWriter, r *http.Request) {
 		connectionsMutex.Unlock()
 	}()
 
-	// Configure timeouts
 	conn.SetReadLimit(512) // 512 bytes max message size
 	conn.SetReadDeadline(time.Now().Add(readTimeout))
 	conn.SetPongHandler(func(string) error {
