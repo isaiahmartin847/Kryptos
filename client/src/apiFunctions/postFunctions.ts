@@ -1,7 +1,7 @@
 import { SessionPostBody, SessionResponse } from "@/types/session";
 import Stripe from "stripe";
 
-const apiUrl = process.env.NEXT_PUBLIC_REST_API
+const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL
 
 
 export const createPaymentIntent = async (

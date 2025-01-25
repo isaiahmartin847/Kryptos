@@ -4,8 +4,7 @@ import CreateSessionModal from "@/components/product/modal/createSessionModal";
 
 
 const Main = () => {
- 
-
+  
   return (
     <div>
       <CreateSessionModal />

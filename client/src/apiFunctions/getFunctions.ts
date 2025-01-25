@@ -2,7 +2,7 @@ import HuntingUnit from "@/types/huntingUnit";
 import Species from "@/types/species";
 import State from "@/types/state";
 
-const apiUrl = process.env.NEXT_PUBLIC_REST_API 
+const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL
 
 export const fetchStates = async (): Promise<State[]> => {
   const response = await fetch(`${apiUrl}/states`);
