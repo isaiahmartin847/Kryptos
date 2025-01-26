@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const LandingPageFooter = () => {
   return (
-    <footer className="w-full h-[200px] py-[39px] px-[18px] bg-secondaryColor border-t-[1px] border-mutedColor">
+    <footer className="w-full h-[200px] py-[39px] px-[18px] bg-secondaryColor">
       <div className="flex space-x-28">
         <Image
           src={"/RegMapsLogo.png"}
