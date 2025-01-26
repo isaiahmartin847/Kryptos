@@ -7,13 +7,25 @@ import { SessionCard, SessionSkeletonCard } from "./cards/sessionCard";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllSession } from "@/apiFunctions/getFunctions";
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 
 const SessionSideBar = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const user = useUser();
   const pathname = usePathname();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["sessions"],
-    queryFn: () => fetchAllSession("user_2rxSCsvzYSw6kBl64hsXk37pkXV"),
+    queryFn: () => {
+      if (user.user?.id) {
+        return fetchAllSession(user.user.id);
+      }
+
+      return Promise.resolve([]);
+    },
+
+    enabled: !!user.user?.id,
     staleTime: 0,
   });
 
