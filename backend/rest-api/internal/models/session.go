@@ -32,8 +32,11 @@ type SessionPostBody struct {
 type SessionResponse struct {
 	ID            uuid.UUID `json:"id"`
 	StateID       uint      `json:"stateId"`
+	StateFullName string    `json:"stateFullName"`
 	SpeciesID     uint      `json:"speciesId"`
+	SpeciesName   string    `json:"speciesName"`
 	HuntingUnitID uint      `json:"huntingUnitId"`
+	HuntingName   string    `json:"huntingName"`
 	CreatedAt     time.Time `json:"createdAt"`
 	ExpiresAt     time.Time `json:"expiresAt"`
 }
@@ -43,8 +46,11 @@ func (s *Session) ToResponse() *SessionResponse {
 	return &SessionResponse{
 		ID:            s.ID,
 		StateID:       s.StateID,
+		StateFullName: s.State.FullName,
 		SpeciesID:     s.SpeciesID,
+		SpeciesName:   s.Species.Name,
 		HuntingUnitID: s.HuntingUnitID,
+		HuntingName:   s.HuntingUnit.Name,
 		CreatedAt:     s.CreatedAt,
 		ExpiresAt:     s.ExpiresAt,
 	}

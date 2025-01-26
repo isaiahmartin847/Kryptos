@@ -38,7 +38,9 @@ func (r *SessionRepository) Get(ctx context.Context) ([]models.Session, error) {
 	var sessions []models.Session
 
 	result := r.db.WithContext(ctx).
-		Omit("User", "State", "Species", "HuntingUnit").
+		Preload("State").
+		Preload("Species").
+		Preload("HuntingUnit").
 		Find(&sessions)
 	if result.Error != nil {
 		return nil, fmt.Errorf("failed to fetch sessions: %w", result.Error)
@@ -51,7 +53,9 @@ func (r *SessionRepository) GetById(ctx context.Context, userID string) ([]model
 	var sessions []models.Session
 
 	result := r.db.WithContext(ctx).
-		Omit("User", "State", "Species", "HuntingUnit").
+		Preload("State").
+		Preload("Species").
+		Preload("HuntingUnit").
 		Find(&sessions, "user_id = ?", userID)
 	if result.Error != nil {
 		return nil, fmt.Errorf("failed to fetch sessions: %w", result.Error)
