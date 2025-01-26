@@ -47,6 +47,5 @@ export const fetchAllSession = async (
   }
 
   const jsonData = await response.json();
-  console.log(jsonData); // Log the parsed response
   return jsonData;
 };

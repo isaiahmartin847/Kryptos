@@ -17,36 +17,9 @@ const SessionSideBar = () => {
     staleTime: 0,
   });
 
-  console.log(data); // Log to check the contents
-
   if (pathname.slice(1, 2) === "p") {
     return null;
   }
-
-  // return isLoading ? (
-  //   <Sidebar className="bg-secondaryColor text-textColor border-r-borderColor">
-  //     <SidebarHeader className="items-center text-xl border-b-[1px] border-b-borderColor p-[22px] font-semibold">
-  //       Sessions
-  //     </SidebarHeader>
-  //     <SidebarContent className="overflow-y-auto">
-  //       {Array(5).map((_, index) => {
-  //         return <SessionSkeletonCard />;
-  //       })}
-  //     </SidebarContent>
-  //   </Sidebar>
-  // ) : isError ? (
-  //   <div>Error fetching sessions</div>
-  // ) : (
-  //   <div>
-  //     {data?.map((session) => (
-  //       <div key={session.id}>
-  //         <p>Species: {session.speciesName}</p>
-  //         <p>State: {session.stateFullName}</p>
-  //         <p>Expires at: {new Date(session.expiresAt).toLocaleString()}</p>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
 
   return (
     <Sidebar className="bg-secondaryColor text-textColor border-r-borderColor">

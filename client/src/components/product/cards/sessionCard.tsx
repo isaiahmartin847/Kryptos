@@ -26,11 +26,6 @@ const SessionCard = ({
 }: Session) => {
   const timeAgo = formatDistanceToNow(CreatedAt);
 
-  useEffect(() => {
-    console.log(HuntingUnit);
-    console.log(ID);
-  });
-
   return (
     <Card className="bg-primaryColor border-0 m-2">
       <CardHeader className="pb-0 text-center text-lg">
