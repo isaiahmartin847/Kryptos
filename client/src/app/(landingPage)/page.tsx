@@ -6,11 +6,11 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div>
-      <div className="flex flex-col items-center space-y-4 mt-40">
-        <h1 className="text-5xl text-textColor font-bold">
+      <div className="flex flex-col items-center space-y-4 mt-40 text-center">
+        <h1 className="md:text-5xl text-3xl text-textColor font-bold">
           Welcome to Hunt Regs
         </h1>
-        <p className="text-mutedColor text-xl text-center w-1/4">
+        <p className="text-mutedColor md:text-xl text-lg  text-center lg:w-1/4 md:w-2/4 w-3/4">
           The cool morning air carried the scent of fresh rain as the sun peeked
           over the horizon. Birds chirped in the distance, signaling the start
           of a new day. The grass glistened with dew, and the sky slowly turned
