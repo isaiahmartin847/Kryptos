@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const LandingPageFooter = () => {
   return (
-    <footer className="w-full h-[200px] py-[39px] px-[18px] bg-secondaryColor">
-      <div className="flex space-x-28">
+    <footer className="w-full min-h-[200px] py-[39px] px-[18px] bg-secondaryColor">
+      <div className="flex flex-col items-center space-x-0 space-y-5 md:flex-row md:items-stretch md:space-x-28 md:space-y-0">
         <Image
           src={"/RegMapsLogo.png"}
           alt={"Logo"}
@@ -62,7 +62,7 @@ const LandingPageFooter = () => {
         </div>
       </div>
       {/* this is the copyright div */}
-      <div className="flex justify-end">
+      <div className="flex justify-center mt-3 md:justify-end md:mt-0">
         <Copyright
           height={10}
           width={10}

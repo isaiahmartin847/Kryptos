@@ -4,9 +4,11 @@ import { ReactQueryProvider } from "@/providers/reactQueryProvider";
 const PricingPage = () => {
   return (
     <ReactQueryProvider>
-      <div className="flex flex-col justify-center items-center text-center">
-        <h1 className="text-[40px] mt-8">Subscriptions & pricing</h1>
-        <p>
+      <div className="flex flex-col justify-center items-center text-center pb-20 md:pb-0">
+        <h1 className="text-[30px] mt-8 md:text-[40px]">
+          Subscriptions & pricing
+        </h1>
+        <p className="w-3/5">
           We currently free but we still do take donations if you feel like our
           service has helped you please donate.
         </p>
