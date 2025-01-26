@@ -30,29 +30,29 @@ type SessionPostBody struct {
 }
 
 type SessionResponse struct {
-	ID            uuid.UUID `json:"id"`
-	StateID       uint      `json:"stateId"`
-	StateFullName string    `json:"stateFullName"`
-	SpeciesID     uint      `json:"speciesId"`
-	SpeciesName   string    `json:"speciesName"`
-	HuntingUnitID uint      `json:"huntingUnitId"`
-	HuntingName   string    `json:"huntingName"`
-	CreatedAt     time.Time `json:"createdAt"`
-	ExpiresAt     time.Time `json:"expiresAt"`
+	ID              uuid.UUID `json:"id"`
+	StateID         uint      `json:"stateId"`
+	StateFullName   string    `json:"stateFullName"`
+	SpeciesID       uint      `json:"speciesId"`
+	SpeciesName     string    `json:"speciesName"`
+	HuntingUnitID   uint      `json:"huntingUnitId"`
+	HuntingUnitName string    `json:"huntingUnitName"`
+	CreatedAt       time.Time `json:"createdAt"`
+	ExpiresAt       time.Time `json:"expiresAt"`
 }
 
 // ToResponse converts a Session model to a SessionResponse
 func (s *Session) ToResponse() *SessionResponse {
 	return &SessionResponse{
-		ID:            s.ID,
-		StateID:       s.StateID,
-		StateFullName: s.State.FullName,
-		SpeciesID:     s.SpeciesID,
-		SpeciesName:   s.Species.Name,
-		HuntingUnitID: s.HuntingUnitID,
-		HuntingName:   s.HuntingUnit.Name,
-		CreatedAt:     s.CreatedAt,
-		ExpiresAt:     s.ExpiresAt,
+		ID:              s.ID,
+		StateID:         s.StateID,
+		StateFullName:   s.State.FullName,
+		SpeciesID:       s.SpeciesID,
+		SpeciesName:     s.Species.Name,
+		HuntingUnitID:   s.HuntingUnitID,
+		HuntingUnitName: s.HuntingUnit.Name,
+		CreatedAt:       s.CreatedAt,
+		ExpiresAt:       s.ExpiresAt,
 	}
 }
 

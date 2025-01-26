@@ -1,9 +1,9 @@
 export interface Session {
-  ID: number;
+  ID: string;
   State: string;
   Species: string;
   HuntingUnit: string;
-  CreatedAt: string;
+  CreatedAt: Date;
 }
 
 export interface SessionPostBody {

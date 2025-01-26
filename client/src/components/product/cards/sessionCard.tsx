@@ -15,14 +15,21 @@ import {
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Session } from "@/types/session";
+import { useEffect } from "react";
 
 const SessionCard = ({
   HuntingUnit,
   Species,
   State,
   CreatedAt,
-}: Pick<Session, "HuntingUnit" | "Species" | "State" | "CreatedAt">) => {
+  ID,
+}: Session) => {
   const timeAgo = formatDistanceToNow(CreatedAt);
+
+  useEffect(() => {
+    console.log(HuntingUnit);
+    console.log(ID);
+  });
 
   return (
     <Card className="bg-primaryColor border-0 m-2">
