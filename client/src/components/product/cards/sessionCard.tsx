@@ -15,7 +15,6 @@ import {
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Session } from "@/types/session";
-import { useEffect } from "react";
 
 const SessionCard = ({
   HuntingUnit,
@@ -61,7 +60,7 @@ const SessionCard = ({
       <CardFooter className="flex justify-center">
         <Link
           className="text-sm italic underline hover:text-primaryAccentColor"
-          href={"#"}>
+          href={`/p/${ID}`}>
           return to session
         </Link>
       </CardFooter>
