@@ -39,15 +39,18 @@ const SessionSideBar = () => {
         Sessions
       </SidebarHeader>
       <SidebarContent className="overflow-y-auto">
-        {isLoading ? (
+        {false ? (
           Array(5)
             .fill(0)
             .map((_, index) => {
               return <SessionSkeletonCard key={index} />;
             })
-        ) : isError ? (
-          // Render error content
-          <div>Error occurred</div>
+        ) : true ? (
+          <div className="flex justify-center text-center mt-2">
+            <div className="w-2/3 text-red-500 text-lg">
+              Unable to load the sessions.
+            </div>
+          </div>
         ) : (
           // Render default content when no loading or error
           data?.map((session) => {
