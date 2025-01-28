@@ -38,21 +38,20 @@ const SessionSideBar = () => {
       <SidebarHeader className="items-center text-xl border-b-[1px] border-b-borderColor p-[22px] font-semibold">
         Sessions
       </SidebarHeader>
-      <SidebarContent className="overflow-y-auto">
-        {false ? (
+      <SidebarContent className="overflow-y-auto scrollbar-thin scrollbar-thumb-borderColor scrollbar-track-secondaryColor custom-scrollbar">
+        {isLoading ? (
           Array(5)
             .fill(0)
             .map((_, index) => {
               return <SessionSkeletonCard key={index} />;
             })
-        ) : true ? (
+        ) : isError ? (
           <div className="flex justify-center text-center mt-2">
             <div className="w-2/3 text-red-500 text-lg">
               Unable to load the sessions.
             </div>
           </div>
         ) : (
-          // Render default content when no loading or error
           data?.map((session) => {
             return (
               <SessionCard
