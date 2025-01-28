@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useWebSocketContext } from "@/providers/websocketProvider";
 import { SendMessage } from "@/types/websocket";
-import { Send } from "lucide-react";
+import { LoaderCircle, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 interface sendMessageForm {
@@ -18,7 +18,7 @@ interface sendMessageForm {
 }
 
 const SendMessageForm = () => {
-  const { sendMessage, isLoading } = useWebSocketContext();
+  const { sendMessage, isLoading, isConnected } = useWebSocketContext();
 
   const form = useForm<sendMessageForm>({
     defaultValues: {
@@ -66,9 +66,14 @@ const SendMessageForm = () => {
 
         <div>
           <Button
+            disabled={!isConnected}
             variant={"secondary"}
             type="submit">
-            {isLoading ? "loading" : <Send />}
+            {isLoading && isConnected ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              <Send />
+            )}
           </Button>
         </div>
       </form>
