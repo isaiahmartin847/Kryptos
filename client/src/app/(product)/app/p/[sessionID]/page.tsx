@@ -24,6 +24,10 @@ const SessionPage = () => {
         className="w-screen h-full">
         <ResizablePanel
           defaultSize={50}
+          className=""></ResizablePanel>
+        <ResizableHandle className="bg-mutedColor w-[.7px]" />
+        <ResizablePanel
+          defaultSize={50}
           className="">
           <WebSocketProvider>
             <div className="h-full flex flex-col">
@@ -36,10 +40,6 @@ const SessionPage = () => {
             </div>
           </WebSocketProvider>
         </ResizablePanel>
-        <ResizableHandle className="bg-mutedColor w-[.7px]" />
-        <ResizablePanel
-          defaultSize={50}
-          className=""></ResizablePanel>
       </ResizablePanelGroup>
     </div>
   );
