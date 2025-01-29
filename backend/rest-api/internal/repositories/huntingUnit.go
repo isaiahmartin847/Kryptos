@@ -32,3 +32,19 @@ func (r *HuntingUnitRepository) GetBySpeciesID(ctx context.Context, speciesID in
 
 	return units, nil
 }
+
+func (r *HuntingUnitRepository) GetAllHuntingUnits(ctx context.Context) ([]models.HuntingUnit, error) {
+	var units []models.HuntingUnit
+
+	//remove the "48d67ab9-2ff1-4ec7-bd3a-1bc97b93b709" to fix the issues
+	result := r.db.WithContext(ctx).
+		Preload("BaseRegulation").
+		Where("base_regulation_id = ?", "48d67ab9-2ff1-4ec7-bd3a-1bc97b93b709").
+		Find(&units)
+
+	if result.Error != nil {
+		return nil, fmt.Errorf("unable to get units %v", result.Error)
+	}
+
+	return units, nil
+}

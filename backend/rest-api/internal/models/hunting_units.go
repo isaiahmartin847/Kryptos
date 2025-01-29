@@ -7,7 +7,7 @@ type HuntingUnit struct {
 	ID               uint `gorm:"primaryKey;autoIncrement"`
 	Name             string
 	SpeciesID        uint
-	BaseRegulationID uuid.UUID
+	BaseRegulationID uuid.UUID      `gorm:"column:base_regulation_id"`
 	Species          Species        `gorm:"foreignKey:SpeciesID"`
 	BaseRegulation   BaseRegulation `gorm:"foreignKey:BaseRegulationID"`
 }

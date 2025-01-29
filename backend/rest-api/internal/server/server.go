@@ -40,8 +40,8 @@ func (s *Server) ConfigureRoutes() {
 	s.echo.GET("/", s.handler.Details)
 	s.echo.GET("/states", s.handler.AllStates)
 	s.echo.GET("/species", s.handler.GetAllByStateID)
-	s.echo.GET("/hunting-units", s.handler.GetAllBySpeciesID)
-
+	s.echo.GET("/hunting-units", s.handler.GetAllHuntingUnitsBySpeciesID)
+	s.echo.GET("/hunting-units/all", s.handler.GetAllHuntingUnits)
 }
 
 func (s *Server) Start(addr string) error {

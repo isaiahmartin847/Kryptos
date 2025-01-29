@@ -13,5 +13,5 @@ type SpecificRegulation struct {
 }
 
 func (SpecificRegulation) TableName() string {
-	return "species_regulations"
+	return "specific_regulations"
 }

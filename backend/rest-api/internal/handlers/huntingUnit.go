@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (h *Handler) GetAllBySpeciesID(c echo.Context) error {
+func (h *Handler) GetAllHuntingUnitsBySpeciesID(c echo.Context) error {
 	ctx := c.Request().Context()
 	queriedID := c.QueryParam("speciesID")
 
@@ -28,4 +28,19 @@ func (h *Handler) GetAllBySpeciesID(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, huntingUnits)
+}
+
+func (h *Handler) GetAllHuntingUnits(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	huntingUnits, err := h.HuntingUnitService.HuntingUnitRepo.GetAllHuntingUnits(ctx)
+	if err != nil {
+		fmt.Print(err)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Unable to fetch the hunting units",
+		})
+	}
+
+	return c.JSON(http.StatusOK, huntingUnits)
+
 }
