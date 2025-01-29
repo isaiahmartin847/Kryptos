@@ -8,6 +8,10 @@ type SpecificRegulations struct {
 	Bull    bool      `gorm:"not null;index"`
 	Cow     bool      `gorm:"not null;index"`
 	Limit   int       `gorm:"not null;index"`
-	NoteOne string    `gorm:"index"` // Consider renaming based on the context (e.g., "AdditionalInfo")
-	NoteTwo string    `gorm:"index"` // Consider renaming as well (e.g., "Comments")
+	NoteOne string    `gorm:"index"`
+	NoteTwo string    `gorm:"index"`
+}
+
+func (SpecificRegulations) TableName() string {
+	return "species_regulations"
 }

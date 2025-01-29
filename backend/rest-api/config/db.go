@@ -22,7 +22,7 @@ func ConnectDatabase() (*gorm.DB, error) {
 	fmt.Println("Connected to the database successfully!")
 
 	// Run migrations
-	err = db.AutoMigrate(&models.User{}, &models.Session{}, &models.State{}, &models.Species{}, &models.HuntingUnit{})
+	err = db.AutoMigrate(&models.BaseRegulations{}, &models.SpecificRegulations{}, &models.User{}, &models.Session{}, &models.State{}, &models.Species{}, &models.HuntingUnit{})
 	if err != nil {
 		return nil, fmt.Errorf("error running migrations: %w", err)
 	}
