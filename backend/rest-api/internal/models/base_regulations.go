@@ -4,7 +4,7 @@ import (
 	"github.com/gofrs/uuid"
 )
 
-type BaseRegulations struct {
+type BaseRegulation struct {
 	ID              uuid.UUID `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	Name            string    `gorm:"not null;index"`
 	Weapon          string    `gorm:"not null;index"`
@@ -17,6 +17,6 @@ type BaseRegulations struct {
 	BlmMap          string    `gorm:"not null;index"`
 }
 
-func (BaseRegulations) TableName() string {
+func (BaseRegulation) TableName() string {
 	return "base_regulations"
 }

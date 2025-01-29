@@ -1,11 +1,15 @@
 package models
 
+import "github.com/gofrs/uuid"
+
 // Original HuntingUnit model
 type HuntingUnit struct {
-	ID        uint `gorm:"primaryKey;autoIncrement"`
-	Name      string
-	SpeciesID uint
-	Species   Species `gorm:"foreignKey:SpeciesID"`
+	ID               uint `gorm:"primaryKey;autoIncrement"`
+	Name             string
+	SpeciesID        uint
+	BaseRegulationID uuid.UUID
+	Species          Species        `gorm:"foreignKey:SpeciesID"`
+	BaseRegulation   BaseRegulation `gorm:"foreignKey:BaseRegulationID"`
 }
 
 // Separate model for the response with only ID and Name
@@ -21,7 +25,5 @@ func (HuntingUnit) TableName() string {
 
 // TableName overrides the default table name for HuntingUnitResponse
 func (HuntingUnitResponse) TableName() string {
-	// Not strictly necessary since it won't be used directly for DB operations
-	// But you can define it for clarity if needed
 	return "hunting_units"
 }

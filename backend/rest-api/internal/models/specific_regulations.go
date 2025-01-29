@@ -2,7 +2,7 @@ package models
 
 import "github.com/gofrs/uuid"
 
-type SpecificRegulations struct {
+type SpecificRegulation struct {
 	ID      uuid.UUID `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	Name    string    `gorm:"not null;index"`
 	Bull    bool      `gorm:"not null;index"`
@@ -12,6 +12,6 @@ type SpecificRegulations struct {
 	NoteTwo string    `gorm:"index"`
 }
 
-func (SpecificRegulations) TableName() string {
+func (SpecificRegulation) TableName() string {
 	return "species_regulations"
 }
