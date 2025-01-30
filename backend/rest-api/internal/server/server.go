@@ -31,8 +31,10 @@ func (s *Server) ConfigureMiddleware() {
 func (s *Server) ConfigureRoutes() {
 	// Session routes
 	sessionGroup := s.echo.Group("/session")
-	sessionGroup.GET("/all", s.handler.GetSessionsByID)
-	sessionGroup.POST("/create", s.handler.CreateSession)
+	sessionGroup.GET("", s.handler.GetSessionsByUserID)
+	sessionGroup.GET("", s.handler.GetSessions)
+	sessionGroup.POST("", s.handler.CreateSession)
+	sessionGroup.DELETE("", s.handler.DeleteSession)
 
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())

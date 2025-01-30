@@ -58,3 +58,7 @@ func (s *SessionService) GetByID(ctx context.Context, userID string) ([]models.S
 
 	return sessions, nil
 }
+
+func (s *SessionService) DeleteSession(ctx context.Context, ID string) error {
+	return s.SessionRepo.DeleteByID(ctx, ID)
+}

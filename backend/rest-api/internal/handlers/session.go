@@ -40,7 +40,7 @@ func (h *Handler) GetSessions(c echo.Context) error {
 	return c.JSON(http.StatusOK, models.ToResponseList(sessions))
 }
 
-func (h *Handler) GetSessionsByID(c echo.Context) error {
+func (h *Handler) GetSessionsByUserID(c echo.Context) error {
 	ctx := c.Request().Context() // Get context from the request
 	userID := c.QueryParam("userID")
 
@@ -54,4 +54,23 @@ func (h *Handler) GetSessionsByID(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, models.ToResponseList(sessions))
+}
+
+func (h *Handler) DeleteSession(c echo.Context) error {
+	ID := c.QueryParam("id")
+
+	if ID == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Param userID is missing"})
+	}
+
+	err := h.SessionService.DeleteSession(c.Request().Context(), ID)
+
+	if err != nil {
+		if err.Error() == "session not found" {
+			return c.JSON(http.StatusNotFound, map[string]string{"error": err.Error()})
+		}
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{"message": "Session deleted successfully"})
 }

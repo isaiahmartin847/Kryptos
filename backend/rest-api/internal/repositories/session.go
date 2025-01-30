@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
@@ -12,6 +13,7 @@ type SessionRepositoryInterface interface {
 	Create(ctx context.Context, session *models.Session) (*models.Session, error)
 	Get(ctx context.Context) ([]models.Session, error)
 	GetById(ctx context.Context, userID string) ([]models.Session, error)
+	DeleteByID(ctx context.Context, ID string) error
 }
 
 type SessionRepository struct {
@@ -62,4 +64,15 @@ func (r *SessionRepository) GetById(ctx context.Context, userID string) ([]model
 	}
 
 	return sessions, nil
+}
+
+func (r *SessionRepository) DeleteByID(ctx context.Context, ID string) error {
+	result := r.db.WithContext(ctx).Where("id = ?", ID).Delete(&models.Session{})
+	if result.Error != nil {
+		return fmt.Errorf("failed to delete session: %v", result.Error)
+	}
+	if result.RowsAffected == 0 {
+		return errors.New("session not found")
+	}
+	return nil
 }
