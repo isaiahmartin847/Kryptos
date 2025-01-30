@@ -24,3 +24,7 @@ func (s *StateService) GetAll(ctx context.Context) ([]models.State, error) {
 
 	return states, nil
 }
+
+// func (s *StateService) Create(ctx context.Context) (*models.State, error) {
+
+// }

@@ -10,6 +10,7 @@ import (
 
 type StateRepositoryInterface interface {
 	Get(ctx context.Context) ([]models.State, error)
+	CreateState(ctx context.Context, state *models.State)
 }
 
 type StateRepository struct {
