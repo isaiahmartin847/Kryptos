@@ -8,16 +8,16 @@ import (
 )
 
 type StateService struct {
-	StateRepo *repositories.StateRepository
+	StateRepo repositories.StateRepositoryInterface
 }
 
-func NewStateService(stateRepo *repositories.StateRepository) *StateService {
+func NewStateService(stateRepo repositories.StateRepositoryInterface) *StateService {
 	return &StateService{StateRepo: stateRepo}
 }
 
 func (s *StateService) GetAll(ctx context.Context) ([]models.State, error) {
 
-	states, err := s.StateRepo.GetAll(ctx)
+	states, err := s.StateRepo.Get(ctx)
 	if err != nil {
 		return nil, err
 	}

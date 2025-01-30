@@ -8,6 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
+type HuntingUnitRepositoryInterface interface {
+	GetBySpeciesID(ctx context.Context, speciesID int64) ([]models.HuntingUnitResponse, error)
+	GetAllHuntingUnits(ctx context.Context) ([]models.HuntingUnit, error)
+}
+
 type HuntingUnitRepository struct {
 	db *gorm.DB
 }

@@ -8,6 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
+type SpeciesRepositoryInterface interface {
+	GetAll(ctx context.Context) ([]models.Species, error)
+	GetALLByState(ctx context.Context, stateID int64) ([]models.SpeciesResponse, error)
+}
+
 type SpeciesRepository struct {
 	db *gorm.DB
 }

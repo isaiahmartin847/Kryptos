@@ -8,10 +8,10 @@ import (
 )
 
 type SpeciesService struct {
-	SpeciesRepo *repositories.SpeciesRepository
+	SpeciesRepo repositories.SpeciesRepositoryInterface
 }
 
-func NewSpeciesService(speciesRepo *repositories.SpeciesRepository) *SpeciesService {
+func NewSpeciesService(speciesRepo repositories.SpeciesRepositoryInterface) *SpeciesService {
 	return &SpeciesService{SpeciesRepo: speciesRepo}
 }
 

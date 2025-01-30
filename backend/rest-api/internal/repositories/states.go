@@ -8,6 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
+type StateRepositoryInterface interface {
+	Get(ctx context.Context) ([]models.State, error)
+}
+
 type StateRepository struct {
 	db *gorm.DB
 }
@@ -18,7 +22,7 @@ func NewStateRepository(db *gorm.DB) *StateRepository {
 	}
 }
 
-func (r *StateRepository) GetAll(ctx context.Context) ([]models.State, error) {
+func (r *StateRepository) Get(ctx context.Context) ([]models.State, error) {
 	var states []models.State
 
 	results := r.db.WithContext(ctx).Find(&states)

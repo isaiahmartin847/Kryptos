@@ -8,10 +8,10 @@ import (
 )
 
 type HuntingUnitService struct {
-	HuntingUnitRepo *repositories.HuntingUnitRepository
+	HuntingUnitRepo repositories.HuntingUnitRepositoryInterface
 }
 
-func NewHuntingUnitService(huntingUnitRepo *repositories.HuntingUnitRepository) *HuntingUnitService {
+func NewHuntingUnitService(huntingUnitRepo repositories.HuntingUnitRepositoryInterface) *HuntingUnitService {
 	return &HuntingUnitService{HuntingUnitRepo: huntingUnitRepo}
 }
 
