@@ -36,11 +36,13 @@ func (s *Server) ConfigureRoutes() {
 	sessionGroup.POST("", s.handler.CreateSession)
 	sessionGroup.DELETE("", s.handler.DeleteSession)
 
+	stateGroup := s.echo.Group("/state")
+	stateGroup.GET("", s.handler.AllStates)
+	// stateGroup.POST("", s.handler)
+
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
-	s.echo.GET("/", s.handler.Details)
-	s.echo.GET("/states", s.handler.AllStates)
 	s.echo.GET("/species", s.handler.GetAllByStateID)
 	s.echo.GET("/hunting-units", s.handler.GetAllHuntingUnitsBySpeciesID)
 	s.echo.GET("/hunting-units/all", s.handler.GetAllHuntingUnits)

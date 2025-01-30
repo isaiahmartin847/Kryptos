@@ -28,3 +28,13 @@ func (r *StateRepository) GetAll(ctx context.Context) ([]models.State, error) {
 
 	return states, nil
 }
+
+func (r *SessionRepository) CreateState(ctx context.Context, state *models.State) (*models.State, error) {
+	if err := r.db.WithContext(ctx).
+		Omit("User", "State", "Species", "HuntingUnit").
+		Create(state).Error; err != nil {
+		return nil, fmt.Errorf("failed to create session: %w", err)
+	}
+
+	return state, nil
+}
