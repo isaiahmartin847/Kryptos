@@ -28,10 +28,11 @@ WHERE table_schema = 'public';
 
 --@block 
 SELECT * FROM users;
-SELECT * FROM sessions;
-SELECT * FROM states;
-SELECT * FROM species;
-SELECT * FROM hunting_units;
+-- SELECT * FROM sessions;
+-- SELECT * FROM states;
+-- SELECT * FROM species;
+-- SELECT * FROM hunting_units;
+-- SELECT * FROM base_regulations
 
 --@block
 TRUNCATE sessions;
@@ -66,9 +67,29 @@ FROM information_schema.columns
 WHERE table_name = 'hunting_units';
 
 --@block 
+UPDATE hunting_units
+SET base_regulation_id = '48d67ab9-2ff1-4ec7-bd3a-1bc97b93b709'
+WHERE id = 2;
+
+--@block 
+SELECT column_name,
+       data_type,
+       character_maximum_length,
+       is_nullable,
+       column_default
+FROM information_schema.columns
+WHERE table_schema = 'public'  -- Use the schema name, typically 'public'
+  AND table_name   = 'base_regulations';  -- Replace with your actual table name
+
+--@block 
 INSERT INTO states (full_name, name_abbreviation) VALUES
 ('Montana', 'MT'),
 ('Colorado', 'CO');
+
+--@block
+INSERT INTO base_regulations (id, name, weapon, hunter_orange, shooting_light, start_date, end_date, harvest_report, private_land_rule, blm_map)
+VALUES 
+  ('48d67ab9-2ff1-4ec7-bd3a-1bc97b93b709', 'HD 320', 'Rifle', true, 30, '03/01', '12/31', 'Must validate tags right away', 'Only with owners permission', 'map_url_png');
 
 
 --@block 

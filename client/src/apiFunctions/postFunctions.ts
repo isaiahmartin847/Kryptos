@@ -1,8 +1,7 @@
 import { SessionPostBody, SessionResponse } from "@/types/session";
 import Stripe from "stripe";
 
-const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL
-
+const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
 
 export const createPaymentIntent = async (
   price: number
@@ -25,7 +24,7 @@ export const createPaymentIntent = async (
 export const createSession = async (
   sessionBody: SessionPostBody
 ): Promise<SessionResponse> => {
-  const response = await fetch(`${apiUrl}/session/create`, {
+  const response = await fetch(`${apiUrl}/session`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

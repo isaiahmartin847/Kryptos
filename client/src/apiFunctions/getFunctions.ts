@@ -6,7 +6,7 @@ import State from "@/types/state";
 const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
 
 export const fetchStates = async (): Promise<State[]> => {
-  const response = await fetch(`${apiUrl}/states`);
+  const response = await fetch(`${apiUrl}/state`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -38,7 +38,7 @@ export const fetchHuntingUnitBySpeciesID = async (
 export const fetchAllSession = async (
   userID: string
 ): Promise<SessionResponse[]> => {
-  const response = await fetch(`${apiUrl}/session/all?userID=${userID}`);
+  const response = await fetch(`${apiUrl}/session?userID=${userID}`);
 
   if (!response.ok) {
     throw new Error(
