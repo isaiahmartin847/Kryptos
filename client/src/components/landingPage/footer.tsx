@@ -68,7 +68,9 @@ const LandingPageFooter = () => {
           width={10}
           color="white"
         />
-        <span className="text-[10px]">2024 HUNT REGS. ALL RIGHTS RESERVED</span>
+        <span className="text-[10px]">
+          2025 Kryptos AI. ALL RIGHTS RESERVED
+        </span>
       </div>
     </footer>
   );
