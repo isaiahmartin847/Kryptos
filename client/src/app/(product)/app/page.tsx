@@ -1,13 +1,10 @@
 "use client";
-import CreateSessionModal from "@/components/product/modal/createSessionModal";
-
-
+import DoubleChart from "@/components/product/doubleLineChart";
 
 const Main = () => {
-  
   return (
     <div>
-      <CreateSessionModal />
+      <DoubleChart />
     </div>
   );
 };
