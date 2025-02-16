@@ -40,11 +40,6 @@ const LandingPageFooter = () => {
           <div className="text-[12px] flex flex-col">
             <Link
               className="hover:underline"
-              href={"/coverage-page"}>
-              Coverage
-            </Link>
-            <Link
-              className="hover:underline"
               href={"/pricing"}>
               Pricing
             </Link>

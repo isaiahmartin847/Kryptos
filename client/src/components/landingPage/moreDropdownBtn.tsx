@@ -29,12 +29,6 @@ const MoreDropdownMenu = () => {
               <span>Pricing</span>
             </DropdownMenuItem>
           </Link>
-          <Link href="/coverage-page">
-            <DropdownMenuItem>
-              <Globe />
-              <span>Coverage</span>
-            </DropdownMenuItem>
-          </Link>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
