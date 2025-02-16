@@ -18,8 +18,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
+  { month: "January", desktop: 1110, mobile: 1110 },
+  { month: "February", desktop: 205, mobile: 200 },
   { month: "March", desktop: 237, mobile: 120 },
   { month: "April", desktop: 73, mobile: 190 },
   { month: "May", desktop: 209, mobile: 130 },
@@ -39,8 +39,8 @@ const chartConfig = {
 
 export default function DoubleChart() {
   return (
-    <Card className="w-1/2 bg-white">
-      <CardHeader>
+    <Card className="w-1/2 bg-secondaryColor">
+      <CardHeader className="text-textColor">
         <CardTitle>Line Chart - Multiple</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
@@ -49,17 +49,26 @@ export default function DoubleChart() {
           <LineChart
             accessibilityLayer
             data={chartData}
+            className="text-textColor"
             margin={{
               left: 12,
               right: 12,
             }}>
-            <CartesianGrid vertical={false} />
+            <CartesianGrid
+              vertical={false}
+              strokeDasharray="3 3"
+            />
             <XAxis
+              className="bg-white"
               dataKey="month"
               tickLine={false}
-              axisLine={false}
+              axisLine={true}
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
+              style={{
+                fontSize: "12px",
+                fill: "white",
+              }}
             />
             <ChartTooltip
               cursor={false}
@@ -68,14 +77,14 @@ export default function DoubleChart() {
             <Line
               dataKey="desktop"
               type="monotone"
-              stroke="var(--color-desktop)"
+              stroke="#33b5e5"
               strokeWidth={2}
               dot={false}
             />
             <Line
               dataKey="mobile"
               type="monotone"
-              stroke="var(--color-mobile)"
+              stroke="#ff5733"
               strokeWidth={2}
               dot={false}
             />
