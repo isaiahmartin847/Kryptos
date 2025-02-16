@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -24,6 +24,7 @@ const chartData = [
   { month: "April", desktop: 73, mobile: 190 },
   { month: "May", desktop: 209, mobile: 130 },
   { month: "June", desktop: 214, mobile: 140 },
+  { month: "July", desktop: 300, mobile: null },
 ];
 
 const chartConfig = {
@@ -62,9 +63,19 @@ export default function DoubleChart() {
               className="bg-white"
               dataKey="month"
               tickLine={false}
-              axisLine={true}
+              axisLine={false}
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
+              style={{
+                fontSize: "12px",
+                fill: "white",
+              }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickCount={10}
               style={{
                 fontSize: "12px",
                 fill: "white",
