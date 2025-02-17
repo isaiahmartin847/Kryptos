@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"gorm.io/driver/postgres"
@@ -9,9 +10,16 @@ import (
 )
 
 func ConnectDatabase() (*gorm.DB, error) {
+
+	host := os.Getenv("POSTGRES_HOST")
+	port := os.Getenv("POSTGRES_PORT")
+	user := os.Getenv("POSTGRES_USER")
+	name := os.Getenv("POSTGRES_NAME")
+	pass := os.Getenv("POSTGRES_PASS")
+
 	var err error
 	// pass these in as envs
-	dsn := "host=localhost port=5432 user=postgres dbname=postgres sslmode=disable password=Developer*1"
+	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", host, port, user, name, pass)
 
 	// Open the database connection
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
