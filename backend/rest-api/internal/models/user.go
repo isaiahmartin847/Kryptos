@@ -6,8 +6,6 @@ type User struct {
 	LastName  string
 	Email     string
 	CreatedAt uint64
-
-	Sessions []Session `gorm:"foreignKey:UserID;references:ID"`
 }
 
 func (User) TableName() string {

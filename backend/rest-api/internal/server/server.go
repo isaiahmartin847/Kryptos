@@ -29,23 +29,11 @@ func (s *Server) ConfigureMiddleware() {
 }
 
 func (s *Server) ConfigureRoutes() {
-	// Session routes
-	sessionGroup := s.echo.Group("/session")
-	sessionGroup.GET("", s.handler.GetSessionsByUserID)
-	sessionGroup.GET("", s.handler.GetSessions)
-	sessionGroup.POST("", s.handler.CreateSession)
-	sessionGroup.DELETE("", s.handler.DeleteSession)
-
-	stateGroup := s.echo.Group("/state")
-	stateGroup.GET("", s.handler.AllStates)
-	// stateGroup.POST("", s.handler)
 
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
-	s.echo.GET("/species", s.handler.GetAllByStateID)
-	s.echo.GET("/hunting-units", s.handler.GetAllHuntingUnitsBySpeciesID)
-	s.echo.GET("/hunting-units/all", s.handler.GetAllHuntingUnits)
+
 }
 
 func (s *Server) Start(addr string) error {

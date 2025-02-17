@@ -5,9 +5,5 @@ import (
 )
 
 type Handler struct {
-	UserService        *service.UserService
-	SessionService     *service.SessionService
-	StateService       *service.StateService
-	SpeciesService     *service.SpeciesService
-	HuntingUnitService *service.HuntingUnitService
+	UserService *service.UserService
 }
