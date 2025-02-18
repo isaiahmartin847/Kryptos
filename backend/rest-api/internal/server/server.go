@@ -33,7 +33,7 @@ func (s *Server) ConfigureRoutes() {
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
-
+	s.echo.GET("/bitcoin", s.handler.GetAllBitcoin)
 }
 
 func (s *Server) Start(addr string) error {

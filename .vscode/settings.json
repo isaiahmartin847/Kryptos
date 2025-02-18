@@ -9,6 +9,16 @@
       "database": "postgres",
       "username": "postgres",
       "password": "Developer*1"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Kryptos",
+      "database": "postgres",
+      "username": "postgres",
+      "password": "kryptos"
     }
   ]
 }
