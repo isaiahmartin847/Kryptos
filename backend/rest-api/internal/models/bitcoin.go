@@ -5,12 +5,12 @@ import (
 )
 
 type Bitcoin struct {
-	ID        uint      `gorm:"primary_key"`
-	Price     float64   `gorm:"type:numeric"`
-	MarketCap float64   `gorm:"type:numeric"`
-	Volume    float64   `gorm:"type:numeric"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	Date      time.Time `gorm:"type:timestamp"`
+	ID        uint      `gorm:"primary_key"    json:"id"`
+	Price     float64   `gorm:"type:numeric"   json:"price"`
+	MarketCap float64   `gorm:"type:numeric"   json:"marketCap"`
+	Volume    float64   `gorm:"type:numeric"   json:"volume"`
+	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt"`
+	Date      time.Time `gorm:"type:timestamp" json:"date"`
 }
 
 func (Bitcoin) TableName() string {

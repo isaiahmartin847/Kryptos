@@ -1,9 +1,21 @@
 import HuntingUnit from "@/types/huntingUnit";
+import { BitcoinResponse } from "@/types/requestBody";
 import { SessionResponse } from "@/types/session";
 import Species from "@/types/species";
 import State from "@/types/state";
 
 const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
+
+export const fetchBitcoin = async (): Promise<BitcoinResponse[]> => {
+  const response = await fetch(`${apiUrl}/bitcoin`);
+
+  if (!response.ok) {
+    console.error(response.status);
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
 
 export const fetchStates = async (): Promise<State[]> => {
   const response = await fetch(`${apiUrl}/state`);
