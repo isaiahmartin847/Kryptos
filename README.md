@@ -1,2 +1,3 @@
-# Reg-Maps
-This is an app that has all the hunting regulation by district using mapBox. 
+# Kryptos
+
+The Rag app that predicts stock and crypto prices.
