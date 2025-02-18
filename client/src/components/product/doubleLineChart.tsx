@@ -41,7 +41,7 @@ export default function DoubleChart() {
     if (data) {
       const tempData = data.map((obj) => {
         return {
-          price: obj.price,
+          price: obj.price.toFixed(1),
           date: new Date(obj.date).toLocaleDateString("en-US", {
             year: "2-digit",
             month: "short",
