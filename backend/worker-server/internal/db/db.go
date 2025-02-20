@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"os"
+	"worker-server/internal/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -29,7 +30,7 @@ func ConnectDatabase() (*gorm.DB, error) {
 	fmt.Println("Connected to the database successfully!")
 
 	// Run migrations
-	err = db.AutoMigrate()
+	err = db.AutoMigrate(&models.Bitcoin{})
 	if err != nil {
 		return nil, fmt.Errorf("error running migrations: %w", err)
 	}

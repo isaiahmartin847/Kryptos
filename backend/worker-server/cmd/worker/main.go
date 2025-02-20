@@ -7,7 +7,9 @@ import (
 	"syscall"
 	"time"
 
+	"worker-server/internal/db"
 	"worker-server/internal/jobs"
+	"worker-server/internal/repository"
 
 	"github.com/go-co-op/gocron"
 	"github.com/joho/godotenv"
@@ -25,17 +27,22 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	// database, err := db.ConnectDatabase()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	database, err := db.ConnectDatabase()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// repo := repository.NewRepository(database)
+	// Repo instance
+	repo := repository.NewRepository(database)
+
+	// Jobs instance
+	JobsInstance := jobs.NewJob(repo)
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(1).Minute().Do(jobs.TestJob)
-	scheduler.Every(5).Minute().Do(jobs.GetBtcPrice)
+	// scheduler.Every(1).Minute().Do(jobs.TestJob)
+	// scheduler.Every(5).Minute().Do(jobs.GetBtcPrice)
+	scheduler.Every(5).Minute().Do(JobsInstance.GetBtcPrice)
 
 	scheduler.StartAsync()
 
