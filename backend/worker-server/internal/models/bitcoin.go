@@ -5,7 +5,7 @@ import (
 )
 
 type Bitcoin struct {
-	ID        uint      `gorm:"primary_key"    json:"id"`
+	ID        uint      `gorm:"primaryKey;autoIncrement" json:"id"`
 	Price     float64   `gorm:"type:numeric"   json:"price"`
 	MarketCap float64   `gorm:"type:numeric"   json:"marketCap"`
 	Volume    float64   `gorm:"type:numeric"   json:"volume"`

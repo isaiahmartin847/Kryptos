@@ -42,7 +42,11 @@ func (j *Job) InsertBitcoinPrice() {
 	// Compare the two times directly
 	if todayDate.After(latestBitcoinDateInDB) {
 		// this is where we insert the new price of btc
-		logger.Log.Println("Todays date is after latestBitcoinDateInDB")
+		logger.Log.Println("Inserting the new data")
+		err := j.repo.InsertNewBitcoinData(latestBtcPrice)
+		if err != nil {
+			logger.Log.Fatalf("Unable to insert data into the db err: v%", err)
+		}
 	} else {
 		// this is where we break the function
 		logger.Log.Println("todays date is equal to latestBitcoinDateInDB")
