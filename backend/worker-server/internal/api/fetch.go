@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"worker-server/internal/models"
 	"worker-server/logger"
 )
 
@@ -16,14 +17,7 @@ type MarketChart struct {
 	TotalVolumes [][]float64 `json:"total_volumes"`
 }
 
-type FormattedData struct {
-	Price       float64
-	MarketCap   float64
-	TotalVolume float64
-	timeStamp   time.Time
-}
-
-func GetTodaysBtcPrice() (*FormattedData, error) {
+func GetTodaysBtcPrice() (*models.BitcoinFetchResponse, error) {
 	response, err := http.Get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=0&interval=daily")
 
 	if err != nil {
@@ -52,11 +46,11 @@ func GetTodaysBtcPrice() (*FormattedData, error) {
 
 	timeStamp := time.Unix(int64(marketData.Prices[0][0]/1000), 0)
 
-	currentBitcoinPrice := &FormattedData{
+	currentBitcoinPrice := &models.BitcoinFetchResponse{
 		Price:       marketData.Prices[0][1],
 		MarketCap:   marketData.MarketCaps[0][1],
 		TotalVolume: marketData.TotalVolumes[0][1],
-		timeStamp:   timeStamp,
+		TimeStamp:   timeStamp,
 	}
 
 	return currentBitcoinPrice, nil

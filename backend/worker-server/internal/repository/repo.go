@@ -8,6 +8,7 @@ import (
 
 type UserRepository interface {
 	GetLatest() (*models.BitcoinResponse, error)
+	InsertNewBitcoinData(response *models.BitcoinFetchResponse) error
 }
 
 type repository struct {
@@ -24,4 +25,14 @@ func (r *repository) GetLatest() (*models.BitcoinResponse, error) {
 		return nil, err
 	}
 	return &latestBtcPrice, nil
+}
+
+func (r *repository) InsertNewBitcoinData(response *models.BitcoinFetchResponse) error {
+	result := r.db.Create(&models.Bitcoin{
+		Price:     response.Price,
+		MarketCap: response.MarketCap,
+		Volume:    response.TotalVolume,
+		Date:      response.TimeStamp,
+	})
+	return result.Error
 }

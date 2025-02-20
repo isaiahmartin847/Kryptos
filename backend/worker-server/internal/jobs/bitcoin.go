@@ -1,24 +1,43 @@
 package jobs
 
 import (
-	"time"
+	"log"
+	"worker-server/internal/api"
+	"worker-server/internal/models"
 	"worker-server/logger"
 )
 
-func (j *Job) GetBtcPrice() {
+func GetBtcPrice() (*models.BitcoinFetchResponse, error) {
 
-	latestPrice, err := j.repo.GetLatest()
+	btcPrice, err := api.GetTodaysBtcPrice()
+	if err != nil {
+		log.Fatalf("Failed to get the bitcoin price %v", err)
+		return nil, err
+	}
+
+	return btcPrice, nil
+
+}
+
+func (j *Job) InsertBitcoinPrice() {
+
+	latestDbPrice, err := j.repo.GetLatest()
 	if err != nil {
 		logger.Log.Fatal("unable to query the latest price")
 		return
 	}
 
-	todayDate := time.Now().UTC()
-	logger.Log.Printf("Todays date: %v", todayDate)
-	logger.Log.Printf("latest in db: %v", latestPrice.Date)
+	latestBtcPrice, err := GetBtcPrice()
+	if err != nil {
+		logger.Log.Fatalf("Unable to get the latest bitcoin price error: %v", err)
+	}
 
-	// latestPrice.Date is already of type time.Time, no need to parse again
-	latestBitcoinDateInDB := latestPrice.Date
+	// instead of the todays date we will fetch todays btc price form the external api
+	todayDate := latestBtcPrice.TimeStamp
+	logger.Log.Printf("Todays date: %v", todayDate)
+	logger.Log.Printf("latest in db: %v", latestDbPrice.Date)
+
+	latestBitcoinDateInDB := latestDbPrice.Date
 
 	// Compare the two times directly
 	if todayDate.After(latestBitcoinDateInDB) {
@@ -28,13 +47,5 @@ func (j *Job) GetBtcPrice() {
 		// this is where we break the function
 		logger.Log.Println("todays date is equal to latestBitcoinDateInDB")
 	}
-
-	// btcPrice, err := api.GetTodaysBtcPrice()
-	// if err != nil {
-	// 	log.Fatalf("Failed to get the bitcoin price %v", err)
-	// 	return
-	// }
-
-	// logger.Log.Printf("btc: %v", btcPrice)
 
 }

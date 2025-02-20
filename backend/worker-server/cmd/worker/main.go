@@ -10,6 +10,7 @@ import (
 	"worker-server/internal/db"
 	"worker-server/internal/jobs"
 	"worker-server/internal/repository"
+	"worker-server/logger"
 
 	"github.com/go-co-op/gocron"
 	"github.com/joho/godotenv"
@@ -40,20 +41,18 @@ func main() {
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	// scheduler.Every(1).Minute().Do(jobs.TestJob)
-	// scheduler.Every(5).Minute().Do(jobs.GetBtcPrice)
-	scheduler.Every(5).Minute().Do(JobsInstance.GetBtcPrice)
+	scheduler.Every(5).Minute().Do(JobsInstance.InsertBitcoinPrice)
 
 	scheduler.StartAsync()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-	log.Println("Worker server started. Press Ctrl+C to stop.")
+	logger.Log.Println("Worker server started. Press Ctrl+C to stop.")
 
 	<-quit
 
-	log.Println("Shutting down worker server...")
+	logger.Log.Println("Shutting down worker server...")
 	scheduler.Stop()
-	log.Println("Worker server stopped")
+	logger.Log.Println("Worker server stopped")
 }

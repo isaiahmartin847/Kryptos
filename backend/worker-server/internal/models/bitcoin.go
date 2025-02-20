@@ -19,6 +19,13 @@ type BitcoinResponse struct {
 	Date  time.Time `gorm:"type:timestamp" json:"date"`
 }
 
+type BitcoinFetchResponse struct {
+	Price       float64
+	MarketCap   float64
+	TotalVolume float64
+	TimeStamp   time.Time
+}
+
 func (Bitcoin) TableName() string {
 	return "bitcoin_price"
 }
