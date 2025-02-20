@@ -9,6 +9,7 @@ import (
 
 	"worker-server/internal/db"
 	"worker-server/internal/jobs"
+	"worker-server/internal/repository"
 
 	"github.com/go-co-op/gocron"
 	"github.com/joho/godotenv"
@@ -26,10 +27,12 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
-	_, err = db.ConnectDatabase()
+	database, err := db.ConnectDatabase()
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	repo := repository.NewRepository(database)
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
@@ -37,15 +40,11 @@ func main() {
 
 	scheduler.StartAsync()
 
-	scheduler.StartAsync()
-
-	// Handle graceful shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
 	log.Println("Worker server started. Press Ctrl+C to stop.")
 
-	// Wait for interrupt signal
 	<-quit
 
 	log.Println("Shutting down worker server...")
