@@ -7,7 +7,6 @@ import (
 	"syscall"
 	"time"
 
-	"worker-server/internal/api"
 	"worker-server/internal/jobs"
 
 	"github.com/go-co-op/gocron"
@@ -36,7 +35,7 @@ func main() {
 	scheduler := gocron.NewScheduler(time.UTC)
 
 	scheduler.Every(1).Minute().Do(jobs.TestJob)
-	scheduler.Every(5).Minute().Do(api.GetTodaysBtcPrice)
+	scheduler.Every(5).Minute().Do(jobs.GetBtcPrice)
 
 	scheduler.StartAsync()
 
