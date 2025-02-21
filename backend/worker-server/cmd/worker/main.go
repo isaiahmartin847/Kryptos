@@ -7,6 +7,7 @@ import (
 	"syscall"
 	"time"
 
+	"worker-server/internal/ai"
 	"worker-server/internal/db"
 	"worker-server/internal/jobs"
 	"worker-server/internal/repository"
@@ -28,6 +29,16 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
+	openaiKey := os.Getenv("OPENAI_KEY")
+	if openaiKey == "" {
+		log.Fatal("OPENAI_KEY environment variable is required")
+	}
+
+	aiClient := ai.NewAIClient(openaiKey)
+	if aiClient == nil {
+		log.Fatal("Failed to initialize AI client")
+	}
+
 	database, err := db.ConnectDatabase()
 	if err != nil {
 		log.Fatal(err)
@@ -42,6 +53,7 @@ func main() {
 	scheduler := gocron.NewScheduler(time.UTC)
 
 	scheduler.Every(5).Minute().Do(JobsInstance.InsertBitcoinPrice)
+	scheduler.Every(5).Minute().Do(aiClient.GenerateResponse)
 
 	scheduler.StartAsync()
 

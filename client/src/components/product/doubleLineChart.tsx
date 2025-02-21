@@ -41,7 +41,8 @@ export default function DoubleChart() {
     if (data) {
       const tempData = data.map((obj) => {
         return {
-          price: obj.price.toFixed(1),
+          // Apply a scaling factor, e.g., 10, to exaggerate the price fluctuations
+          price: obj.price * 10,
           date: new Date(obj.date).toLocaleDateString("en-US", {
             year: "2-digit",
             month: "short",
@@ -62,7 +63,6 @@ export default function DoubleChart() {
     <Card className="w-1/2 bg-secondaryColor">
       <CardHeader className="text-textColor">
         <CardTitle>Bitcoin Price</CardTitle>
-        <CardDescription>January</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -98,9 +98,14 @@ export default function DoubleChart() {
                 fontSize: "12px",
                 fill: "white",
               }}
+              domain={[
+                (dataMin: number | undefined) => (dataMin ? dataMin * 0.95 : 0),
+                (dataMax: number | undefined) =>
+                  dataMax ? dataMax * 1.05 : 100,
+              ]}
             />
             <ChartTooltip
-              cursor={false}
+              cursor={true}
               content={<ChartTooltipContent />}
             />
             <Line

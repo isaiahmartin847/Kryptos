@@ -45,7 +45,7 @@ func (j *Job) InsertBitcoinPrice() {
 		logger.Log.Println("Inserting the new data")
 		err := j.repo.InsertNewBitcoinData(latestBtcPrice)
 		if err != nil {
-			logger.Log.Fatalf("Unable to insert data into the db err: v%", err)
+			logger.Log.Fatalf("Unable to insert data into the db err: %v", err)
 		}
 	} else {
 		// this is where we break the function
