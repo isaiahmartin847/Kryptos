@@ -32,14 +32,10 @@ func (j *Job) InsertBitcoinPrice() {
 		logger.Log.Fatalf("Unable to get the latest bitcoin price error: %v", err)
 	}
 
-	// Log today's BTC price timestamp and latest DB price date
-	logger.Log.Printf("Todays date: %v", latestBtcPrice.TimeStamp)
-	logger.Log.Printf("Latest in db: %v", latestDbPrice.Date)
-
 	todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
 	latestBitcoinDateInDB := latestDbPrice.Date.Format("2006-01-02")
 
-	if todayDate > latestBitcoinDateInDB { // String comparison
+	if todayDate > latestBitcoinDateInDB {
 		logger.Log.Println("Inserting the new data")
 		err := j.repo.InsertNewBitcoinData(latestBtcPrice)
 		if err != nil {
