@@ -32,24 +32,21 @@ func (j *Job) InsertBitcoinPrice() {
 		logger.Log.Fatalf("Unable to get the latest bitcoin price error: %v", err)
 	}
 
-	// instead of the todays date we will fetch todays btc price form the external api
-	todayDate := latestBtcPrice.TimeStamp
-	logger.Log.Printf("Todays date: %v", todayDate)
-	logger.Log.Printf("latest in db: %v", latestDbPrice.Date)
+	// Log today's BTC price timestamp and latest DB price date
+	logger.Log.Printf("Todays date: %v", latestBtcPrice.TimeStamp)
+	logger.Log.Printf("Latest in db: %v", latestDbPrice.Date)
 
-	latestBitcoinDateInDB := latestDbPrice.Date
+	todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
+	latestBitcoinDateInDB := latestDbPrice.Date.Format("2006-01-02")
 
-	// Compare the two times directly
-	if todayDate.After(latestBitcoinDateInDB) {
-		// this is where we insert the new price of btc
+	if todayDate > latestBitcoinDateInDB { // String comparison
 		logger.Log.Println("Inserting the new data")
 		err := j.repo.InsertNewBitcoinData(latestBtcPrice)
 		if err != nil {
 			logger.Log.Fatalf("Unable to insert data into the db err: %v", err)
 		}
 	} else {
-		// this is where we break the function
-		logger.Log.Println("todays date is equal to latestBitcoinDateInDB")
+		logger.Log.Println("Today's date is equal to latestBitcoinDateInDB or earlier")
 	}
 
 }

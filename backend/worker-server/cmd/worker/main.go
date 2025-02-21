@@ -53,7 +53,7 @@ func main() {
 	scheduler := gocron.NewScheduler(time.UTC)
 
 	scheduler.Every(5).Minute().Do(JobsInstance.InsertBitcoinPrice)
-	scheduler.Every(5).Minute().Do(aiClient.GenerateResponse)
+	// scheduler.Every(5).Minute().Do(aiClient.GenerateResponse)
 
 	scheduler.StartAsync()
 
