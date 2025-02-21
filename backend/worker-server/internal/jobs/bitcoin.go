@@ -21,7 +21,7 @@ func GetBtcPrice() (*models.BitcoinFetchResponse, error) {
 
 func (j *Job) InsertBitcoinPrice() {
 
-	latestDbPrice, err := j.repo.GetLatest()
+	latestDbPrice, err := j.repo.GetLatestBtcPrice()
 	if err != nil {
 		logger.Log.Fatal("unable to query the latest price")
 		return

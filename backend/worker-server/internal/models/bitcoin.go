@@ -13,6 +13,13 @@ type Bitcoin struct {
 	Date      time.Time `gorm:"type:timestamp" json:"date"`
 }
 
+type BitcoinPromptStruct struct {
+	Price     float64   `gorm:"type:numeric"   json:"price"`
+	MarketCap float64   `gorm:"type:numeric"   json:"marketCap"`
+	Volume    float64   `gorm:"type:numeric"   json:"volume"`
+	Date      time.Time `gorm:"type:timestamp" json:"date"`
+}
+
 type BitcoinResponse struct {
 	ID    uint      `gorm:"primary_key"    json:"id"`
 	Price float64   `gorm:"type:numeric"   json:"price"`
@@ -31,5 +38,9 @@ func (Bitcoin) TableName() string {
 }
 
 func (BitcoinResponse) TableName() string {
+	return "bitcoin_price"
+}
+
+func (BitcoinPromptStruct) TableName() string {
 	return "bitcoin_price"
 }

@@ -52,8 +52,15 @@ func main() {
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(5).Minute().Do(JobsInstance.InsertBitcoinPrice)
-	// scheduler.Every(5).Minute().Do(aiClient.GenerateResponse)
+	promptData, err := repo.GetLastThirtyBtcData()
+	if err != nil {
+		logger.Log.Fatalf("unable to get fetch the past thirty months %v", err)
+	}
+
+	aiClient.GenerateResponse(promptData)
+
+	scheduler.Every(1).Day().Do(JobsInstance.InsertBitcoinPrice)
+	scheduler.Every(5).Minute().Do(repo.GetLastThirtyBtcData)
 
 	scheduler.StartAsync()
 
