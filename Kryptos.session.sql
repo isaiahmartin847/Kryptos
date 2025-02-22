@@ -6,10 +6,16 @@ SELECT table_name
 FROM information_schema.tables 
 WHERE table_schema = 'public';
 
+
 --@block
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
 WHERE table_name = 'bitcoin_price';
+
+--@block 
+SELECT * from bitcoin_prediction
+
+
 
 --@block
 INSERT INTO bitcoin_price (price, market_cap, created_at, date, volume)
@@ -27,6 +33,8 @@ VALUES
 TRUNCATE TABLE bitcoin_price;
 
 
+--@block 
+SELECT * FROM bitcoin_prediction
 
 --@block 
-SELECT * FROM bitcoin_price
+DElETE FROM bitcoin_prediction WHERE id = 2

@@ -43,6 +43,9 @@ func (j *Job) InsertBtcPrice() {
 		if err != nil {
 			logger.Log.Fatalf("Unable to insert data into the db err: %v", err)
 		}
+
+		j.InsertBtcPrediction()
+
 	} else {
 		logger.Log.Println("Today's date is equal to latestBtcDateInDB or earlier")
 	}

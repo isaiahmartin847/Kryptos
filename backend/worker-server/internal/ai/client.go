@@ -32,8 +32,11 @@ func (c *AIClient) GenerateResponse(promptData []models.BtcPromptStruct) (string
 			Model: openai.GPT4Turbo,
 			Messages: []openai.ChatCompletionMessage{
 				{
-					Role:    openai.ChatMessageRoleUser,
-					Content: fmt.Sprintf("Analyze this data and give me a prediction of tomorrow's price. Each object is structured like this: { price, marketcap, total_volume, date } %v Return just the number down to two decimals don't return any words", promptData),
+					Role: openai.ChatMessageRoleUser,
+					Content: fmt.Sprintf(
+						"Analyze this data and predict tomorrow's price. Each object is structured like this: { price, marketcap, total_volume, date } %v. Return **only** the predicted price as a number, formatted to exactly two decimal places (e.g., '12345.67'). Do not include any words, explanations, or symbols. Your response must be only the number.",
+						promptData,
+					),
 				},
 			},
 		},
