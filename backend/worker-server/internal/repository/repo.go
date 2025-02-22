@@ -7,17 +7,22 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserRepository interface {
+type DbRepository interface {
+	// fetches
 	GetLatestBtcPrice() (*models.BitcoinResponse, error)
-	InsertNewBitcoinData(response *models.BitcoinFetchResponse) error
 	GetLastThirtyBtcData() ([]models.BitcoinPromptStruct, error)
+	GetAllBtcPredictions() ([]models.BitcoinPrediction, error)
+
+	// insertions
+	InsertNewBitcoinData(response *models.BitcoinFetchResponse) error
+	InsertNewBitcoinPredictionData(data *models.BitcoinPredictionData) error
 }
 
 type repository struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) UserRepository {
+func NewRepository(db *gorm.DB) DbRepository {
 	return &repository{db: db}
 }
 
@@ -38,6 +43,24 @@ func (r *repository) GetLastThirtyBtcData() ([]models.BitcoinPromptStruct, error
 	}
 
 	return lastThirtyData, nil
+}
+
+func (r *repository) GetAllBtcPredictions() ([]models.BitcoinPrediction, error) {
+	var allBtcData []models.BitcoinPrediction
+	if err := r.db.Find(&allBtcData).Error; err != nil {
+		logger.Log.Fatalf("Unable to the prediction data %v", err)
+		return nil, err
+	}
+	return allBtcData, nil
+
+}
+
+func (r *repository) InsertNewBitcoinPredictionData(data *models.BitcoinPredictionData) error {
+	result := r.db.Create(&models.BitcoinPredictionData{
+		Price: data.Price,
+		Date:  data.Date,
+	})
+	return result.Error
 }
 
 func (r *repository) InsertNewBitcoinData(response *models.BitcoinFetchResponse) error {

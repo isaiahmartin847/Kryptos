@@ -2,6 +2,8 @@ package jobs
 
 import (
 	"log"
+	"strconv"
+	"time"
 	"worker-server/internal/api"
 	"worker-server/internal/models"
 	"worker-server/logger"
@@ -44,5 +46,30 @@ func (j *Job) InsertBitcoinPrice() {
 	} else {
 		logger.Log.Println("Today's date is equal to latestBitcoinDateInDB or earlier")
 	}
+
+}
+
+func (j *Job) InsertBtcPrediction() {
+	lastThirty, err := j.repo.GetLastThirtyBtcData()
+	if err != nil {
+		logger.Log.Fatalf("Unable to get the last thirty %v", err)
+	}
+
+	prediction, err := j.aiClient.GenerateResponse(lastThirty)
+	if err != nil {
+		logger.Log.Fatalf("Unable to create a prediction %v", err)
+	}
+
+	predictionFloat, err := strconv.ParseFloat(prediction, 64)
+	if err != nil {
+		logger.Log.Fatal("convert string to float")
+	}
+
+	predictionData := models.BitcoinPredictionData{
+		Price: predictionFloat,
+		Date:  time.Now().Add(24 * time.Hour),
+	}
+
+	j.repo.InsertNewBitcoinPredictionData(&predictionData)
 
 }

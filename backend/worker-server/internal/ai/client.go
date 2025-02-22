@@ -6,8 +6,14 @@ import (
 	"worker-server/internal/models"
 	"worker-server/logger"
 
-	openai "github.com/sashabaranov/go-openai"
+	"github.com/sashabaranov/go-openai"
 )
+
+// AiInterface defines the methods that any AI client implementation must provide.
+type AiInterface interface {
+	// GenerateResponse takes prompt data and returns a generated response.
+	GenerateResponse(promptData []models.BitcoinPromptStruct) (string, error)
+}
 
 type AIClient struct {
 	aiClient *openai.Client
@@ -23,7 +29,7 @@ func (c *AIClient) GenerateResponse(promptData []models.BitcoinPromptStruct) (st
 	resp, err := c.aiClient.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
-			Model: openai.GPT3Dot5Turbo,
+			Model: openai.GPT4Turbo,
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleUser,
