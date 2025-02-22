@@ -9,13 +9,13 @@ import (
 
 type DbRepository interface {
 	// fetches
-	GetLatestBtcPrice() (*models.BitcoinResponse, error)
-	GetLastThirtyBtcData() ([]models.BitcoinPromptStruct, error)
-	GetAllBtcPredictions() ([]models.BitcoinPrediction, error)
+	GetLatestBtcPrice() (*models.BtcResponse, error)
+	GetLastThirtyBtcData() ([]models.BtcPromptStruct, error)
+	GetAllBtcPredictions() ([]models.BtcPrediction, error)
 
 	// insertions
-	InsertNewBitcoinData(response *models.BitcoinFetchResponse) error
-	InsertNewBitcoinPredictionData(data *models.BitcoinPredictionData) error
+	InsertNewBtcData(response *models.BtcFetchResponse) error
+	InsertNewBtcPredictionData(data *models.BtcPredictionData) error
 }
 
 type repository struct {
@@ -26,8 +26,8 @@ func NewRepository(db *gorm.DB) DbRepository {
 	return &repository{db: db}
 }
 
-func (r *repository) GetLatestBtcPrice() (*models.BitcoinResponse, error) {
-	var latestBtcPrice models.BitcoinResponse
+func (r *repository) GetLatestBtcPrice() (*models.BtcResponse, error) {
+	var latestBtcPrice models.BtcResponse
 	if err := r.db.Order("date DESC").First(&latestBtcPrice).Error; err != nil {
 		logger.Log.Fatalf("Unable to get the latest bitcoin data %v", err)
 		return nil, err
@@ -35,8 +35,8 @@ func (r *repository) GetLatestBtcPrice() (*models.BitcoinResponse, error) {
 	return &latestBtcPrice, nil
 }
 
-func (r *repository) GetLastThirtyBtcData() ([]models.BitcoinPromptStruct, error) {
-	var lastThirtyData []models.BitcoinPromptStruct
+func (r *repository) GetLastThirtyBtcData() ([]models.BtcPromptStruct, error) {
+	var lastThirtyData []models.BtcPromptStruct
 	if err := r.db.Order("date DESC").Limit(30).Find(&lastThirtyData).Error; err != nil {
 		logger.Log.Fatalf("Unable to fetch the last thirty bitcoin data points %v", err)
 		return nil, err
@@ -45,8 +45,8 @@ func (r *repository) GetLastThirtyBtcData() ([]models.BitcoinPromptStruct, error
 	return lastThirtyData, nil
 }
 
-func (r *repository) GetAllBtcPredictions() ([]models.BitcoinPrediction, error) {
-	var allBtcData []models.BitcoinPrediction
+func (r *repository) GetAllBtcPredictions() ([]models.BtcPrediction, error) {
+	var allBtcData []models.BtcPrediction
 	if err := r.db.Find(&allBtcData).Error; err != nil {
 		logger.Log.Fatalf("Unable to the prediction data %v", err)
 		return nil, err
@@ -55,16 +55,16 @@ func (r *repository) GetAllBtcPredictions() ([]models.BitcoinPrediction, error) 
 
 }
 
-func (r *repository) InsertNewBitcoinPredictionData(data *models.BitcoinPredictionData) error {
-	result := r.db.Create(&models.BitcoinPredictionData{
+func (r *repository) InsertNewBtcPredictionData(data *models.BtcPredictionData) error {
+	result := r.db.Create(&models.BtcPredictionData{
 		Price: data.Price,
 		Date:  data.Date,
 	})
 	return result.Error
 }
 
-func (r *repository) InsertNewBitcoinData(response *models.BitcoinFetchResponse) error {
-	result := r.db.Create(&models.Bitcoin{
+func (r *repository) InsertNewBtcData(response *models.BtcFetchResponse) error {
+	result := r.db.Create(&models.Btc{
 		Price:     response.Price,
 		MarketCap: response.MarketCap,
 		Volume:    response.TotalVolume,

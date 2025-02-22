@@ -9,7 +9,7 @@ import (
 	"worker-server/logger"
 )
 
-func GetBtcPrice() (*models.BitcoinFetchResponse, error) {
+func GetBtcPrice() (*models.BtcFetchResponse, error) {
 
 	btcPrice, err := api.GetTodaysBtcPrice()
 	if err != nil {
@@ -21,7 +21,7 @@ func GetBtcPrice() (*models.BitcoinFetchResponse, error) {
 
 }
 
-func (j *Job) InsertBitcoinPrice() {
+func (j *Job) InsertBtcPrice() {
 
 	latestDbPrice, err := j.repo.GetLatestBtcPrice()
 	if err != nil {
@@ -35,16 +35,16 @@ func (j *Job) InsertBitcoinPrice() {
 	}
 
 	todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
-	latestBitcoinDateInDB := latestDbPrice.Date.Format("2006-01-02")
+	latestBtcDateInDB := latestDbPrice.Date.Format("2006-01-02")
 
-	if todayDate > latestBitcoinDateInDB {
+	if todayDate > latestBtcDateInDB {
 		logger.Log.Println("Inserting the new data")
-		err := j.repo.InsertNewBitcoinData(latestBtcPrice)
+		err := j.repo.InsertNewBtcData(latestBtcPrice)
 		if err != nil {
 			logger.Log.Fatalf("Unable to insert data into the db err: %v", err)
 		}
 	} else {
-		logger.Log.Println("Today's date is equal to latestBitcoinDateInDB or earlier")
+		logger.Log.Println("Today's date is equal to latestBtcDateInDB or earlier")
 	}
 
 }
@@ -65,11 +65,11 @@ func (j *Job) InsertBtcPrediction() {
 		logger.Log.Fatal("convert string to float")
 	}
 
-	predictionData := models.BitcoinPredictionData{
+	predictionData := models.BtcPredictionData{
 		Price: predictionFloat,
 		Date:  time.Now().Add(24 * time.Hour),
 	}
 
-	j.repo.InsertNewBitcoinPredictionData(&predictionData)
+	j.repo.InsertNewBtcPredictionData(&predictionData)
 
 }

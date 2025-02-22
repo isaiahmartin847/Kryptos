@@ -17,7 +17,7 @@ type MarketChart struct {
 	TotalVolumes [][]float64 `json:"total_volumes"`
 }
 
-func GetTodaysBtcPrice() (*models.BitcoinFetchResponse, error) {
+func GetTodaysBtcPrice() (*models.BtcFetchResponse, error) {
 	response, err := http.Get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=0&interval=daily")
 
 	if err != nil {
@@ -46,7 +46,7 @@ func GetTodaysBtcPrice() (*models.BitcoinFetchResponse, error) {
 
 	timeStamp := time.Unix(int64(marketData.Prices[0][0]/1000), 0)
 
-	currentBitcoinPrice := &models.BitcoinFetchResponse{
+	currentBitcoinPrice := &models.BtcFetchResponse{
 		Price:       marketData.Prices[0][1],
 		MarketCap:   marketData.MarketCaps[0][1],
 		TotalVolume: marketData.TotalVolumes[0][1],

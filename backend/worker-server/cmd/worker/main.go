@@ -59,7 +59,7 @@ func main() {
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(1).Day().Do(JobsInstance.InsertBitcoinPrice)
+	scheduler.Every(1).Day().Do(JobsInstance.InsertBtcPrice)
 	// scheduler.Every(5).Minute().Do(repo.GetLastThirtyBtcData)
 
 	scheduler.StartAsync()
@@ -75,25 +75,3 @@ func main() {
 	scheduler.Stop()
 	logger.Log.Println("Worker server stopped")
 }
-
-// this works
-// func testInsertPredictionData(repo repository.UserRepository) {
-// 	testvar := "97688.13"
-
-// 	// pareses the string into a float
-// 	floatVal, err := strconv.ParseFloat(testvar, 64)
-// 	if err != nil {
-// 		logger.Log.Fatal("convert string to float")
-// 	}
-
-// 	testData := models.BitcoinPredictionData{
-// 		Price: floatVal,
-// 		Date:  time.Now(),
-// 	}
-
-// 	err = repo.InsertNewBitcoinPredictionData(&testData)
-// 	if err != nil {
-// 		logger.Log.Fatalf("error happened while trying to insert data %v", err)
-// 	}
-
-// }

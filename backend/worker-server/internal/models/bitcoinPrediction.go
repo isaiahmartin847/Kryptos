@@ -2,22 +2,22 @@ package models
 
 import "time"
 
-type BitcoinPrediction struct {
+type BtcPrediction struct {
 	ID        uint      `gorm:"primaryKey:autoIncrement" json:"id"`
 	Price     float64   `gorm:"type:numeric" json:"price"`
 	Date      time.Time `gorm:"type:timestamp" json:"date"`
 	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt"`
 }
 
-type BitcoinPredictionData struct {
+type BtcPredictionData struct {
 	Price float64   `gorm:"type:numeric"`
 	Date  time.Time `gorm:"type:timestamp"`
 }
 
-func (BitcoinPredictionData) TableName() string {
+func (BtcPredictionData) TableName() string {
 	return "bitcoin_prediction"
 }
 
-func (BitcoinPrediction) TableName() string {
+func (BtcPrediction) TableName() string {
 	return "bitcoin_prediction"
 }
