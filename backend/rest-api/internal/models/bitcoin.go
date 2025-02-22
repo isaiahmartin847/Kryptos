@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Bitcoin struct {
+type Btc struct {
 	ID        uint      `gorm:"primary_key"    json:"id"`
 	Price     float64   `gorm:"type:numeric"   json:"price"`
 	MarketCap float64   `gorm:"type:numeric"   json:"marketCap"`
@@ -13,6 +13,6 @@ type Bitcoin struct {
 	Date      time.Time `gorm:"type:timestamp" json:"date"`
 }
 
-func (Bitcoin) TableName() string {
+func (Btc) TableName() string {
 	return "bitcoin_price"
 }

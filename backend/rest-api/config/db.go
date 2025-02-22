@@ -30,7 +30,7 @@ func ConnectDatabase() (*gorm.DB, error) {
 	fmt.Println("Connected to the database successfully!")
 
 	// Run migrations
-	err = db.AutoMigrate(&models.User{}, &models.Bitcoin{})
+	err = db.AutoMigrate(&models.User{}, &models.Btc{}, &models.BtcPrediction{})
 	if err != nil {
 		return nil, fmt.Errorf("error running migrations: %w", err)
 	}

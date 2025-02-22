@@ -37,4 +37,4 @@ TRUNCATE TABLE bitcoin_price;
 SELECT * FROM bitcoin_prediction
 
 --@block 
-DElETE FROM bitcoin_prediction WHERE id = 2
+DElETE FROM bitcoin_price WHERE id = 72

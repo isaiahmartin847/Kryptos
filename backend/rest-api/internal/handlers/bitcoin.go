@@ -11,10 +11,10 @@ type Response struct {
 	Status  string `json:"status"`
 }
 
-func (h *Handler) GetAllBitcoin(c echo.Context) error {
+func (h *Handler) GetAllBtc(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	bitcoinPrices, err := h.BitcoinService.GetAll(ctx)
+	bitcoinPrices, err := h.BtcService.GetAll(ctx)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, Response{

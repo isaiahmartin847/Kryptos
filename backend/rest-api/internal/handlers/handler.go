@@ -5,6 +5,6 @@ import (
 )
 
 type Handler struct {
-	UserService    *service.UserService
-	BitcoinService *service.BitcoinService
+	UserService *service.UserService
+	BtcService  *service.BtcService
 }

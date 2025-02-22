@@ -7,18 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type BitcoinRepository struct {
+type BtcRepository struct {
 	db *gorm.DB
 }
 
-func NewBitcoinRepository(db *gorm.DB) *BitcoinRepository {
-	return &BitcoinRepository{
+func NewBtcRepository(db *gorm.DB) *BtcRepository {
+	return &BtcRepository{
 		db: db,
 	}
 }
 
-func (repo *BitcoinRepository) GetAll(ctx context.Context) ([]models.Bitcoin, error) {
-	var bitcoin_prices []models.Bitcoin
+func (repo *BtcRepository) GetAll(ctx context.Context) ([]models.Btc, error) {
+	var bitcoin_prices []models.Btc
 
 	if err := repo.db.WithContext(ctx).Find(&bitcoin_prices).Error; err != nil {
 		return nil, err
