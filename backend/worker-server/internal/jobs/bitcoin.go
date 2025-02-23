@@ -1,7 +1,6 @@
 package jobs
 
 import (
-	"log"
 	"strconv"
 	"time"
 	"worker-server/internal/api"
@@ -13,7 +12,7 @@ func GetBtcPrice() (*models.BtcFetchResponse, error) {
 
 	btcPrice, err := api.GetTodaysBtcPrice()
 	if err != nil {
-		log.Fatalf("Failed to get the bitcoin price %v", err)
+		logger.Error("Failed to get the bitcoin price %v", err)
 		return nil, err
 	}
 
@@ -25,29 +24,30 @@ func (j *Job) InsertBtcPrice() {
 
 	latestDbPrice, err := j.repo.GetLatestBtcPrice()
 	if err != nil {
-		logger.Log.Fatal("unable to query the latest price")
+		logger.Error("Error: unable to query the latest price")
 		return
 	}
 
 	latestBtcPrice, err := GetBtcPrice()
 	if err != nil {
-		logger.Log.Fatalf("Unable to get the latest bitcoin price error: %v", err)
+		logger.Error("Error: unable to get the latest bitcoin price error: %v", err)
+		return
 	}
 
 	todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
 	latestBtcDateInDB := latestDbPrice.Date.Format("2006-01-02")
 
 	if todayDate > latestBtcDateInDB {
-		logger.Log.Println("Inserting the new data")
+		logger.Debug("Inserting the new btc data.")
 		err := j.repo.InsertNewBtcData(latestBtcPrice)
 		if err != nil {
-			logger.Log.Fatalf("Unable to insert data into the db err: %v", err)
+			logger.Error("Error: unable to insert data into the db err: %v", err)
 		}
 
 		j.InsertBtcPrediction()
 
 	} else {
-		logger.Log.Println("Today's date is equal to latestBtcDateInDB or earlier")
+		logger.Info("Today's date is equal to latestBtcDateInDB or earlier")
 	}
 
 }
@@ -55,17 +55,20 @@ func (j *Job) InsertBtcPrice() {
 func (j *Job) InsertBtcPrediction() {
 	lastThirty, err := j.repo.GetLastThirtyBtcData()
 	if err != nil {
-		logger.Log.Fatalf("Unable to get the last thirty %v", err)
+		logger.Error("Error: Unable to get the last thirty %v", err)
+		return
 	}
 
 	prediction, err := j.aiClient.GenerateResponse(lastThirty)
 	if err != nil {
-		logger.Log.Fatalf("Unable to create a prediction %v", err)
+		logger.Error("Error: unable to create a prediction %v", err)
+		return
 	}
 
 	predictionFloat, err := strconv.ParseFloat(prediction, 64)
 	if err != nil {
-		logger.Log.Fatal("convert string to float")
+		logger.Error("Error: converting string to float")
+		return
 	}
 
 	predictionData := models.BtcPredictionData{

@@ -29,7 +29,7 @@ func NewRepository(db *gorm.DB) DbRepository {
 func (r *repository) GetLatestBtcPrice() (*models.BtcResponse, error) {
 	var latestBtcPrice models.BtcResponse
 	if err := r.db.Order("date DESC").First(&latestBtcPrice).Error; err != nil {
-		logger.Log.Fatalf("Unable to get the latest bitcoin data %v", err)
+		logger.Error("Error: unable to get the latest bitcoin data %v", err)
 		return nil, err
 	}
 	return &latestBtcPrice, nil
@@ -38,7 +38,7 @@ func (r *repository) GetLatestBtcPrice() (*models.BtcResponse, error) {
 func (r *repository) GetLastThirtyBtcData() ([]models.BtcPromptStruct, error) {
 	var lastThirtyData []models.BtcPromptStruct
 	if err := r.db.Order("date DESC").Limit(30).Find(&lastThirtyData).Error; err != nil {
-		logger.Log.Fatalf("Unable to fetch the last thirty bitcoin data points %v", err)
+		logger.Error("Error: unable to fetch the last thirty bitcoin data points %v", err)
 		return nil, err
 	}
 
@@ -48,7 +48,7 @@ func (r *repository) GetLastThirtyBtcData() ([]models.BtcPromptStruct, error) {
 func (r *repository) GetAllBtcPredictions() ([]models.BtcPrediction, error) {
 	var allBtcData []models.BtcPrediction
 	if err := r.db.Find(&allBtcData).Error; err != nil {
-		logger.Log.Fatalf("Unable to the prediction data %v", err)
+		logger.Error("Error: unable to the prediction data %v", err)
 		return nil, err
 	}
 	return allBtcData, nil

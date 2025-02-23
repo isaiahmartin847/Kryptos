@@ -21,7 +21,7 @@ func GetTodaysBtcPrice() (*models.BtcFetchResponse, error) {
 	response, err := http.Get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=0&interval=daily")
 
 	if err != nil {
-		logger.Log.Fatal("unable to fetch", err)
+		logger.Error("Error: unable to fetch the btc data. %v", err)
 		return nil, err
 	}
 
@@ -29,18 +29,19 @@ func GetTodaysBtcPrice() (*models.BtcFetchResponse, error) {
 
 	responseData, err := io.ReadAll(response.Body)
 	if err != nil {
-		logger.Log.Fatal("error reading data", err)
+		logger.Error("Error: error occurred trying to parse out btc data.", err)
 		return nil, err
 	}
 
 	var marketData MarketChart
 	err = json.Unmarshal(responseData, &marketData)
 	if err != nil {
-		logger.Log.Fatal("Error unmarshaling JSON:", err)
+		logger.Error("Error: unmarshaling JSON:", err)
 		return nil, err
 	}
 
 	if len(marketData.Prices) == 0 {
+		logger.Error("Error: no btc prices found.")
 		return nil, fmt.Errorf("no btc numbers found")
 	}
 

@@ -46,6 +46,6 @@ func (c *AIClient) GenerateResponse(promptData []models.BtcPromptStruct) (string
 		return "", err
 	}
 
-	logger.Log.Printf("%v", resp.Choices[0].Message.Content)
+	logger.Debug("Debug: AI response: %v", resp.Choices[0].Message.Content)
 	return resp.Choices[0].Message.Content, nil
 }
