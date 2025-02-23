@@ -1,80 +1,67 @@
 package logger
 
 import (
-	"fmt"
+	"context"
+	"log/slog"
 	"os"
-	"time"
+	"path/filepath"
+	"runtime"
+	"strconv"
 )
 
-// Logger is a simple logger with different log levels.
-type Logger struct {
-	logLevel string
+// customSourceHandler is a wrapper around slog.Handler to modify source output
+type customSourceHandler struct {
+	handler slog.Handler
 }
 
-// New creates a new Logger instance.
-func New(logLevel string) *Logger {
-	return &Logger{logLevel: logLevel}
+// Declare defaultLogger globally so it can be used in all log functions
+var defaultLogger *slog.Logger
+
+// Handle adds a short filename and line number to log attributes
+func (h *customSourceHandler) Handle(ctx context.Context, r slog.Record) error {
+	source := getCallerInfo()
+	r.AddAttrs(slog.String("source", source))
+	return h.handler.Handle(ctx, r)
 }
 
-// log formats the log message with a timestamp and level.
-func (l *Logger) log(level, msg string, args ...any) {
-	if level == "DEBUG" || level == "INFO" || level == "WARN" || level == "ERROR" || level == "FATAL" {
-		timestamp := time.Now().Format(time.RFC3339)
-		formattedMsg := fmt.Sprintf(msg, args...)
-		fmt.Printf("[%s] %s: %s\n", level, timestamp, formattedMsg)
-	}
+// Enabled ensures logging is enabled at the requested level
+func (h *customSourceHandler) Enabled(ctx context.Context, level slog.Level) bool {
+	return h.handler.Enabled(ctx, level)
 }
 
-// Debug logs a message at the debug level.
-func (l *Logger) Debug(msg string, args ...any) {
-	l.log("DEBUG", msg, args...)
+// WithAttrs returns a new handler with additional attributes
+func (h *customSourceHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	return &customSourceHandler{handler: h.handler.WithAttrs(attrs)}
 }
 
-// Info logs a message at the info level.
-func (l *Logger) Info(msg string, args ...any) {
-	l.log("INFO", msg, args...)
+// WithGroup returns a new handler with a grouped log context
+func (h *customSourceHandler) WithGroup(name string) slog.Handler {
+	return &customSourceHandler{handler: h.handler.WithGroup(name)}
 }
 
-// Warn logs a message at the warning level.
-func (l *Logger) Warn(msg string, args ...any) {
-	l.log("WARN", msg, args...)
+// getCallerInfo extracts the file and line number from runtime
+func getCallerInfo() string {
+	pc := make([]uintptr, 1)
+	runtime.Callers(6, pc) // Get the caller stack frame
+	frames := runtime.CallersFrames(pc)
+	frame, _ := frames.Next()
+	return filepath.Base(frame.File) + ":" + strconv.Itoa(frame.Line)
 }
 
-// Error logs a message at the error level.
-func (l *Logger) Error(msg string, args ...any) {
-	l.log("ERROR", msg, args...)
-}
-
-// Fatal logs a message at the fatal level and exits the program.
-func (l *Logger) Fatal(msg string, args ...any) {
-	l.log("FATAL", msg, args...) // Log as an error
-	os.Exit(1)                   // Exit with a non-zero status code
-}
-
-var defaultLogger *Logger
-
-// Setup initializes the logger.
+// Setup initializes the logger with a custom handler
 func Setup() {
-	defaultLogger = New("INFO") // Set the default log level
+	handler := slog.NewTextHandler(os.Stdout, nil)
+	customHandler := &customSourceHandler{handler: handler}
+	defaultLogger = slog.New(customHandler) // Assign to global logger
+	slog.SetDefault(defaultLogger)          // Set default slog logger
 }
 
-// Use the default logger to log messages
-func Debug(msg string, args ...any) {
-	defaultLogger.Debug(msg, args...)
-}
-
-func Info(msg string, args ...any) {
-	defaultLogger.Info(msg, args...)
-}
-
-func Warn(msg string, args ...any) {
-	defaultLogger.Warn(msg, args...)
-}
-
-func Error(msg string, args ...any) {
-	defaultLogger.Error(msg, args...)
-}
-
+// Logging functions
+func Debug(msg string, args ...any) { defaultLogger.DebugContext(context.Background(), msg, args...) }
+func Info(msg string, args ...any)  { defaultLogger.InfoContext(context.Background(), msg, args...) }
+func Warn(msg string, args ...any)  { defaultLogger.WarnContext(context.Background(), msg, args...) }
+func Error(msg string, args ...any) { defaultLogger.ErrorContext(context.Background(), msg, args...) }
 func Fatal(msg string, args ...any) {
-	defaultLogger.Fatal(msg, args...)
+	defaultLogger.ErrorContext(context.Background(), msg, args...)
+	os.Exit(1)
 }
