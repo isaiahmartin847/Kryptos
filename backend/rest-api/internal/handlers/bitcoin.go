@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/logger"
 	"github.com/labstack/echo/v4"
 )
@@ -26,6 +27,14 @@ func (h *Handler) GetAllBtc(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, bitcoinPrices)
+	response := models.ApiResponse[models.Btc]{
+		Status: "succuss",
+		Data: models.Data[models.Btc]{
+			Items: bitcoinPrices,
+			Meta:  models.Meta{Version: "1.0"},
+		},
+	}
+
+	return c.JSON(http.StatusOK, response)
 
 }
