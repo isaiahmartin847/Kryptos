@@ -21,9 +21,10 @@ func (h *Handler) GetAllBtc(c echo.Context) error {
 	if err != nil {
 		logger.Error("Error: unable to fetch bitcoin prices %v", err)
 
-		return c.JSON(http.StatusBadRequest, Response{
+		// Return JSON response with error
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
 			Message: "Unable to fetch the bitcoin prices",
-			Status:  "error",
 		})
 	}
 
