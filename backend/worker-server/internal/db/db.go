@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"worker-server/internal/models"
+	"worker-server/logger"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -27,7 +28,7 @@ func ConnectDatabase() (*gorm.DB, error) {
 		return nil, fmt.Errorf("error connecting to the database: %w", err)
 	}
 
-	fmt.Println("Connected to the database successfully!")
+	logger.Info("Database connected")
 
 	// Run migrations
 	err = db.AutoMigrate(&models.Btc{}, &models.BtcPrediction{})
@@ -35,7 +36,7 @@ func ConnectDatabase() (*gorm.DB, error) {
 		return nil, fmt.Errorf("error running migrations: %w", err)
 	}
 
-	fmt.Println("migration success")
+	logger.Info("migration success")
 
 	// Return the database connection
 	return db, nil
