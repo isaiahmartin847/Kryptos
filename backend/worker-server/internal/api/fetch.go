@@ -11,12 +11,6 @@ import (
 	"worker-server/logger"
 )
 
-type MarketChart struct {
-	Prices       [][]float64 `json:"prices"`
-	MarketCaps   [][]float64 `json:"market_caps"`
-	TotalVolumes [][]float64 `json:"total_volumes"`
-}
-
 func GetTodaysBtcPrice() (*models.BtcFetchResponse, error) {
 	response, err := http.Get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=0&interval=daily")
 
@@ -33,7 +27,7 @@ func GetTodaysBtcPrice() (*models.BtcFetchResponse, error) {
 		return nil, err
 	}
 
-	var marketData MarketChart
+	var marketData models.MarketChart
 	err = json.Unmarshal(responseData, &marketData)
 	if err != nil {
 		logger.Error("Error: unmarshaling JSON:", err)
