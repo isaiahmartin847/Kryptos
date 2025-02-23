@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
+	"github.com/isaiahmartin847/Reg-Maps/logger"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,7 +15,7 @@ func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 		payload := &models.WebhookLoginPayload{}
 
 		if err := c.Bind(payload); err != nil {
-			log.Printf("Error binding the payload: %v", err)
+			logger.Error("Error binding the payload: %v", err)
 			return err
 		}
 
@@ -29,6 +29,7 @@ func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 
 		_, err := h.UserService.CreateUser(ctx, &user)
 		if err != nil {
+			logger.Error("Error: Clerk failed insert the user to the db %v", err)
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Unable to create user"})
 		}
 

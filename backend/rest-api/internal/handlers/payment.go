@@ -11,14 +11,10 @@ import (
 	"github.com/stripe/stripe-go/v75/paymentintent"
 )
 
-
-
+// TODO update this so you don't init a new stripe client every request
 func (h *Handler) Stripe_transaction(c echo.Context) error {
 	transaction := &model.Stripe{}
 	StripeAPIKey := os.Getenv("STRIPE_API_KEY")
-
-
-	
 
 	stripe.Key = StripeAPIKey
 
@@ -26,23 +22,19 @@ func (h *Handler) Stripe_transaction(c echo.Context) error {
 		return err
 	}
 
-
 	//	handles the case that the value is 0 or negative
 	if transaction.Amount <= 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, "Amount must be a positive number")
 	}
 
 	paymentIntent, err := paymentintent.New(&stripe.PaymentIntentParams{
-		Amount:   stripe.Int64(transaction.Amount),  
+		Amount:   stripe.Int64(transaction.Amount),
 		Currency: stripe.String("usd"),
 	})
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Unable to create a payment intent")
 	}
 
-
-
 	return c.JSON(http.StatusCreated, paymentIntent)
-
 
 }

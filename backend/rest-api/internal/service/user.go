@@ -6,6 +6,7 @@ import (
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	repository "github.com/isaiahmartin847/Reg-Maps/internal/repositories"
+	"github.com/isaiahmartin847/Reg-Maps/logger"
 )
 
 type UserService struct {
@@ -24,6 +25,7 @@ func (s *UserService) CreateUser(ctx context.Context, user *models.User) (*model
 
 	createdUser, err := s.UserRepo.Create(ctx, user)
 	if err != nil {
+		logger.Error("Error: unable to create the user %v", err)
 		return nil, err
 	}
 

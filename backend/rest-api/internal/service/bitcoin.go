@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"log"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	repository "github.com/isaiahmartin847/Reg-Maps/internal/repositories"
+	"github.com/isaiahmartin847/Reg-Maps/logger"
 )
 
 type BtcService struct {
@@ -20,7 +20,7 @@ func (s *BtcService) GetAll(ctx context.Context) ([]models.Btc, error) {
 
 	bitcoinPrice, err := s.BitcoinRepo.GetAll(ctx)
 	if err != nil {
-		log.Printf("Error to fetch all the bitcoin prices %v", err)
+		logger.Error("Error: to fetch all the bitcoin prices %v", err)
 		return nil, err
 	}
 

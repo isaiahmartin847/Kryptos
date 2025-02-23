@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/isaiahmartin847/Reg-Maps/logger"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,6 +18,8 @@ func (h *Handler) GetAllBtc(c echo.Context) error {
 	bitcoinPrices, err := h.BtcService.GetAll(ctx)
 
 	if err != nil {
+		logger.Error("Error: unable to fetch bitcoin prices %v", err)
+
 		return c.JSON(http.StatusBadRequest, Response{
 			Message: "Unable to fetch the bitcoin prices",
 			Status:  "error",
