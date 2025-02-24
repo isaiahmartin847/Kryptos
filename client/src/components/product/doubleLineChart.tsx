@@ -61,44 +61,35 @@ export default function DoubleChart() {
   }
 
   return (
-    <Card className="w-1/2 bg-secondaryColor">
-      <CardHeader className="text-textColor">
+    <Card className="w-3/4">
+      <CardHeader>
         <CardTitle>Bitcoin Price</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <LineChart
-            data={chartData}
-            className="text-textColor"
-            margin={{
-              left: 12,
-              right: 12,
-            }}>
-            <CartesianGrid
-              vertical={false}
-              strokeDasharray="3 3"
-            />
+          <LineChart data={chartData}>
+            <CartesianGrid vertical={true} />
+
             <XAxis
-              className="bg-white"
               dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={formatDate} // Use the formatDate function
-              style={{
-                fontSize: "12px",
-                fill: "white",
-              }}
+              // style={{
+              //   fontSize: "12px",
+              //   fill: "white",
+              // }}
             />
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickCount={10}
-              style={{
-                fontSize: "12px",
-                fill: "white",
-              }}
+              // style={{
+              //   fontSize: "12px",
+              //   fill: "white",
+              // }}
               domain={[
                 (dataMin: number | undefined) => (dataMin ? dataMin * 0.95 : 0),
                 (dataMax: number | undefined) =>
