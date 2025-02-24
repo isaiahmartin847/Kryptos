@@ -7,7 +7,7 @@ import State from "@/types/state";
 const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
 
 export const fetchBitcoin = async (): Promise<BitcoinResponse[]> => {
-  const response = await fetch(`${apiUrl}/bitcoin`);
+  const response = await fetch(`${apiUrl}/btc`);
 
   if (!response.ok) {
     console.error(response.status);
