@@ -13,7 +13,6 @@ import (
 	"worker-server/logger"
 
 	"github.com/go-co-op/gocron"
-	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -25,10 +24,10 @@ func main() {
 		logger.Error("Error changing directory: %v", err)
 	}
 
-	err = godotenv.Load()
-	if err != nil {
-		logger.Fatal("Fatal unable to load .env file: %v", err)
-	}
+	// err = godotenv.Load()
+	// if err != nil {
+	// 	logger.Fatal("Fatal unable to load .env file: %v", err)
+	// }
 
 	openaiKey := os.Getenv("OPENAI_KEY")
 	if openaiKey == "" {
