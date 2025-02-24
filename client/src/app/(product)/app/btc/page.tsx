@@ -77,7 +77,7 @@ export default function DoubleChart() {
               <CartesianGrid
                 vertical={false}
                 horizontal={true}
-                stroke="#b8b8b8"
+                stroke="#363636"
               />
 
               <XAxis
