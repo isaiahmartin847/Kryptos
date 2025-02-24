@@ -39,7 +39,7 @@ export default function DoubleChart() {
 
   useEffect(() => {
     if (data) {
-      const tempData = data.map((obj) => {
+      const tempData = data.data.items.map((obj) => {
         return {
           // Apply a scaling factor, e.g., 10, to exaggerate the price fluctuations
           price: obj.price * 10,
@@ -51,6 +51,7 @@ export default function DoubleChart() {
         };
       });
 
+      console.log(tempData);
       setChartData(tempData);
     }
   }, [data]);
