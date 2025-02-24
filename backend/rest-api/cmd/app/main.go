@@ -1,5 +1,7 @@
 package main
 
+// to run this go to the root then run cmd: infisical run --path /rest -- air
+
 import (
 	"log"
 	"os"
@@ -8,17 +10,11 @@ import (
 	"github.com/isaiahmartin847/Reg-Maps/internal/app"
 	"github.com/isaiahmartin847/Reg-Maps/internal/server"
 	"github.com/isaiahmartin847/Reg-Maps/logger"
-	"github.com/joho/godotenv"
 )
 
 func main() {
 
 	logger.Setup()
-
-	// Load environment variables
-	if err := godotenv.Load(".env"); err != nil {
-		logger.Fatal("Fatal: .env file not found, using environment variables. %v", err)
-	}
 
 	// Connect to the database
 	db, err := config.ConnectDatabase()
