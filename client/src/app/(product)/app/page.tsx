@@ -11,7 +11,10 @@ const Main = () => {
           <CardTitle>Charts</CardTitle>
         </CardHeader>
         <CardContent className="py-4">
-          <StockCard />
+          <StockCard
+            marketCap={100000000}
+            price={100000}
+          />
         </CardContent>
       </Card>
     </div>
