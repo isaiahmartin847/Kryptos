@@ -13,6 +13,15 @@ type Btc struct {
 	Date      time.Time `gorm:"type:timestamp" json:"date"`
 }
 
+type BtcData struct {
+	Price float64   `gorm:"type:numeric"`
+	Date  time.Time `gorm:"type:timestamp"`
+}
+
+func (BtcData) TableName() string {
+	return "bitcoin_price"
+}
+
 func (Btc) TableName() string {
 	return "bitcoin_price"
 }

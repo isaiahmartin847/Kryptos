@@ -10,9 +10,8 @@ type BtcPrediction struct {
 }
 
 type BtcPredictionData struct {
-	Price     float64   `gorm:"type:numeric"`
-	Date      time.Time `gorm:"type:timestamp"`
-	CreatedAt time.Time `gorm:"autoCreateTime" json:"createdAt"`
+	Price float64   `gorm:"type:numeric"`
+	Date  time.Time `gorm:"type:timestamp"`
 }
 
 func (BtcPredictionData) TableName() string {
