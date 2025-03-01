@@ -14,6 +14,9 @@ const Main = () => {
           <StockCard
             marketCap={100000000}
             price={100000}
+            color="#F7931A"
+            iconName="SiBitcoin"
+            name="btc"
           />
         </CardContent>
       </Card>

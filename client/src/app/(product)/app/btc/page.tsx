@@ -15,13 +15,17 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useQuery } from "@tanstack/react-query";
-import { fetchBitcoin } from "@/apiFunctions/getFunctions";
+import { fetchBitcoin, fetchBitcoinChart } from "@/apiFunctions/getFunctions";
 import { useEffect, useState } from "react";
 
 const chartConfig = {
-  price: {
-    label: "price",
-    color: "#2563eb",
+  bitcoin: {
+    label: "bitcoin",
+    color: "#2563eb", // Blue color
+  },
+  prediction: {
+    label: "prediction",
+    color: "#f77d25", // Orange color
   },
 } satisfies ChartConfig;
 
@@ -38,16 +42,17 @@ const formatDate = (dateString: string) => {
 export default function DoubleChart() {
   const [chartData, setChartData] = useState<any[]>([]);
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bitcoinPrice"],
-    queryFn: fetchBitcoin,
+    queryKey: ["bitcoinChart"],
+    queryFn: fetchBitcoinChart,
   });
 
   useEffect(() => {
     if (data) {
       const tempData = data.data.items.map((obj) => {
         return {
-          // Apply a scaling factor, e.g., 10, to exaggerate the price fluctuations
-          price: obj.price * 10,
+          // Format to 2 decimal places
+          bitcoin: parseFloat((obj.bitcoin * 10).toFixed(2)),
+          prediction: parseFloat((obj.prediction * 10).toFixed(2)),
           date: new Date(obj.date).toLocaleDateString("en-US", {
             year: "2-digit",
             month: "short",
@@ -87,20 +92,17 @@ export default function DoubleChart() {
                   fill: "white",
                 }}
                 dataKey="date"
-                // tickLine={true}
-                // axisLine={true}
                 tickMargin={8}
                 tickFormatter={formatDate}
               />
               <YAxis
+                width={75} // Explicitly set width for the Y-axis
                 stroke="#b8b8b8"
                 style={{
                   fontSize: "12px",
                   fill: "white",
                 }}
-                // tickLine={true}
-                // axisLine={true}
-                tickMargin={8}
+                tickMargin={1}
                 tickCount={10}
                 domain={[
                   (dataMin: number | undefined) =>
@@ -114,10 +116,18 @@ export default function DoubleChart() {
                 content={<ChartTooltipContent />}
               />
               <Line
-                dataKey="price"
+                dataKey="bitcoin"
                 type="linear"
                 strokeWidth={2}
                 dot={false}
+                stroke="#2563eb" // Explicitly set blue color
+              />
+              <Line
+                dataKey="prediction"
+                type="linear"
+                strokeWidth={2}
+                dot={false}
+                stroke="#f77d25" // Explicitly set orange color
               />
             </LineChart>
           </ChartContainer>
