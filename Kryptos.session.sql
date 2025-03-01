@@ -10,7 +10,7 @@ WHERE table_schema = 'public';
 --@block
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
-WHERE table_name = 'bitcoin_price';
+WHERE table_name = 'stock';
 
 --@block 
 SELECT * from bitcoin_prediction
@@ -29,6 +29,11 @@ VALUES
     (95776.1572385272, 1898997753781.95, NOW(), TO_TIMESTAMP(1739836800000 / 1000), 25324374113.0816),
     (95495.8915329929, 1892702154844.51, NOW(), TO_TIMESTAMP(1739923200000 / 1000), 38311133144.7294)
 
+
+--@block 
+INSERT INTO stock (price, market_cap, color, name)  
+VALUES  
+    (85680.0, 1.66e12, '#FFA500', 'Bitcoin');
 --@block
 TRUNCATE TABLE bitcoin_price;
 
