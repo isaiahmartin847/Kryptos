@@ -31,15 +31,15 @@ VALUES
 
 
 --@block 
-INSERT INTO stock (price, market_cap, color, name)  
+INSERT INTO stock (price, market_cap, color, name, ticker)  
 VALUES  
-    (85680.0, 1.66e12, '#FFA500', 'Bitcoin');
+    (85680.0, 1.66e12, '#FFA500', 'Bitcoin', 'BTC');
 --@block
 TRUNCATE TABLE bitcoin_price;
 
 
 --@block 
-SELECT * FROM bitcoin_prediction
+SELECT * FROM stock
 
 --@block 
-DElETE FROM bitcoin_price WHERE id = 72
+DElETE FROM stock WHERE id = 1

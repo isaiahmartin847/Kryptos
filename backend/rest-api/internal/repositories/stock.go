@@ -17,13 +17,12 @@ func NewStockRepository(db *gorm.DB) *StockRepository {
 	}
 }
 
-func (repo *StockRepository) GetStockByTicker(ctx context.Context, ticker string) (*models.Stock, error) {
+func (repo *StockRepository) GetStockByTicker(ctx context.Context, ticker string) (models.Stock, error) {
 	var stock models.Stock
 
 	if err := repo.db.WithContext(ctx).Where(&models.Stock{Ticker: ticker}).First(&stock).Error; err != nil {
-		return nil, err
+		return models.Stock{}, err
 	}
 
-	return &stock, nil
-
+	return stock, nil
 }

@@ -37,7 +37,7 @@ func (h *Handler) GetStockByTicker(c echo.Context) error {
 	response := models.ApiResponse[models.Stock]{
 		Status: "success",
 		Data: models.Data[models.Stock]{
-			Items: []models.Stock{*stock},
+			Items: []models.Stock{stock},
 			Meta:  models.Meta{Version: "1.0"},
 		},
 	}

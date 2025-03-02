@@ -20,7 +20,7 @@ func NewServer(h *handler.Handler) *Server {
 }
 
 func (s *Server) ConfigureMiddleware() {
-	// Configure CORS
+	// change CORS to not let any url hit the end api
 	s.echo.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -33,9 +33,11 @@ func (s *Server) ConfigureRoutes() {
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
+
 	s.echo.GET("/btc", s.handler.GetAllBtc)
 	s.echo.GET("/btc/chart", s.handler.GetChartData)
 	s.echo.GET("/prediction", s.handler.GetLatestPrediction)
+	s.echo.GET("/stock", s.handler.GetStockByTicker)
 }
 
 func (s *Server) Start(addr string) error {
