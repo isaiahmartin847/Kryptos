@@ -8,11 +8,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Response struct {
-	Message string `json:"message"`
-	Status  string `json:"status"`
-}
-
 func (h *Handler) GetAllBtc(c echo.Context) error {
 	ctx := c.Request().Context()
 
@@ -29,7 +24,7 @@ func (h *Handler) GetAllBtc(c echo.Context) error {
 	}
 
 	response := models.ApiResponse[models.Btc]{
-		Status: "succuss",
+		Status: "success",
 		Data: models.Data[models.Btc]{
 			Items: bitcoinPrices,
 			Meta:  models.Meta{Version: "1.0"},
