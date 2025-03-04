@@ -14,7 +14,7 @@ func (h *Handler) GetStockByTicker(c echo.Context) error {
 	ctx := c.Request().Context()
 
 	// add more starlization like making these all caps
-	ticker := strings.ToUpper(strings.TrimSpace(c.QueryParam("ticker")))
+	ticker := strings.ToUpper(strings.TrimSpace(c.Param("ticker")))
 
 	// Make sure ticker is in the right format
 	if ticker == "" || len(ticker) > 5 {

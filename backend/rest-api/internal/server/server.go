@@ -30,6 +30,11 @@ func (s *Server) ConfigureMiddleware() {
 
 func (s *Server) ConfigureRoutes() {
 
+	stockGroup := s.echo.Group("/stock")
+
+	stockGroup.GET("/", s.handler.GetAllStocks)
+	stockGroup.GET("/:ticker", s.handler.GetStockByTicker)
+
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
