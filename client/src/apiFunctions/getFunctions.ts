@@ -41,7 +41,7 @@ export const fetchStockByTicker = async (
   return response.json();
 };
 
-export const fetchStocks = async (): Promise<ApiResponse<Stock[]>> => {
+export const fetchStocks = async (): Promise<ApiResponse<Stock>> => {
   const response = await fetch(`${apiUrl}/stock`);
 
   if (!response.ok) {

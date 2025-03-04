@@ -3,6 +3,7 @@
 import { fetchStocks } from "@/apiFunctions/getFunctions";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Stock } from "@/types/stocks";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
@@ -19,19 +20,30 @@ const Main = () => {
   }, [data]);
 
   return (
-    <div className="mt-20 flex items-center justify-center">
-      <Card className="w-3/4">
+    <div className="flex h-[calc(100vh-74px)] justify-center border-2">
+      <Card className="mt-40 h-fit w-3/4">
         <CardHeader className="border-b-2 border-neutral-400">
           <CardTitle>Charts</CardTitle>
         </CardHeader>
         <CardContent className="py-4">
-          <StockCard
-            marketCap={100000000}
-            price={100000}
-            color="#F7931A"
-            iconName="SiBitcoin"
-            name="btc"
-          />
+          {!isLoading ? (
+            data?.data.items.map((item: Stock) => {
+              return (
+                <StockCard
+                  key={item.id}
+                  marketCap={item.marketCap}
+                  price={item.price}
+                  color={item.color}
+                  iconName="SiBitcoin"
+                  name={item.ticker}
+                />
+              );
+            })
+          ) : isError ? (
+            <div>Error</div>
+          ) : (
+            <div>Loading...</div>
+          )}
         </CardContent>
       </Card>
     </div>
