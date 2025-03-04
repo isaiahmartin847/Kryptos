@@ -29,12 +29,23 @@ export const fetchBitcoinChart = async (): Promise<
 };
 
 export const fetchStockByTicker = async (
-  ticker: string
+  ticker: string,
 ): Promise<ApiResponse<Stock>> => {
   const response = await fetch(`${apiUrl}/stock?ticker=${ticker}`);
 
   if (!response.ok) {
     console.error(response.status);
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+export const fetchStocks = async (): Promise<ApiResponse<Stock[]>> => {
+  const response = await fetch(`${apiUrl}/stock`);
+
+  if (!response.ok) {
+    console.error("Unable to fetch the stocks", response.statusText);
     throw new Error("Network response was not ok");
   }
 

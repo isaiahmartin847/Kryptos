@@ -1,10 +1,23 @@
 "use client";
 
+import { fetchStocks } from "@/apiFunctions/getFunctions";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQueries, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 const Main = () => {
+  const { data, isLoading, isError, isSuccess } = useQuery({
+    queryKey: ["stocks"],
+    queryFn: fetchStocks,
+  });
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
+
   return (
     <div className="mt-20 flex items-center justify-center">
       <Card className="w-3/4">
