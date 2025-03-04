@@ -2,10 +2,11 @@
 
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useQueries, useQuery } from "@tanstack/react-query";
 
 const Main = () => {
   return (
-    <div className="flex justify-center items-center mt-20">
+    <div className="mt-20 flex items-center justify-center">
       <Card className="w-3/4">
         <CardHeader className="border-b-2 border-neutral-400">
           <CardTitle>Charts</CardTitle>

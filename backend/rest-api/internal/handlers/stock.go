@@ -45,3 +45,29 @@ func (h *Handler) GetStockByTicker(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 
 }
+
+func (h *Handler) GetAllStocks(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	stocks, err := h.StockService.GetAllStocks(ctx)
+	if err != nil {
+		logger.Error("Unable to get the stocks")
+
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "Server was unable to get the stocks",
+		})
+
+	}
+
+	response := models.ApiResponse[models.Stock]{
+		Status: "success",
+		Data: models.Data[models.Stock]{
+			Items: stocks,
+			Meta:  models.Meta{Version: "1.0"},
+		},
+	}
+
+	return c.JSON(http.StatusOK, response)
+
+}

@@ -37,7 +37,7 @@ func (s *Server) ConfigureRoutes() {
 	s.echo.GET("/btc", s.handler.GetAllBtc)
 	s.echo.GET("/btc/chart", s.handler.GetChartData)
 	s.echo.GET("/prediction", s.handler.GetLatestPrediction)
-	s.echo.GET("/stock", s.handler.GetStockByTicker)
+	s.echo.GET("/stock", s.handler.GetAllStocks)
 }
 
 func (s *Server) Start(addr string) error {

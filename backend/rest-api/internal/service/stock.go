@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"errors"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
@@ -18,9 +17,9 @@ func NewStockService(stockRepo *repositories.StockRepository) *StockService {
 }
 
 func (s *StockService) GetByTicker(ctx context.Context, ticker string) (models.Stock, error) {
-	if s.StockRepo == nil {
-		return models.Stock{}, errors.New("StockRepository is not initialized")
-	}
+	// if s.StockRepo == nil {
+	// return models.Stock{}, errors.New("StockRepository is not initialized")
+	// }
 
 	stock, err := s.StockRepo.GetStockByTicker(ctx, ticker)
 	if err != nil {
@@ -29,4 +28,14 @@ func (s *StockService) GetByTicker(ctx context.Context, ticker string) (models.S
 	}
 
 	return stock, nil
+}
+
+func (s *StockService) GetAllStocks(ctx context.Context) ([]models.Stock, error) {
+
+	stocks, err := s.StockRepo.GetAllStocks(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return stocks, nil
 }
