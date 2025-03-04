@@ -34,6 +34,7 @@ const Main = () => {
                   marketCap={item.marketCap}
                   price={item.price}
                   color={item.color}
+                  // add the icon name in the db and schema
                   iconName="SiBitcoin"
                   name={item.ticker}
                 />
