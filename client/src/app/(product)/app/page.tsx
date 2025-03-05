@@ -20,7 +20,7 @@ const Main = () => {
   }, [data]);
 
   return (
-    <div className="flex h-[calc(100vh-74px)] justify-center border-2">
+    <div className="flex h-[calc(100vh-75px)] justify-center">
       <Card className="mt-40 h-fit w-3/4">
         <CardHeader className="border-b-2 border-neutral-400">
           <CardTitle>Charts</CardTitle>

@@ -71,13 +71,16 @@ const StockCard = ({
         <CardContent className="cursor-pointer rounded-xl bg-primaryColor p-3 hover:bg-primaryColor/70">
           <div className="flex w-full items-center justify-between">
             {Icon ? (
-              <Suspense
-                fallback={
-                  <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
-                }
-              >
-                <Icon size={24} color={color} className="text-xl" />
-              </Suspense>
+              <div className="flex space-x-3">
+                <Suspense
+                  fallback={
+                    <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
+                  }
+                >
+                  <Icon size={24} color={color} className="text-xl" />
+                </Suspense>
+                <h1 className="font-semibold">{name}</h1>
+              </div>
             ) : (
               <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
             )}
