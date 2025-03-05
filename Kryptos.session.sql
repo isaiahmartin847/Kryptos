@@ -43,3 +43,8 @@ SELECT * FROM stock
 
 --@block 
 DElETE FROM stock WHERE id = 1
+
+--@block
+UPDATE stock
+SET icon_type = 'SiBitcoin'
+WHERE id = 2;

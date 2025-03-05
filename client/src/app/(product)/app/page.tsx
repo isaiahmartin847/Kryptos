@@ -8,7 +8,7 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const Main = () => {
-  const { data, isLoading, isError, isSuccess } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["stocks"],
     queryFn: fetchStocks,
   });
@@ -34,9 +34,9 @@ const Main = () => {
                   marketCap={item.marketCap}
                   price={item.price}
                   color={item.color}
-                  // add the icon name in the db and schema
-                  iconName="SiBitcoin"
-                  name={item.ticker}
+                  iconName={item.icon_type}
+                  name={item.name}
+                  ticker={item.ticker}
                 />
               );
             })

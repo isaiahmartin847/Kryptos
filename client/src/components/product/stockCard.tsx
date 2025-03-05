@@ -18,7 +18,7 @@ const iconLibraries: Record<string, () => Promise<any>> = {
 };
 
 const getIconComponent = (
-  iconName: string
+  iconName: string,
 ): React.LazyExoticComponent<React.ComponentType<any>> | null => {
   const prefixMatch = iconName.match(/^([A-Za-z]{1,2})/);
   const prefix = prefixMatch ? prefixMatch[1].toLowerCase() : "";
@@ -35,7 +35,7 @@ const getIconComponent = (
         throw new Error(`Icon ${iconName} not found in module`);
       }
       return { default: IconComponent };
-    })
+    }),
   );
 };
 
@@ -45,6 +45,7 @@ interface Props {
   iconName: string;
   color: string;
   name: string;
+  ticker: string;
 }
 
 const formatNumber = (num: number) => {
@@ -54,27 +55,31 @@ const formatNumber = (num: number) => {
   }).format(num);
 };
 
-const StockCard = ({ price, marketCap, iconName, color, name }: Props) => {
+const StockCard = ({
+  price,
+  marketCap,
+  iconName,
+  color,
+  name,
+  ticker,
+}: Props) => {
   const Icon = getIconComponent(iconName);
 
   return (
     <Card>
-      <Link href={`/${name}`}>
-        <CardContent className="p-3 bg-primaryColor rounded-xl hover:bg-primaryColor/70 cursor-pointer">
-          <div className="flex justify-between items-center w-full">
+      <Link href={`/${ticker}`}>
+        <CardContent className="cursor-pointer rounded-xl bg-primaryColor p-3 hover:bg-primaryColor/70">
+          <div className="flex w-full items-center justify-between">
             {Icon ? (
               <Suspense
                 fallback={
-                  <div className="w-6 h-6 animate-pulse bg-gray-200 rounded" />
-                }>
-                <Icon
-                  size={24}
-                  color={color}
-                  className="text-xl"
-                />
+                  <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
+                }
+              >
+                <Icon size={24} color={color} className="text-xl" />
               </Suspense>
             ) : (
-              <div className="w-6 h-6 animate-pulse bg-gray-200 rounded" />
+              <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
             )}
             <h1>
               <span className="font-semibold">Price</span>: $

@@ -5,4 +5,5 @@ export interface Stock {
   color: string;
   name: string;
   ticker: string;
+  icon_type: string;
 }
