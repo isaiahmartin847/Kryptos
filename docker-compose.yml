@@ -1,0 +1,87 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:17 # Use the official PostgreSQL image
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=postgres # Default database name
+      - POSTGRES_USER=postgres # Default user
+      - POSTGRES_PASSWORD=kryptos # Default password
+    ports:
+      - "5432:5432" # Expose PostgreSQL to host
+    volumes:
+      - postgres-data:/var/lib/postgresql/data # Persist data in case of container restart
+    networks:
+      - kryptos-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    command: ["postgres", "-c", "ssl=off"] # Disable SSL for non-SSL connections
+
+  rest-api:
+    build:
+      context: ./backend/rest-api
+      dockerfile: Dockerfile
+    container_name: rest-api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/rest-api:/app
+    networks:
+      - kryptos-network
+    environment:
+      - POSTGRES_HOST=postgres # Connect to the postgres service
+      - POSTGRES_PORT=5432 # Use the default PostgreSQL port
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=kryptos
+      - POSTGRES_SSLMODE=disable # Disable SSL for connection
+    depends_on:
+      - postgres
+
+  worker-server:
+    build:
+      context: ./backend/worker-server
+      dockerfile: Dockerfile
+    container_name: worker-server
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./backend/worker-server:/app
+    networks:
+      - kryptos-network
+    environment:
+      - POSTGRES_HOST=postgres # Connect to the postgres service
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=kryptos
+      - POSTGRES_SSLMODE=disable # Disable SSL for connection
+    depends_on:
+      - postgres
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+    networks:
+      - kryptos-network
+    depends_on:
+      - rest-api
+
+networks:
+  kryptos-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
