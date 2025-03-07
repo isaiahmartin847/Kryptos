@@ -19,6 +19,16 @@
       "database": "postgres",
       "username": "postgres",
       "password": "kryptos"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "dockerized-Krytpos",
+      "database": "postgres",
+      "username": "postgres",
+      "password": "kryptos"
     }
   ]
 }

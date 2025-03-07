@@ -1,0 +1,45 @@
+
+
+
+--@block
+SELECT table_name 
+FROM information_schema.tables 
+WHERE table_schema = 'public';
+
+
+--@block
+SELECT column_name, data_type, is_nullable, column_default
+FROM information_schema.columns
+WHERE table_name = 'stock';
+
+--@block 
+SELECT * from bitcoin_prediction
+
+
+
+--@block
+INSERT INTO bitcoin_price (price, market_cap, created_at, date, volume)
+VALUES
+    (95739.9773707924, 1898788887978.33, NOW(), TO_TIMESTAMP(1739318400000 / 1000), 36454577154.5622),
+    (97836.1885612748, 1936842454814, NOW(), TO_TIMESTAMP(1739404800000 / 1000), 47115618235.1905),
+    (96561.6639990985, 1914315097486.39, NOW(), TO_TIMESTAMP(1739491200000 / 1000), 29084371910.6906),
+    (97488.4814853646, 1931656846871.49, NOW(), TO_TIMESTAMP(1739577600000 / 1000), 32289906944.9286),
+    (97569.9516943047, 1934308378710.29, NOW(), TO_TIMESTAMP(1739664000000 / 1000), 14215311318.3463),
+    (96149.3484548204, 1905012222220.37, NOW(), TO_TIMESTAMP(1739750400000 / 1000), 13634794998.7393),
+    (95776.1572385272, 1898997753781.95, NOW(), TO_TIMESTAMP(1739836800000 / 1000), 25324374113.0816),
+    (95495.8915329929, 1892702154844.51, NOW(), TO_TIMESTAMP(1739923200000 / 1000), 38311133144.7294)
+
+
+--@block 
+INSERT INTO stock (price, market_cap, color, name, ticker, icon_type)  
+VALUES  
+    (85680.0, 1.66e12, '#FFA500', 'Bitcoin', 'BTC', 'SiBitcoin');
+--@block
+TRUNCATE TABLE bitcoin_price;
+
+
+--@block 
+SELECT * FROM stock
+
+--@block 
+DElETE FROM stock WHERE id = 1
