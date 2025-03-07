@@ -2,16 +2,17 @@ version: "3.8"
 
 services:
   postgres:
-    image: postgres:17 # Use the official PostgreSQL image
+    image: postgres:17
     container_name: postgres
+    env_file: .env # Load environment variables from .env file
     environment:
-      - POSTGRES_DB=postgres # Default database name
-      - POSTGRES_USER=postgres # Default user
-      - POSTGRES_PASSWORD=kryptos # Default password
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432" # Expose PostgreSQL to host
+      - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data # Persist data in case of container restart
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - kryptos-network
     healthcheck:
@@ -20,7 +21,7 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
-    command: ["postgres", "-c", "ssl=off"] # Disable SSL for non-SSL connections
+    command: ["postgres", "-c", "ssl=off"]
 
   rest-api:
     build:
@@ -33,13 +34,14 @@ services:
       - ./backend/rest-api:/app
     networks:
       - kryptos-network
+    env_file: .env # Load environment variables from .env file
     environment:
-      - POSTGRES_HOST=postgres # Connect to the postgres service
-      - POSTGRES_PORT=5432 # Use the default PostgreSQL port
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=kryptos
-      - POSTGRES_SSLMODE=disable # Disable SSL for connection
+      - POSTGRES_HOST=${POSTGRES_HOST} # Should resolve to "postgres"
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_SSLMODE=disable
     depends_on:
       - postgres
 
@@ -54,13 +56,14 @@ services:
       - ./backend/worker-server:/app
     networks:
       - kryptos-network
+    env_file: .env # Load environment variables from .env file
     environment:
-      - POSTGRES_HOST=postgres # Connect to the postgres service
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=kryptos
-      - POSTGRES_SSLMODE=disable # Disable SSL for connection
+      - POSTGRES_HOST=${POSTGRES_HOST} # Should resolve to "postgres"
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_SSLMODE=disable
     depends_on:
       - postgres
 
@@ -75,6 +78,16 @@ services:
       - ./client:/app
     networks:
       - kryptos-network
+    env_file: .env # Load environment variables from .env file
+    environment:
+      - NEXT_PUBLIC_REST_API_URL=${NEXT_PUBLIC_REST_API_URL}
+      - NEXT_PUBLIC_WS_API_URL=${NEXT_PUBLIC_WS_API_URL}
+      - NEXT_PUBLIC_NAME=${NEXT_PUBLIC_NAME}
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      - STRIPE_PUBLIC_KEY_TEST=${STRIPE_PUBLIC_KEY_TEST}
+      - STRIPE_SECRET_KEY_TEST=${STRIPE_SECRET_KEY_TEST}
+      - OPENAI_KEY=${OPENAI_KEY}
     depends_on:
       - rest-api
 

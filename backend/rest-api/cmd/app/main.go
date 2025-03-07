@@ -39,5 +39,5 @@ func main() {
 	logger.Info("Server running on port: %v", port)
 
 	// Start the server
-	log.Fatal(srv.Start(os.Getenv("HOST_PORT")))
+	log.Fatal(srv.Start(":8080"))
 }

@@ -7,12 +7,6 @@ import { NextFetchEvent } from "next/server";
 const clerkAuth = clerkMiddleware();
 
 export async function middleware(request: NextRequest, event: NextFetchEvent) {
-  console.log("CLERK_SECRET_KEY:", process.env.CLERK_SECRET_KEY);
-  console.log(
-    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:",
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-  );
-
   const hostname = request.headers.get("host");
   const pathname = request.nextUrl.pathname;
 
