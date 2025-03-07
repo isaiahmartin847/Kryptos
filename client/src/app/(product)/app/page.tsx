@@ -4,7 +4,7 @@ import { fetchStocks } from "@/apiFunctions/getFunctions";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Stock } from "@/types/stocks";
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const Main = () => {
@@ -31,8 +31,8 @@ const Main = () => {
               return (
                 <StockCard
                   key={item.id}
-                  marketCap={item.marketCap}
-                  price={item.price}
+                  marketCap={item.daily_prices[0].market_cap}
+                  price={item.daily_prices[0].price}
                   color={item.color}
                   iconName={item.icon_type}
                   name={item.name}
