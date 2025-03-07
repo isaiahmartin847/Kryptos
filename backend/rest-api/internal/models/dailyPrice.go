@@ -12,3 +12,7 @@ type DailyPrice struct {
 	StockID   uint      `gorm:"type:bigint;index" json:"stock_id"`
 	Stock     *Stock    `gorm:"foreignKey:StockID;references:ID" json:"-"`
 }
+
+func (DailyPrice) TableName() string {
+	return "daily_price"
+}

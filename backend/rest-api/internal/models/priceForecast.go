@@ -10,3 +10,7 @@ type PriceForecast struct {
 	StockID   uint      `gorm:"type:bigint;index" json:"stock_id"`
 	Stock     *Stock    `gorm:"foreignKey:StockID;references:ID" json:"-"`
 }
+
+func (PriceForecast) TableName() string {
+	return "price_forecast"
+}
