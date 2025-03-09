@@ -9,7 +9,7 @@ import (
 
 type DbRepository interface {
 	// fetches
-	GetLatestBtcPrice() (*models.BtcResponse, error)
+	GetLatestPrice(id int64) (*models.DailyPrice, error)
 	GetLastThirtyBtcData() ([]models.BtcPromptStruct, error)
 	GetAllBtcPredictions() ([]models.BtcPrediction, error)
 
@@ -26,13 +26,14 @@ func NewRepository(db *gorm.DB) DbRepository {
 	return &repository{db: db}
 }
 
-func (r *repository) GetLatestBtcPrice() (*models.BtcResponse, error) {
-	var latestBtcPrice models.BtcResponse
-	if err := r.db.Order("date DESC").First(&latestBtcPrice).Error; err != nil {
+func (r *repository) GetLatestPrice(id int64) (*models.DailyPrice, error) {
+	var latestDbPrice models.DailyPrice
+
+	if err := r.db.Order("date DESC").Where("stock_id = ?", id).First(&latestDbPrice).Error; err != nil {
 		logger.Error("Error: unable to get the latest bitcoin data %v", err)
 		return nil, err
 	}
-	return &latestBtcPrice, nil
+	return &latestDbPrice, nil
 }
 
 func (r *repository) GetLastThirtyBtcData() ([]models.BtcPromptStruct, error) {

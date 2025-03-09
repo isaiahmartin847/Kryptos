@@ -20,35 +20,37 @@ func GetBtcPrice() (*models.BtcFetchResponse, error) {
 
 }
 
-func (j *Job) InsertBtcPrice() {
+func (j *Job) InsertNewDailyPrice(id int64) {
 
-	latestDbPrice, err := j.repo.GetLatestBtcPrice()
+	latestDbPrice, err := j.repo.GetLatestPrice(id)
 	if err != nil {
 		logger.Error("Error: unable to query the latest price")
 		return
 	}
 
-	latestBtcPrice, err := GetBtcPrice()
-	if err != nil {
-		logger.Error("Error: unable to get the latest bitcoin price error: %v", err)
-		return
-	}
+	logger.Info("latest Db price %v", latestDbPrice)
 
-	todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
-	latestBtcDateInDB := latestDbPrice.Date.Format("2006-01-02")
+	// latestBtcPrice, err := GetBtcPrice()
+	// if err != nil {
+	// 	logger.Error("Error: unable to get the latest bitcoin price error: %v", err)
+	// 	return
+	// }
 
-	if todayDate > latestBtcDateInDB {
-		logger.Debug("Inserting the new btc data.")
-		err := j.repo.InsertNewBtcData(latestBtcPrice)
-		if err != nil {
-			logger.Error("Error: unable to insert data into the db err: %v", err)
-		}
+	// todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
+	// latestBtcDateInDB := latestDbPrice.Date.Format("2006-01-02")
 
-		j.InsertBtcPrediction()
+	// if todayDate > latestBtcDateInDB {
+	// 	logger.Debug("Inserting the new btc data.")
+	// 	err := j.repo.InsertNewBtcData(latestBtcPrice)
+	// 	if err != nil {
+	// 		logger.Error("Error: unable to insert data into the db err: %v", err)
+	// 	}
 
-	} else {
-		logger.Info("Today's date is equal to latestBtcDateInDB or earlier")
-	}
+	// 	j.InsertBtcPrediction()
+
+	// } else {
+	// 	logger.Info("Today's date is equal to latestBtcDateInDB or earlier")
+	// }
 
 }
 

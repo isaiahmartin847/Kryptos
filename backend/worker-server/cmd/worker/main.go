@@ -48,7 +48,9 @@ func main() {
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(1).Day().Do(JobsInstance.InsertBtcPrice)
+	scheduler.Every(1).Day().Do(func() {
+		JobsInstance.InsertNewDailyPrice(1)
+	})
 
 	scheduler.StartAsync()
 
