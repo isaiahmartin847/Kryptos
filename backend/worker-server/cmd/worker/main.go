@@ -13,16 +13,22 @@ import (
 	"worker-server/logger"
 
 	"github.com/go-co-op/gocron"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 
 	logger.Setup()
 
-	err := os.Chdir("../..")
+	err := godotenv.Load()
 	if err != nil {
-		logger.Error("Error changing directory: %v", err)
+		logger.Fatal("Fatal unable to load .env file")
 	}
+
+	// err := os.Chdir("../..")
+	// if err != nil {
+	// 	logger.Error("Error changing directory: %v", err)
+	// }
 
 	openaiKey := os.Getenv("OPENAI_KEY")
 	if openaiKey == "" {
@@ -48,13 +54,13 @@ func main() {
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	// scheduler.Every(1).Day().Do(func() {
-	// 	JobsInstance.InsertNewDailyPrice(1)
-	// })
-
-	scheduler.Every(1).Minute().Do(func() {
-		JobsInstance.InsertNewForecastedPrice(1)
+	scheduler.Every(1).Day().Do(func() {
+		JobsInstance.InsertNewDailyPrice(1)
 	})
+
+	// scheduler.Every(1).Minute().Do(func() {
+	// 	JobsInstance.InsertNewForecastedPrice(1)
+	// })
 
 	scheduler.StartAsync()
 

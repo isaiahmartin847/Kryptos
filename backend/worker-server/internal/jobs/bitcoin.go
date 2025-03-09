@@ -2,6 +2,7 @@ package jobs
 
 import (
 	"fmt"
+	"strconv"
 	"worker-server/internal/api"
 	"worker-server/internal/models"
 	"worker-server/logger"
@@ -19,9 +20,9 @@ func GetBtcPrice() (*models.BtcFetchResponse, error) {
 
 }
 
-func (j *Job) InsertNewDailyPrice(id int64) {
+func (j *Job) InsertNewDailyPrice(stockID int64) {
 
-	latestDbPrice, err := j.repo.GetLatestPrice(id)
+	latestDbPrice, err := j.repo.GetLatestPrice(stockID)
 	if err != nil {
 		logger.Error("Error: unable to query the latest price")
 		return
@@ -29,27 +30,27 @@ func (j *Job) InsertNewDailyPrice(id int64) {
 
 	logger.Info("latest Db price %v", latestDbPrice)
 
-	// latestBtcPrice, err := GetBtcPrice()
-	// if err != nil {
-	// 	logger.Error("Error: unable to get the latest bitcoin price error: %v", err)
-	// 	return
-	// }
+	latestBtcPrice, err := GetBtcPrice()
+	if err != nil {
+		logger.Error("Error: unable to get the latest bitcoin price error: %v", err)
+		return
+	}
 
-	// todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
-	// latestBtcDateInDB := latestDbPrice.Date.Format("2006-01-02")
+	todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
+	latestBtcDateInDB := latestDbPrice.Date.Format("2006-01-02")
 
-	// if todayDate > latestBtcDateInDB {
-	// 	logger.Debug("Inserting the new btc data.")
-	// 	err := j.repo.InsertNewBtcData(latestBtcPrice)
-	// 	if err != nil {
-	// 		logger.Error("Error: unable to insert data into the db err: %v", err)
-	// 	}
+	if todayDate > latestBtcDateInDB {
+		logger.Debug("Inserting the new btc data.")
+		err := j.repo.InsertNewBtcData(latestBtcPrice)
+		if err != nil {
+			logger.Error("Error: unable to insert data into the db err: %v", err)
+		}
 
-	// 	j.InsertBtcPrediction()
+		j.InsertNewForecastedPrice(stockID)
 
-	// } else {
-	// 	logger.Info("Today's date is equal to latestBtcDateInDB or earlier")
-	// }
+	} else {
+		logger.Info("Today's date is equal to latestBtcDateInDB or earlier")
+	}
 
 }
 
@@ -60,15 +61,19 @@ func (j *Job) InsertNewForecastedPrice(stockID int64) {
 		logger.Error(fmt.Sprintf("Error: Unable to get the last thirty days %v", err))
 	}
 
-	// logger.Info(fmt.Sprintf("Last thirty days: %v", lastThirtyDaysData))
-
 	prediction, err := j.aiClient.GenerateResponse(lastThirtyDaysData)
 	if err != nil {
 		logger.Error("Error: unable to create a prediction %v", err)
 		return
 	}
 
-	logger.Info("Prediction price: %v", prediction)
+	predictionFloat, err := strconv.ParseFloat(prediction, 64)
+	if err != nil {
+		logger.Error("Error: converting string to float")
+		return
+	}
+
+	logger.Info("Prediction price: %v", predictionFloat)
 
 }
 
