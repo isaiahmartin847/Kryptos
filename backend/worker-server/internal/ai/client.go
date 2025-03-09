@@ -12,7 +12,7 @@ import (
 // AiInterface defines the methods that any AI client implementation must provide.
 type AiInterface interface {
 	// GenerateResponse takes prompt data and returns a generated response.
-	GenerateResponse(promptData []models.BtcPromptStruct) (string, error)
+	GenerateResponse(promptData []models.DailyPrice) (string, error)
 }
 
 type AIClient struct {
@@ -25,7 +25,7 @@ func NewAIClient(apiKey string) *AIClient {
 	}
 }
 
-func (c *AIClient) GenerateResponse(promptData []models.BtcPromptStruct) (string, error) {
+func (c *AIClient) GenerateResponse(promptData []models.DailyPrice) (string, error) {
 	resp, err := c.aiClient.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{

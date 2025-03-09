@@ -53,14 +53,22 @@ func (j *Job) InsertNewDailyPrice(id int64) {
 
 }
 
-func (j *Job) TestingFunc(stockID int64) {
-	lastThirtyDaysPrice, err := j.repo.GetLastThirtyDaysPrices(stockID)
+func (j *Job) InsertNewForecastedPrice(stockID int64) {
+	lastThirtyDaysData, err := j.repo.GetLastThirtyDaysPrices(stockID)
 
 	if err != nil {
 		logger.Error(fmt.Sprintf("Error: Unable to get the last thirty days %v", err))
 	}
 
-	logger.Info(fmt.Sprintf("Last thirty days: %v", lastThirtyDaysPrice))
+	// logger.Info(fmt.Sprintf("Last thirty days: %v", lastThirtyDaysData))
+
+	prediction, err := j.aiClient.GenerateResponse(lastThirtyDaysData)
+	if err != nil {
+		logger.Error("Error: unable to create a prediction %v", err)
+		return
+	}
+
+	logger.Info("Prediction price: %v", prediction)
 
 }
 

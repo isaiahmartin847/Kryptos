@@ -53,7 +53,7 @@ func main() {
 	// })
 
 	scheduler.Every(1).Minute().Do(func() {
-		JobsInstance.TestingFunc(1)
+		JobsInstance.InsertNewForecastedPrice(1)
 	})
 
 	scheduler.StartAsync()
