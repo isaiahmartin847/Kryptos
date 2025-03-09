@@ -48,8 +48,12 @@ func main() {
 
 	scheduler := gocron.NewScheduler(time.UTC)
 
-	scheduler.Every(1).Day().Do(func() {
-		JobsInstance.InsertNewDailyPrice(1)
+	// scheduler.Every(1).Day().Do(func() {
+	// 	JobsInstance.InsertNewDailyPrice(1)
+	// })
+
+	scheduler.Every(1).Minute().Do(func() {
+		JobsInstance.TestingFunc(1)
 	})
 
 	scheduler.StartAsync()

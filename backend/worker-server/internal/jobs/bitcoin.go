@@ -1,8 +1,7 @@
 package jobs
 
 import (
-	"strconv"
-	"time"
+	"fmt"
 	"worker-server/internal/api"
 	"worker-server/internal/models"
 	"worker-server/logger"
@@ -54,30 +53,43 @@ func (j *Job) InsertNewDailyPrice(id int64) {
 
 }
 
-func (j *Job) InsertBtcPrediction() {
-	lastThirty, err := j.repo.GetLastThirtyBtcData()
+func (j *Job) TestingFunc(stockID int64) {
+	lastThirtyDaysPrice, err := j.repo.GetLastThirtyDaysPrices(stockID)
+
 	if err != nil {
-		logger.Error("Error: Unable to get the last thirty %v", err)
-		return
+		logger.Error(fmt.Sprintf("Error: Unable to get the last thirty days %v", err))
 	}
 
-	prediction, err := j.aiClient.GenerateResponse(lastThirty)
-	if err != nil {
-		logger.Error("Error: unable to create a prediction %v", err)
-		return
-	}
-
-	predictionFloat, err := strconv.ParseFloat(prediction, 64)
-	if err != nil {
-		logger.Error("Error: converting string to float")
-		return
-	}
-
-	predictionData := models.BtcPredictionData{
-		Price: predictionFloat,
-		Date:  time.Now().Add(24 * time.Hour),
-	}
-
-	j.repo.InsertNewBtcPredictionData(&predictionData)
+	logger.Info(fmt.Sprintf("Last thirty days: %v", lastThirtyDaysPrice))
 
 }
+
+// func (j *Job) InsertNewForecast(stockID int64) {
+// 	lastThirty, err := j.repo.GetLastThirtyDaysPrices(stockID)
+// 	if err != nil {
+// 		logger.Error("Error: Unable to get the last thirty %v", err)
+// 		return
+// 	}
+
+// 	logger.Info("%v", lastThirty)
+
+// prediction, err := j.aiClient.GenerateResponse(lastThirty)
+// if err != nil {
+// logger.Error("Error: unable to create a prediction %v", err)
+// return
+// }
+//
+// predictionFloat, err := strconv.ParseFloat(prediction, 64)
+// if err != nil {
+// logger.Error("Error: converting string to float")
+// return
+// }
+//
+// predictionData := models.BtcPredictionData{
+// 	Price: predictionFloat,
+// 	Date:  time.Now().Add(24 * time.Hour),
+// }
+
+// j.repo.InsertNewBtcPredictionData(&predictionData)
+
+// }

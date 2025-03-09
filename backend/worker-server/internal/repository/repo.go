@@ -9,9 +9,9 @@ import (
 
 type DbRepository interface {
 	// fetches
-	GetLatestPrice(id int64) (*models.DailyPrice, error)
-	GetLastThirtyBtcData() ([]models.BtcPromptStruct, error)
-	GetAllBtcPredictions() ([]models.BtcPrediction, error)
+	GetLatestPrice(stockID int64) (*models.DailyPrice, error)
+	GetLastThirtyDaysPrices(stockID int64) ([]models.DailyPrice, error)
+	GetAllPricePredictions() ([]models.BtcPrediction, error)
 
 	// insertions
 	InsertNewBtcData(response *models.BtcFetchResponse) error
@@ -26,19 +26,19 @@ func NewRepository(db *gorm.DB) DbRepository {
 	return &repository{db: db}
 }
 
-func (r *repository) GetLatestPrice(id int64) (*models.DailyPrice, error) {
+func (r *repository) GetLatestPrice(stockID int64) (*models.DailyPrice, error) {
 	var latestDbPrice models.DailyPrice
 
-	if err := r.db.Order("date DESC").Where("stock_id = ?", id).First(&latestDbPrice).Error; err != nil {
+	if err := r.db.Order("date DESC").Where("stock_id = ?", stockID).First(&latestDbPrice).Error; err != nil {
 		logger.Error("Error: unable to get the latest bitcoin data %v", err)
 		return nil, err
 	}
 	return &latestDbPrice, nil
 }
 
-func (r *repository) GetLastThirtyBtcData() ([]models.BtcPromptStruct, error) {
-	var lastThirtyData []models.BtcPromptStruct
-	if err := r.db.Order("date DESC").Limit(30).Find(&lastThirtyData).Error; err != nil {
+func (r *repository) GetLastThirtyDaysPrices(stockID int64) ([]models.DailyPrice, error) {
+	var lastThirtyData []models.DailyPrice
+	if err := r.db.Order("date DESC").Where("stock_id = ?", stockID).Limit(30).Find(&lastThirtyData).Error; err != nil {
 		logger.Error("Error: unable to fetch the last thirty bitcoin data points %v", err)
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (r *repository) GetLastThirtyBtcData() ([]models.BtcPromptStruct, error) {
 	return lastThirtyData, nil
 }
 
-func (r *repository) GetAllBtcPredictions() ([]models.BtcPrediction, error) {
+func (r *repository) GetAllPricePredictions() ([]models.BtcPrediction, error) {
 	var allBtcData []models.BtcPrediction
 	if err := r.db.Find(&allBtcData).Error; err != nil {
 		logger.Error("Error: unable to the prediction data %v", err)
