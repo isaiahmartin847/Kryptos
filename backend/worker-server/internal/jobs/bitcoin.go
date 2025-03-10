@@ -30,23 +30,24 @@ func (j *Job) InsertNewDailyPrice(stockID int64) {
 
 	logger.Info("latest Db price %v", latestDbPrice)
 
-	latestBtcPrice, err := GetBtcPrice()
+	latestStockPrice, err := GetBtcPrice()
 	if err != nil {
 		logger.Error("Error: unable to get the latest bitcoin price error: %v", err)
 		return
 	}
 
-	todayDate := latestBtcPrice.TimeStamp.Format("2006-01-02")
-	latestBtcDateInDB := latestDbPrice.Date.Format("2006-01-02")
+	currentDate := latestStockPrice.TimeStamp.Format("2006-01-02")
+	latestPriceDateInDB := latestDbPrice.Date.Format("2006-01-02")
 
-	if todayDate > latestBtcDateInDB {
+	if currentDate > latestPriceDateInDB {
 		logger.Debug("Inserting the new btc data.")
-		err := j.repo.InsertNewBtcData(latestBtcPrice)
+		// this is what is throwing the insertion error
+		err := j.repo.InsertNewStockData(latestStockPrice)
 		if err != nil {
 			logger.Error("Error: unable to insert data into the db err: %v", err)
 		}
 
-		j.InsertNewForecastedPrice(stockID)
+		// j.InsertNewForecastedPrice(stockID)
 
 	} else {
 		logger.Info("Today's date is equal to latestBtcDateInDB or earlier")

@@ -11,11 +11,11 @@ type DbRepository interface {
 	// fetches
 	GetLatestPrice(stockID int64) (*models.DailyPrice, error)
 	GetLastThirtyDaysPrices(stockID int64) ([]models.DailyPrice, error)
-	GetAllPricePredictions() ([]models.BtcPrediction, error)
+	GetAllStockForecast() ([]models.BtcPrediction, error)
 
 	// insertions
-	InsertNewBtcData(response *models.BtcFetchResponse) error
-	InsertNewBtcPredictionData(data *models.BtcPredictionData) error
+	InsertNewStockData(response *models.BtcFetchResponse) error
+	InsertNewStockForecast(data *models.BtcPredictionData) error
 }
 
 type repository struct {
@@ -46,7 +46,7 @@ func (r *repository) GetLastThirtyDaysPrices(stockID int64) ([]models.DailyPrice
 	return lastThirtyData, nil
 }
 
-func (r *repository) GetAllPricePredictions() ([]models.BtcPrediction, error) {
+func (r *repository) GetAllStockForecast() ([]models.BtcPrediction, error) {
 	var allBtcData []models.BtcPrediction
 	if err := r.db.Find(&allBtcData).Error; err != nil {
 		logger.Error("Error: unable to the prediction data %v", err)
@@ -56,7 +56,7 @@ func (r *repository) GetAllPricePredictions() ([]models.BtcPrediction, error) {
 
 }
 
-func (r *repository) InsertNewBtcPredictionData(data *models.BtcPredictionData) error {
+func (r *repository) InsertNewStockForecast(data *models.BtcPredictionData) error {
 	result := r.db.Create(&models.BtcPredictionData{
 		Price: data.Price,
 		Date:  data.Date,
@@ -64,7 +64,7 @@ func (r *repository) InsertNewBtcPredictionData(data *models.BtcPredictionData) 
 	return result.Error
 }
 
-func (r *repository) InsertNewBtcData(response *models.BtcFetchResponse) error {
+func (r *repository) InsertNewStockData(response *models.BtcFetchResponse) error {
 	result := r.db.Create(&models.Btc{
 		Price:     response.Price,
 		MarketCap: response.MarketCap,

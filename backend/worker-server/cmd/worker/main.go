@@ -13,17 +13,16 @@ import (
 	"worker-server/logger"
 
 	"github.com/go-co-op/gocron"
-	"github.com/joho/godotenv"
 )
 
 func main() {
 
 	logger.Setup()
 
-	err := godotenv.Load()
-	if err != nil {
-		logger.Fatal("Fatal unable to load .env file")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	logger.Fatal("Fatal unable to load .env file")
+	// }
 
 	// err := os.Chdir("../..")
 	// if err != nil {
