@@ -42,7 +42,8 @@ func (j *Job) InsertNewDailyPrice(stockID int64) {
 	if currentDate > latestPriceDateInDB {
 		logger.Debug("Inserting the new btc data.")
 		// this is what is throwing the insertion error
-		err := j.repo.InsertNewStockData(latestStockPrice)
+		logger.Info(fmt.Sprintf("This is the stock data %v", latestStockPrice))
+		err := j.repo.InsertNewStockData(latestStockPrice, stockID)
 		if err != nil {
 			logger.Error("Error: unable to insert data into the db err: %v", err)
 		}

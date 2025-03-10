@@ -14,7 +14,7 @@ type DbRepository interface {
 	GetAllStockForecast() ([]models.BtcPrediction, error)
 
 	// insertions
-	InsertNewStockData(response *models.BtcFetchResponse) error
+	InsertNewStockData(response *models.BtcFetchResponse, stockID int64) error
 	InsertNewStockForecast(data *models.BtcPredictionData) error
 }
 
@@ -64,12 +64,20 @@ func (r *repository) InsertNewStockForecast(data *models.BtcPredictionData) erro
 	return result.Error
 }
 
-func (r *repository) InsertNewStockData(response *models.BtcFetchResponse) error {
-	result := r.db.Create(&models.Btc{
-		Price:     response.Price,
-		MarketCap: response.MarketCap,
-		Volume:    response.TotalVolume,
+func (r *repository) InsertNewStockData(response *models.BtcFetchResponse, stockID int64) error {
+	// result := r.db.Create(&models.Btc{
+	// 	Price:     response.Price,
+	// 	MarketCap: response.MarketCap,
+	// 	Volume:    response.TotalVolume,
+	// 	Date:      response.TimeStamp,
+	// })
+
+	result := r.db.Create(&models.DailyPrice{
+		Price:     uint(response.Price),
+		MarketCap: uint(response.MarketCap),
+		Volume:    uint(response.TotalVolume),
 		Date:      response.TimeStamp,
+		StockID:   uint(stockID),
 	})
 	return result.Error
 }
