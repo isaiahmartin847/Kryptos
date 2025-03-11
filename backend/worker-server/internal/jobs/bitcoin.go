@@ -3,6 +3,7 @@ package jobs
 import (
 	"fmt"
 	"strconv"
+	"time"
 	"worker-server/internal/api"
 	"worker-server/internal/models"
 	"worker-server/logger"
@@ -27,8 +28,6 @@ func (j *Job) InsertNewDailyPrice(stockID int64) {
 		logger.Error("Error: unable to query the latest price")
 		return
 	}
-
-	logger.Info("latest Db price %v", latestDbPrice)
 
 	latestStockPrice, err := GetBtcPrice()
 	if err != nil {
@@ -76,6 +75,14 @@ func (j *Job) InsertNewForecastedPrice(stockID int64) {
 	}
 
 	logger.Info("Prediction price: %v", predictionFloat)
+
+	predictionData := models.PriceForecast{
+		Price:   uint(predictionFloat),
+		StockID: uint(stockID),
+		Date:    time.Now().Add(24 * time.Hour),
+	}
+
+	j.repo.InsertNewStockForecast(&predictionData)
 
 }
 
