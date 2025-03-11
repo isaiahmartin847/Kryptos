@@ -47,7 +47,7 @@ func (j *Job) InsertNewDailyPrice(stockID int64) {
 			logger.Error("Error: unable to insert data into the db err: %v", err)
 		}
 
-		// j.InsertNewForecastedPrice(stockID)
+		j.InsertNewForecastedPrice(stockID)
 
 	} else {
 		logger.Info("Today's date is equal to latestBtcDateInDB or earlier")
@@ -85,33 +85,3 @@ func (j *Job) InsertNewForecastedPrice(stockID int64) {
 	j.repo.InsertNewStockForecast(&predictionData)
 
 }
-
-// func (j *Job) InsertNewForecast(stockID int64) {
-// 	lastThirty, err := j.repo.GetLastThirtyDaysPrices(stockID)
-// 	if err != nil {
-// 		logger.Error("Error: Unable to get the last thirty %v", err)
-// 		return
-// 	}
-
-// 	logger.Info("%v", lastThirty)
-
-// prediction, err := j.aiClient.GenerateResponse(lastThirty)
-// if err != nil {
-// logger.Error("Error: unable to create a prediction %v", err)
-// return
-// }
-//
-// predictionFloat, err := strconv.ParseFloat(prediction, 64)
-// if err != nil {
-// logger.Error("Error: converting string to float")
-// return
-// }
-//
-// predictionData := models.BtcPredictionData{
-// 	Price: predictionFloat,
-// 	Date:  time.Now().Add(24 * time.Hour),
-// }
-
-// j.repo.InsertNewBtcPredictionData(&predictionData)
-
-// }
