@@ -60,7 +60,7 @@ func (repo *BtcRepository) GetBitcoinChartData(ctx context.Context) ([]models.Bt
 	return charData, nil
 }
 
-func (repo *BtcRepository) GetChartData(ticker string, ctx context.Context) ([]models.ChartData, error) {
+func (repo *BtcRepository) GetChartData(ctx context.Context, ticker string) ([]models.ChartData, error) {
 	var chartData []models.ChartData
 
 	err := repo.db.WithContext(ctx).Table("daily_price").

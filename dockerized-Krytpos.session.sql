@@ -10,11 +10,54 @@ WHERE table_schema = 'public';
 --@block
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
-WHERE table_name = 'stock';
+WHERE table_name = 'daily_price';
 
 --@block 
-SELECT * from price_forecast
+SELECT * from daily_price
 
+--@block 
+SELECT 
+    price_forecast.price AS forecasted_price, 
+    daily_price.price AS real_price, 
+    daily_price.date
+FROM 
+    daily_price
+JOIN 
+    stock ON stock.id = daily_price.stock_id
+JOIN 
+    price_forecast ON price_forecast.stock_id = stock.id 
+                   AND price_forecast.date = daily_price.date
+WHERE 
+    stock.ticker = 'BTC';
+
+
+--@block 
+INSERT INTO daily_price (price, date, market_cap, created_at, volume, stock_id)
+VALUES 
+(50000, '2024-03-01 00:00:00+00', 900000000000, 1710000000, 35000, 1),
+(51000, '2024-03-02 00:00:00+00', 910000000000, 1710086400, 36000, 1);
+
+--@block 
+INSERT INTO price_forecast (price, date, created_at, stock_id)
+VALUES 
+(50500, '2024-03-01 00:00:00+00', '2024-02-28 12:00:00+00', 1),
+(51500, '2024-03-02 00:00:00+00', '2024-03-01 12:00:00+00', 1);
+
+
+--@block 
+SELECT 
+    price_forecast.price AS forecasted_price, 
+    daily_price.price AS real_price, 
+    daily_price.date
+FROM 
+    daily_price
+JOIN 
+    stock ON stock.id = daily_price.stock_id
+JOIN 
+    price_forecast ON price_forecast.stock_id = stock.id 
+                   AND price_forecast.date = daily_price.date
+WHERE 
+    stock.ticker = 'BTC';
 
 
 --@block

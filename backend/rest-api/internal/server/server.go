@@ -40,7 +40,7 @@ func (s *Server) ConfigureRoutes() {
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
 
 	s.echo.GET("/btc", s.handler.GetAllBtc)
-	s.echo.GET("/btc/chart", s.handler.GetChartData)
+	s.echo.GET("/chart", s.handler.GetChartData)
 	s.echo.GET("/prediction", s.handler.GetLatestPrediction)
 	s.echo.GET("/stock", s.handler.GetAllStocks)
 }

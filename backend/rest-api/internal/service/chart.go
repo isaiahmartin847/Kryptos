@@ -48,3 +48,16 @@ func (s *BtcService) GetLatestPrediction(ctx context.Context) (*models.BtcPredic
 
 	return prediction, nil
 }
+
+func (s *BtcService) GetChartData(ctx context.Context, ticker string) ([]models.ChartData, error) {
+
+	chartData, err := s.BitcoinRepo.GetChartData(ctx, ticker)
+
+	if err != nil {
+		logger.Error("Unable to get the chart data on the service layer error: %v", err)
+		return nil, err
+	}
+
+	return chartData, nil
+
+}

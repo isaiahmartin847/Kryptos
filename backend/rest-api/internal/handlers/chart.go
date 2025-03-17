@@ -54,18 +54,22 @@ func (h *Handler) GetLatestPrediction(c echo.Context) error {
 func (h *Handler) GetChartData(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	chartData, err := h.BtcService.GetBtcChartData(ctx)
+	ticker := c.QueryParam("ticker")
+
+	logger.Info("this is the ticker: %v", ticker)
+
+	chartData, err := h.BtcService.GetChartData(ctx, ticker)
 	if err != nil {
-		logger.Error("Unable to get the join table of bitcoin prices and predictions, %v", err)
+		logger.Error("Unable to get the join table of %v prices and forecast, %v", ticker, err)
 		return c.JSON(http.StatusInternalServerError, models.Error{
 			Code:    http.StatusInternalServerError,
-			Message: "Unable to get the joined tables of the bitcoin prices and predictions",
+			Message: "Unable to get the chart data",
 		})
 	}
 
-	response := models.ApiResponse[models.BtcChartData]{
+	response := models.ApiResponse[models.ChartData]{
 		Status: "success",
-		Data: models.Data[models.BtcChartData]{
+		Data: models.Data[models.ChartData]{
 			Items: chartData,
 			Meta:  models.Meta{Version: "1.0"},
 		},
