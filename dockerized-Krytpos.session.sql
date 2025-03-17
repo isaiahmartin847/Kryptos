@@ -13,7 +13,7 @@ FROM information_schema.columns
 WHERE table_name = 'stock';
 
 --@block 
-SELECT * from daily_price
+SELECT * from price_forecast
 
 
 
