@@ -74,8 +74,6 @@ func (j *Job) InsertNewForecastedPrice(stockID int64) {
 		return
 	}
 
-	logger.Info("Prediction price: %v", predictionFloat)
-
 	predictionData := models.PriceForecast{
 		Price:   uint(predictionFloat),
 		StockID: uint(stockID),

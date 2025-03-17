@@ -59,3 +59,22 @@ func (repo *BtcRepository) GetBitcoinChartData(ctx context.Context) ([]models.Bt
 
 	return charData, nil
 }
+
+func (repo *BtcRepository) GetChartData(ticker string, ctx context.Context) ([]models.ChartData, error) {
+	var chartData []models.ChartData
+
+	err := repo.db.WithContext(ctx).Table("daily_price").
+		Joins("JOIN stock ON stock.id = daily_price.stock_id").
+		Joins("JOIN price_forecast ON price_forecast.stock_id = stock.id AND price_forecast.date = daily_price.date").
+		Where("stock.ticker = ?", ticker).
+		Select("price_forecast.price AS forecasted_price, daily_price.price AS real_price, daily_price.date").
+		Scan(&chartData).Error
+
+	if err != nil {
+		logger.Error("Unable to get the chart data of ticker: %v err: %v", ticker, err)
+		return nil, err
+	}
+
+	return chartData, nil
+
+}

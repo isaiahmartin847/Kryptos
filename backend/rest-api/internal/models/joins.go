@@ -7,3 +7,9 @@ type BtcChartData struct {
 	PricePredict float64   `json:"prediction"`
 	Date         time.Time `json:"date"`
 }
+
+type ChartData struct {
+	ForecastedPrice float64   `json:"forecasted_price"`
+	DailyPrice      float64   `json:"daily_price"`
+	Date            time.Time `json:"date"`
+}
