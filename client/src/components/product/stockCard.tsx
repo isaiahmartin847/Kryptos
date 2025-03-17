@@ -4,6 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import { MoveDown } from "lucide-react";
 
 // Define supported icon libraries with correct paths
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconLibraries: Record<string, () => Promise<any>> = {
   si: () => import("react-icons/si"),
   fa: () => import("react-icons/fa"),
@@ -19,6 +20,7 @@ const iconLibraries: Record<string, () => Promise<any>> = {
 
 const getIconComponent = (
   iconName: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): React.LazyExoticComponent<React.ComponentType<any>> | null => {
   const prefixMatch = iconName.match(/^([A-Za-z]{1,2})/);
   const prefix = prefixMatch ? prefixMatch[1].toLowerCase() : "";
@@ -67,7 +69,7 @@ const StockCard = ({
 
   return (
     <Card>
-      <Link href={`/${ticker}`}>
+      <Link href={`/chart/${ticker.toLowerCase()}`}>
         <CardContent className="cursor-pointer rounded-xl bg-primaryColor p-3 hover:bg-primaryColor/70">
           <div className="flex w-full items-center justify-between">
             {Icon ? (
