@@ -13,17 +13,6 @@ import { fetchChartData } from "@/apiFunctions/getFunctions";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-const chartConfig = {
-  bitcoin: {
-    label: "bitcoin",
-    color: "#2563eb", // Blue color
-  },
-  prediction: {
-    label: "prediction",
-    color: "#f77d25", // Orange color
-  },
-} satisfies ChartConfig;
-
 // Function to format the date as "Jan 1 25"
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -46,13 +35,26 @@ export default function DoubleChart() {
     enabled: !!ticker,
   });
 
+  const name = data?.data.stock?.name ?? "";
+
+  const chartConfig = {
+    stock: {
+      label: name,
+      color: "#2563eb",
+    },
+    forecast: {
+      label: "forecast",
+      color: "#f77d25",
+    },
+  } satisfies ChartConfig;
+
   useEffect(() => {
     if (data) {
       const tempData = data.data.items.map((obj) => {
         return {
           // Format to 2 decimal places
           bitcoin: parseFloat((obj.daily_price * 10).toFixed(2)),
-          prediction: parseFloat((obj.forecasted_price * 10).toFixed(2)),
+          forecast: parseFloat((obj.forecasted_price * 10).toFixed(2)),
           date: new Date(obj.date).toLocaleDateString("en-US", {
             year: "2-digit",
             month: "short",
@@ -78,7 +80,7 @@ export default function DoubleChart() {
     <div className="flex h-[calc(100%-75px)] items-center justify-center">
       <Card className="w-full text-textColor xl:w-3/4">
         <CardHeader>
-          <CardTitle>Bitcoin Price & Prediction</CardTitle>
+          <CardTitle>{data.data.stock?.name} Price & Forecast</CardTitle>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
@@ -124,7 +126,7 @@ export default function DoubleChart() {
                 stroke="#2563eb" // Explicitly set blue color
               />
               <Line
-                dataKey="prediction"
+                dataKey="forecast"
                 type="linear"
                 strokeWidth={2}
                 dot={false}
