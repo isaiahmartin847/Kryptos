@@ -18,6 +18,11 @@ SELECT * from daily_price
 --@block 
 SELECT * from price_forecast
 
+
+--@block 
+UPDATE daily_price
+SET percent_change = 0.10
+WHERE id = 30
 --@block 
 SELECT 
     price_forecast.price AS forecasted_price, 

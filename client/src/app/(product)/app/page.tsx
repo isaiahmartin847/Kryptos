@@ -37,6 +37,7 @@ const Main = () => {
                   iconName={item.icon_type}
                   name={item.name}
                   ticker={item.ticker}
+                  percentageChange={item.daily_prices[0].percent_change}
                 />
               );
             })

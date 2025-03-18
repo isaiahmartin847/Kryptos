@@ -17,6 +17,7 @@ export interface DailyPrice {
   created_at: Date;
   volume: number;
   stock_id: number;
+  percent_change: number;
 }
 
 export interface PriceForecast {

@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
-import { MoveDown } from "lucide-react";
+import { MoveUp } from "lucide-react";
 
 // Define supported icon libraries with correct paths
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,6 +48,7 @@ interface Props {
   color: string;
   name: string;
   ticker: string;
+  percentageChange: number;
 }
 
 const formatNumber = (num: number) => {
@@ -64,8 +65,11 @@ const StockCard = ({
   color,
   name,
   ticker,
+  percentageChange,
 }: Props) => {
   const Icon = getIconComponent(iconName);
+
+  const formattedPercentage = (percentageChange * 100).toFixed(2) + "%";
 
   return (
     <Card>
@@ -94,9 +98,11 @@ const StockCard = ({
               <span className="font-semibold">Market Cap</span>: $
               {formatNumber(marketCap)}
             </h1>
-            <span className="text-red-500">
-              <MoveDown color="red" />
-              0.66%
+
+            {/* this is preset make it variable to if the stock is up or down  */}
+            <span className="flex text-green-500">
+              <MoveUp color="green" />
+              {formattedPercentage}
             </span>
           </div>
         </CardContent>
