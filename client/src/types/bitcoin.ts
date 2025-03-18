@@ -6,9 +6,3 @@ export interface Bitcoin {
   createdAt: string;
   date: string;
 }
-
-export interface BitcoinChart {
-  bitcoin: number;
-  prediction: number;
-  date: string;
-}

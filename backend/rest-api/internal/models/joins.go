@@ -9,7 +9,7 @@ type BtcChartData struct {
 }
 
 type ChartData struct {
-	ForecastedPrice float64   `json:"forecasted_price"`
-	DailyPrice      float64   `json:"daily_price"`
-	Date            time.Time `json:"date"`
+	ForecastedPrice float64   `json:"forecasted_price" gorm:"column:forecasted_price"`
+	DailyPrice      float64   `json:"daily_price" gorm:"column:price"`
+	Date            time.Time `json:"date" gorm:"column:date"`
 }

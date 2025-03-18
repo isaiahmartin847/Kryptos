@@ -67,7 +67,7 @@ func (repo *BtcRepository) GetChartData(ctx context.Context, ticker string) ([]m
 		Joins("JOIN stock ON stock.id = daily_price.stock_id").
 		Joins("JOIN price_forecast ON price_forecast.stock_id = stock.id AND price_forecast.date = daily_price.date").
 		Where("stock.ticker = ?", ticker).
-		Select("price_forecast.price AS forecasted_price, daily_price.price AS real_price, daily_price.date").
+		Select("price_forecast.price AS forecasted_price, daily_price.price, daily_price.date").
 		Scan(&chartData).Error
 
 	if err != nil {

@@ -9,7 +9,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useQuery } from "@tanstack/react-query";
-import { fetchBitcoinChart } from "@/apiFunctions/getFunctions";
+import { fetchChartData } from "@/apiFunctions/getFunctions";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
@@ -38,9 +38,12 @@ export default function DoubleChart() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [chartData, setChartData] = useState<any[]>([]);
   const param = useParams();
+  const ticker = (param.ticker as string)?.toUpperCase() ?? "";
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bitcoinChart"],
-    queryFn: fetchBitcoinChart,
+    queryKey: ["ChartData"],
+    queryFn: () => fetchChartData(ticker.toUpperCase()),
+    enabled: !!ticker,
   });
 
   useEffect(() => {
@@ -48,8 +51,8 @@ export default function DoubleChart() {
       const tempData = data.data.items.map((obj) => {
         return {
           // Format to 2 decimal places
-          bitcoin: parseFloat((obj.bitcoin * 10).toFixed(2)),
-          prediction: parseFloat((obj.prediction * 10).toFixed(2)),
+          bitcoin: parseFloat((obj.daily_price * 10).toFixed(2)),
+          prediction: parseFloat((obj.forecasted_price * 10).toFixed(2)),
           date: new Date(obj.date).toLocaleDateString("en-US", {
             year: "2-digit",
             month: "short",
@@ -58,11 +61,14 @@ export default function DoubleChart() {
         };
       });
 
-      console.log(tempData);
-      console.log(param.ticker);
+      console.log(data);
       setChartData(tempData);
     }
-  }, [data, param.ticker]);
+  }, [data]);
+
+  if (!ticker) {
+    return <div>No ticker provided</div>;
+  }
 
   if (isLoading || !data || isError) {
     return <div>loading..</div>;
