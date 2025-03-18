@@ -65,9 +65,10 @@ func (repo *BtcRepository) GetChartData(ctx context.Context, ticker string) ([]m
 
 	err := repo.db.WithContext(ctx).Table("daily_price").
 		Joins("JOIN stock ON stock.id = daily_price.stock_id").
-		Joins("JOIN price_forecast ON price_forecast.stock_id = stock.id AND price_forecast.date = daily_price.date").
+		Joins("JOIN price_forecast ON price_forecast.stock_id = stock.id AND DATE(price_forecast.date) = DATE(daily_price.date)").
 		Where("stock.ticker = ?", ticker).
 		Select("price_forecast.price AS forecasted_price, daily_price.price, daily_price.date").
+		Order("daily_price.date ASC"). // Add this line for sorting
 		Scan(&chartData).Error
 
 	if err != nil {
@@ -76,5 +77,4 @@ func (repo *BtcRepository) GetChartData(ctx context.Context, ticker string) ([]m
 	}
 
 	return chartData, nil
-
 }

@@ -16,6 +16,9 @@ WHERE table_name = 'daily_price';
 SELECT * from daily_price
 
 --@block 
+SELECT * from price_forecast
+
+--@block 
 SELECT 
     price_forecast.price AS forecasted_price, 
     daily_price.price AS real_price, 
@@ -26,7 +29,7 @@ JOIN
     stock ON stock.id = daily_price.stock_id
 JOIN 
     price_forecast ON price_forecast.stock_id = stock.id 
-                   AND price_forecast.date = daily_price.date
+                   AND DATE(price_forecast.date) = DATE(daily_price.date)
 WHERE 
     stock.ticker = 'BTC';
 
