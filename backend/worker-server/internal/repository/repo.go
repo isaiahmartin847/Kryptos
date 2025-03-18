@@ -68,11 +68,12 @@ func (r *repository) InsertNewStockForecast(data *models.PriceForecast) error {
 func (r *repository) InsertNewStockData(response *models.BtcFetchResponse, stockID int64) error {
 
 	result := r.db.Create(&models.DailyPrice{
-		Price:     uint(response.Price),
-		MarketCap: uint(response.MarketCap),
-		Volume:    uint(response.TotalVolume),
-		Date:      response.TimeStamp,
-		StockID:   uint(stockID),
+		Price:         response.Price,
+		MarketCap:     response.MarketCap,
+		Volume:        response.TotalVolume,
+		Date:          response.TimeStamp,
+		PercentChange: 0.10,
+		StockID:       uint(stockID),
 	})
 	return result.Error
 }
