@@ -6,8 +6,9 @@ type Meta struct {
 }
 
 type Data[T any] struct {
-	Items []T  `json:"items"`
-	Meta  Meta `json:"meta"`
+	Items []T    `json:"items"`
+	Stock *Stock `json:"stock,omitempty"`
+	Meta  Meta   `json:"meta"`
 }
 
 // ApiResponse is the main structure for API responses.

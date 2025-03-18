@@ -67,10 +67,20 @@ func (h *Handler) GetChartData(c echo.Context) error {
 		})
 	}
 
+	stock, err := h.StockService.GetByTicker(ctx, ticker)
+	if err != nil {
+		logger.Error("Unable to get the stock with the ticker provided")
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "Unable to get the stock related to the ticker",
+		})
+	}
+
 	response := models.ApiResponse[models.ChartData]{
 		Status: "success",
 		Data: models.Data[models.ChartData]{
 			Items: chartData,
+			Stock: &stock,
 			Meta:  models.Meta{Version: "1.0"},
 		},
 	}
