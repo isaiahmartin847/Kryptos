@@ -14,7 +14,7 @@ type DbRepository interface {
 	GetAllStockForecast() ([]models.BtcPrediction, error)
 
 	// insertions
-	InsertNewStockData(response *models.BtcFetchResponse, stockID int64) error
+	InsertNewStockData(response *models.BtcFetchResponse, PercentChange float64, stockID int64) error
 	InsertNewStockForecast(data *models.PriceForecast) error
 }
 
@@ -65,14 +65,14 @@ func (r *repository) InsertNewStockForecast(data *models.PriceForecast) error {
 	return result.Error
 }
 
-func (r *repository) InsertNewStockData(response *models.BtcFetchResponse, stockID int64) error {
+func (r *repository) InsertNewStockData(response *models.BtcFetchResponse, PercentChange float64, stockID int64) error {
 
 	result := r.db.Create(&models.DailyPrice{
 		Price:         response.Price,
 		MarketCap:     response.MarketCap,
 		Volume:        response.TotalVolume,
 		Date:          response.TimeStamp,
-		PercentChange: 0.10,
+		PercentChange: PercentChange,
 		StockID:       uint(stockID),
 	})
 	return result.Error
