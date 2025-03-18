@@ -11,7 +11,6 @@ type Data[T any] struct {
 	Meta  Meta   `json:"meta"`
 }
 
-// ApiResponse is the main structure for API responses.
 type ApiResponse[T any] struct {
 	Status string  `json:"status"`
 	Data   Data[T] `json:"data"`

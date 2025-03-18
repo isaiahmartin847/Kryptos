@@ -1,9 +1,12 @@
+import { Stock } from "./stocks";
+
 interface Meta {
   version: string;
 }
 
 interface Data<T> {
   items: T[];
+  stock?: Stock;
   meta: Meta;
 }
 
