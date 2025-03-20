@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// GET HANDLER
 func (h *Handler) GetStockByTicker(c echo.Context) error {
 	ctx := c.Request().Context()
 
@@ -69,5 +70,41 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, response)
+
+}
+
+// POST HANDLERS
+
+func (h *Handler) SaveStock(c echo.Context) error {
+	ctx := c.Request().Context()
+	var reqBody models.SavedStock
+
+	if err := c.Bind(&reqBody); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Invalid request payload",
+		})
+	}
+
+	err := h.StockService.SaveStock(ctx, &reqBody)
+
+	if err != nil {
+		logger.Error("Unable to save stock")
+
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "Server was unable to save that stock to that user",
+		})
+
+	}
+
+	response := models.ApiResponse[models.SavedStock]{
+		Status: "success",
+		Data: models.Data[models.SavedStock]{
+			Item: reqBody,
+			Meta: models.Meta{Version: "1.0"},
+		},
+	}
+
+	return c.JSON(http.StatusCreated, response)
 
 }

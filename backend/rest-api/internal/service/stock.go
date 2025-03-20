@@ -16,6 +16,7 @@ func NewStockService(stockRepo *repositories.StockRepository) *StockService {
 	return &StockService{StockRepo: stockRepo}
 }
 
+// GET FUNCTIONS
 func (s *StockService) GetByTicker(ctx context.Context, ticker string) (models.Stock, error) {
 	// if s.StockRepo == nil {
 	// return models.Stock{}, errors.New("StockRepository is not initialized")
@@ -38,4 +39,19 @@ func (s *StockService) GetAllStocks(ctx context.Context) ([]models.Stock, error)
 	}
 
 	return stocks, nil
+}
+
+// POST FUNCTIONS
+
+func (s *StockService) SaveStock(ctx context.Context, saveStockData *models.SavedStock) error {
+
+	err := s.StockRepo.SaveStock(ctx, saveStockData)
+
+	if err != nil {
+		logger.Error("Unable to create the saved stock")
+		return err
+	}
+
+	return nil
+
 }

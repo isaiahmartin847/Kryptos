@@ -6,7 +6,8 @@ type Meta struct {
 }
 
 type Data[T any] struct {
-	Items []T    `json:"items"`
+	Items []T    `json:"items,omitempty"`
+	Item  T      `json:"item,omitempty"`
 	Stock *Stock `json:"stock,omitempty"`
 	Meta  Meta   `json:"meta"`
 }

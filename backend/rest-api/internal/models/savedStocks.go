@@ -8,8 +8,8 @@ type SavedStock struct {
 	UserID    string    `gorm:"type:text" json:"user_id"`
 	CreatedAt time.Time `gorm:"type:timestamp" json:"created_at"`
 
-	Stock *Stock `gorm:"foreignKey:StockID:references:ID" json:"-"`
-	User  *User  `gorm:"foreignKey:UserID:references:ID" json:"-"`
+	Stock *Stock `gorm:"foreignKey=StockID;references=ID" json:"-"`
+	User  *User  `gorm:"foreignKey=UserID;references=ID" json:"-"`
 }
 
 type SaveStockRequest struct {

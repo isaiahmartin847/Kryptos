@@ -45,7 +45,7 @@ func (repo *StockRepository) GetAllStocks(ctx context.Context) ([]models.Stock, 
 	return stocks, nil
 }
 
-func (repo *StockRepository) SaveStock(ctx context.Context, stock *models.SaveStockRequest) error {
+func (repo *StockRepository) SaveStock(ctx context.Context, stock *models.SavedStock) error {
 	if err := repo.db.WithContext(ctx).Create(stock).Error; err != nil {
 
 		logger.Error("Unable to create saved stock",
