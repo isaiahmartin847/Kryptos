@@ -4,6 +4,12 @@ import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { House } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Tooltip } from "@radix-ui/react-tooltip"; // Make sure you're using Radix UI Tooltip
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip";
 
 const Navbar = () => {
   const [url, setUrl] = useState<string>("");
@@ -28,9 +34,25 @@ const Navbar = () => {
       <div className="flex flex-1 justify-center"></div>
 
       <div className="flex w-[200px] items-center justify-end space-x-3">
-        <Link href={url}>
+        {/* <Link href={url}>
           <House />
-        </Link>
+        </Link> */}
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link href={url}>
+                <House />
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent
+              side="left"
+              className="-translate-x-[14px] transform rounded-lg"
+            >
+              <p>Go to homepage</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         <UserButton
           appearance={{
