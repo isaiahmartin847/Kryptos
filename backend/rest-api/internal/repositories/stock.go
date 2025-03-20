@@ -43,10 +43,9 @@ func (repo *StockRepository) GetStockByTicker(ctx context.Context, ticker string
 func (repo *StockRepository) GetAllStocks(ctx context.Context) ([]models.Stock, error) {
 	var stocks []models.Stock
 
-	// Preload DailyPrices and order by the latest 'CreatedAt'
 	if err := repo.db.WithContext(ctx).
 		Preload("DailyPrices", func(db *gorm.DB) *gorm.DB {
-			return db.Order("created_at desc").Limit(1)
+			return db.Order("date DESC").Limit(1)
 		}).
 		Find(&stocks).Error; err != nil {
 		logger.Error("Unable to query the stocks from the database")
