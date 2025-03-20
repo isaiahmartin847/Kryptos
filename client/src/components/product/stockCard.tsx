@@ -106,7 +106,7 @@ const StockCard = ({
               ) : (
                 <MoveDown color="red" />
               )}
-              {percentageChange.toFixed(1)} %
+              {percentageChange.toFixed(1)}%
             </span>
           </div>
         </CardContent>

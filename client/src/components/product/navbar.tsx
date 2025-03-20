@@ -1,26 +1,37 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
+import { House } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+  const [url, setUrl] = useState<string>("");
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      setUrl("http://localhost:3000/");
+    } else if (process.env.NODE_ENV === "production") {
+      // TODO set this with the prod url
+      setUrl("http://PROD");
+    }
+  }, []);
+
   return (
-    <div className="flex h-[75px] w-full bg-secondaryColor items-center px-7">
+    <div className="flex h-[75px] w-full items-center bg-secondaryColor px-7">
       <div className="w-[200px]">
         <Link href="/">
-          <Image
-            src="/Logo.png"
-            alt="Logo"
-            height={52}
-            width={54}
-          />
+          <Image src="/Logo.png" alt="Logo" height={52} width={54} />
         </Link>
       </div>
 
-      <div className="flex-1 flex justify-center">
-        <h1 className="text-5xl font-semibold">Dashboard</h1>
-      </div>
+      <div className="flex flex-1 justify-center"></div>
 
-      <div className="w-[200px] flex items-center space-x-3 justify-end">
+      <div className="flex w-[200px] items-center justify-end space-x-3">
+        <Link href={url}>
+          <House />
+        </Link>
+
         <UserButton
           appearance={{
             elements: {
