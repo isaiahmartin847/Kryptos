@@ -10,10 +10,10 @@ WHERE table_schema = 'public';
 --@block
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
-WHERE table_name = 'daily_price';
+WHERE table_name = 'users';
 
 --@block 
-SELECT * from daily_price
+SELECT * from users
 
 --@block 
 SELECT * from price_forecast

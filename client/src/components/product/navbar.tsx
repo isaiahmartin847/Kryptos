@@ -34,10 +34,6 @@ const Navbar = () => {
       <div className="flex flex-1 justify-center"></div>
 
       <div className="flex w-[200px] items-center justify-end space-x-3">
-        {/* <Link href={url}>
-          <House />
-        </Link> */}
-
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
