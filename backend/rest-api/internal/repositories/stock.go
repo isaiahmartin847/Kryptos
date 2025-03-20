@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/logger"
@@ -29,17 +30,6 @@ func (repo *StockRepository) GetStockByTicker(ctx context.Context, ticker string
 	return stock, nil
 }
 
-// func (repo *StockRepository) GetAllStocks(ctx context.Context) ([]models.Stock, error) {
-// 	var stocks []models.Stock
-
-// 	if err := repo.db.WithContext(ctx).Find(&stocks).Error; err != nil {
-// 		logger.Error("Unable to query the stocks from the database")
-// 		return nil, err
-// 	}
-
-// 	return stocks, nil
-// }
-
 func (repo *StockRepository) GetAllStocks(ctx context.Context) ([]models.Stock, error) {
 	var stocks []models.Stock
 
@@ -53,4 +43,17 @@ func (repo *StockRepository) GetAllStocks(ctx context.Context) ([]models.Stock, 
 	}
 
 	return stocks, nil
+}
+
+func (repo *StockRepository) SaveStock(ctx context.Context, stock *models.SaveStockRequest) error {
+	if err := repo.db.WithContext(ctx).Create(stock).Error; err != nil {
+
+		logger.Error("Unable to create saved stock",
+			slog.String("source", "SaveStock"),
+			slog.String("error", err.Error()),
+		)
+
+		return err
+	}
+	return nil
 }
