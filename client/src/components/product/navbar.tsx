@@ -10,6 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
+import SavedStockSideSheet from "./sideSheet";
 
 const Navbar = () => {
   const [url, setUrl] = useState<string>("");
@@ -49,6 +50,8 @@ const Navbar = () => {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+
+        <SavedStockSideSheet />
 
         <UserButton
           appearance={{

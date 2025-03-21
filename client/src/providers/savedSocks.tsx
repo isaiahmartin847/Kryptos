@@ -1,20 +1,19 @@
 import React, { createContext, useState, ReactNode, useContext } from "react";
 
-// Define the context and its type
 interface SavedStockType {
   isSideSheet: boolean;
   changeSideSheet: () => void;
 }
 
-// Create the context with a default value
 const AppContext = createContext<SavedStockType | undefined>(undefined);
 
 interface AppProviderProps {
   children: ReactNode;
 }
 
-// Create a provider component
-export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+export const SavedStockProvider: React.FC<AppProviderProps> = ({
+  children,
+}) => {
   const [isSideSheet, setIsSideSheet] = useState<boolean>(false);
 
   const changeSideSheet = () => {
