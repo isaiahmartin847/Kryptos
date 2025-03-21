@@ -1,6 +1,6 @@
 import { Bitcoin } from "@/types/bitcoin";
 import { ApiResponse, ChartData } from "@/types/requestBody";
-import { Stock } from "@/types/stocks";
+import { SavedStock, Stock } from "@/types/stocks";
 
 const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
 
@@ -42,10 +42,23 @@ export const fetchStockByTicker = async (
 };
 
 export const fetchStocks = async (): Promise<ApiResponse<Stock>> => {
-  const response = await fetch("http://localhost:8080/stock");
+  const response = await fetch(`${apiUrl}/stock`);
 
   if (!response.ok) {
     console.error("Unable to fetch the stocks", response.statusText);
+    throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+export const fetchSavedStocks = async (
+  userId: string,
+): Promise<ApiResponse<SavedStock>> => {
+  const response = await fetch(`${apiUrl}/saved?userId=${userId}`);
+
+  if (!response.ok) {
+    console.error("Unable to fetch the saved stocks for this user");
     throw new Error("Network response was not ok");
   }
 
