@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchStocks } from "@/apiFunctions/getFunctions";
+import { SkeletonStockCard } from "@/components/product/skeletonComponents";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Stock } from "@/types/stocks";
@@ -25,7 +26,7 @@ const Main = () => {
         <CardHeader className="border-b-2 border-neutral-400">
           <CardTitle>Charts</CardTitle>
         </CardHeader>
-        <CardContent className="py-4">
+        <CardContent className="space-y-3 py-4">
           {!isLoading ? (
             data?.data.items.map((item: Stock) => {
               return (
