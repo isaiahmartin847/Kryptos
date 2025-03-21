@@ -27,3 +27,10 @@ export interface PriceForecast {
   created_at: Date;
   sock_id: number;
 }
+
+export interface SavedStock {
+  id: number;
+  stock_id: number;
+  user_id: string;
+  stock: Stock;
+}
