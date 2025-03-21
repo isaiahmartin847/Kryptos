@@ -13,10 +13,13 @@ FROM information_schema.columns
 WHERE table_name = 'users';
 
 --@block 
-SELECT * from users
+SELECT * from saved_stock
 
 --@block 
 SELECT * from price_forecast
+
+--@block 
+SELECT * FROM saved_stock WHERE user_id = 'user_2uabclBU1y3lea8xEqm9bJpKMis';
 
 
 --@block 

@@ -41,6 +41,18 @@ func (s *StockService) GetAllStocks(ctx context.Context) ([]models.Stock, error)
 	return stocks, nil
 }
 
+func (s *StockService) GetSavedStocksWithUserId(ctx context.Context, userId string) ([]models.SavedStock, error) {
+
+	savedStocks, err := s.StockRepo.GetSavedStocksWithUserId(ctx, userId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return savedStocks, nil
+
+}
+
 // POST FUNCTIONS
 
 func (s *StockService) SaveStock(ctx context.Context, saveStockData *models.SavedStock) error {

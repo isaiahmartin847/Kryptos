@@ -73,6 +73,36 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 
 }
 
+func (h *Handler) GetSavedStocks(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	userId := c.QueryParam("userId")
+
+	// TODO add in some query param checking before running the query
+
+	savedStocks, err := h.StockService.GetSavedStocksWithUserId(ctx, userId)
+
+	if err != nil {
+		logger.Error("unable to get the saved stocks")
+
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "Server was unable to get the saved stocks",
+		})
+	}
+
+	response := models.ApiResponse[models.SavedStock]{
+		Status: "success",
+		Data: models.Data[models.SavedStock]{
+			Items: savedStocks,
+			Meta:  models.Meta{Version: "1.0"},
+		},
+	}
+
+	return c.JSON(http.StatusOK, response)
+
+}
+
 // POST HANDLERS
 
 func (h *Handler) SaveStock(c echo.Context) error {
@@ -100,7 +130,7 @@ func (h *Handler) SaveStock(c echo.Context) error {
 	response := models.ApiResponse[models.SavedStock]{
 		Status: "success",
 		Data: models.Data[models.SavedStock]{
-			Item: reqBody,
+			Item: &reqBody,
 			Meta: models.Meta{Version: "1.0"},
 		},
 	}
