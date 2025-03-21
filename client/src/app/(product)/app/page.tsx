@@ -1,7 +1,6 @@
 "use client";
 
 import { fetchStocks } from "@/apiFunctions/getFunctions";
-import { SkeletonStockCard } from "@/components/product/skeletonComponents";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Stock } from "@/types/stocks";

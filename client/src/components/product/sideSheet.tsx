@@ -8,9 +8,12 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import { useSavedStocks } from "@/providers/savedStocksProvider";
+import { SkeletonStockCard } from "./skeletonComponents";
+import StockCard from "./stockCard";
 
 const SavedStockSideSheet = () => {
-  const { isSavedStockError } = useSavedStocks();
+  const { isSavedStockError, isSavedStockLoading, savedStocksData } =
+    useSavedStocks();
 
   return (
     <Drawer direction="right">
@@ -32,11 +35,32 @@ const SavedStockSideSheet = () => {
             <div className="p-4 text-center text-lg">
               Oops! Something went wrong while fetching your saved stocks.
             </div>
-          ) : true ? (
+          ) : isSavedStockLoading ? (
             // handle loading
-            <div>loading</div>
+            <div className="mx-4 mt-5 space-y-3">
+              {Array(5)
+                .fill(null)
+                .map((_, index) => {
+                  return <SkeletonStockCard key={index} />;
+                })}
+            </div>
           ) : (
-            <div>done</div>
+            <div className="mx-4 mt-5 space-y-3">
+              {savedStocksData?.data.items.map((item) => {
+                return (
+                  <StockCard
+                    key={item.id}
+                    color={item.stock.color}
+                    iconName={item.stock.icon_type}
+                    name={item.stock.name}
+                    marketCap={item.stock.daily_prices[0].market_cap}
+                    price={item.stock.daily_prices[0].price}
+                    percentageChange={item.stock.daily_prices[0].percent_change}
+                    ticker={item.stock.ticker}
+                  />
+                );
+              })}
+            </div>
           )}
         </div>
       </DrawerContent>
