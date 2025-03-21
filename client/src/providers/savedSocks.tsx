@@ -1,4 +1,11 @@
-import React, { createContext, useState, ReactNode, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useContext,
+  useEffect,
+} from "react";
+import { useUser } from "@clerk/clerk-react";
 
 interface SavedStockType {
   isSideSheet: boolean;
@@ -11,10 +18,18 @@ interface AppProviderProps {
   children: ReactNode;
 }
 
+// This is the saved stock provider that holds all the functions and state
 export const SavedStockProvider: React.FC<AppProviderProps> = ({
   children,
 }) => {
   const [isSideSheet, setIsSideSheet] = useState<boolean>(false);
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      console.log(user.id);
+    }
+  }, [user]);
 
   const changeSideSheet = () => {
     setIsSideSheet(!isSideSheet);

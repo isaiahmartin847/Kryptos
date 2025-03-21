@@ -9,8 +9,8 @@ import {
 import { dark } from "@clerk/themes";
 import "@/app/globals.css";
 import Navbar from "@/components/product/navbar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ReactQueryProvider } from "@/providers/reactQueryProvider";
+import { SavedStockProvider } from "@/providers/savedSocks";
 
 export default function SubdomainLayout({
   children,
@@ -22,19 +22,21 @@ export default function SubdomainLayout({
       appearance={{
         baseTheme: dark,
       }}
-      afterSignOutUrl={"http://localhost:3000/"}>
+      // TODO update this with the real redirect url
+      afterSignOutUrl={"http://localhost:3000/"}
+    >
       <SignedOut>
         <RedirectToSignIn />
       </SignedOut>
 
       <SignedIn>
         <ReactQueryProvider>
-          <SidebarProvider>
-            <main className="bg-cover bg-center h-screen bg-primaryColor text-textColor w-screen">
+          <SavedStockProvider>
+            <main className="h-screen w-screen bg-primaryColor bg-cover bg-center text-textColor">
               <Navbar />
               {children}
             </main>
-          </SidebarProvider>
+          </SavedStockProvider>
         </ReactQueryProvider>
       </SignedIn>
     </ClerkProvider>
