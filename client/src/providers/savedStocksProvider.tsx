@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useEffect } from "react";
+import React, { createContext, ReactNode, useContext } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSavedStocks } from "@/apiFunctions/getFunctions";
@@ -37,12 +37,6 @@ export const SavedStockProvider: React.FC<AppProviderProps> = ({
     },
     enabled: !!user?.id,
   });
-
-  useEffect(() => {
-    if (savedStocksData) {
-      console.log(savedStocksData);
-    }
-  }, [savedStocksData]);
 
   return (
     <AppContext.Provider

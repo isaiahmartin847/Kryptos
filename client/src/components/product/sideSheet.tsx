@@ -7,8 +7,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
+import { useSavedStocks } from "@/providers/savedStocksProvider";
 
 const SavedStockSideSheet = () => {
+  const { isSavedStockError } = useSavedStocks();
+
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -23,6 +26,19 @@ const SavedStockSideSheet = () => {
             </DrawerClose>
           </div>
         </DrawerHeader>
+        <div>
+          {isSavedStockError ? (
+            // handle error
+            <div className="p-4 text-center text-lg">
+              Oops! Something went wrong while fetching your saved stocks.
+            </div>
+          ) : true ? (
+            // handle loading
+            <div>loading</div>
+          ) : (
+            <div>done</div>
+          )}
+        </div>
       </DrawerContent>
     </Drawer>
   );
