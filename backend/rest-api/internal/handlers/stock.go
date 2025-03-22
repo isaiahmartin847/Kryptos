@@ -51,7 +51,19 @@ func (h *Handler) GetStockByTicker(c echo.Context) error {
 func (h *Handler) GetAllStocks(c echo.Context) error {
 	ctx := c.Request().Context()
 
-	stocks, err := h.StockService.GetAllStocks(ctx)
+	// Declare userId as a pointer to a string
+	var userId *string
+
+	userIdQuery := c.QueryParam("userId")
+
+	// If the userId query param is not empty, assign it to userId
+	if userIdQuery != "" {
+		userId = &userIdQuery
+	}
+
+	// TODO create a checker for the user id
+
+	stocks, err := h.StockService.GetAllStocks(ctx, userId)
 	if err != nil {
 		logger.Error("Unable to get the stocks")
 

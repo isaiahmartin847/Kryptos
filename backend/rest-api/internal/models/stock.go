@@ -8,6 +8,10 @@ type Stock struct {
 	IconType       string          `gorm:"type:string" json:"icon_type"`
 	DailyPrices    []DailyPrice    `gorm:"foreignKey:StockID" json:"daily_prices,omitempty"`
 	PriceForecasts []PriceForecast `gorm:"foreignKey:StockID" json:"price_forecasts,omitempty"`
+
+	SavedStocks []SavedStock `gorm:"foreignKey:StockID" json:"-"`
+
+	IsSaved bool `gorm:"-" json:"is_saved"`
 }
 
 func (Stock) TableName() string {

@@ -30,14 +30,39 @@ func (repo *StockRepository) GetStockByTicker(ctx context.Context, ticker string
 	return stock, nil
 }
 
-func (repo *StockRepository) GetAllStocks(ctx context.Context) ([]models.Stock, error) {
+// func (repo *StockRepository) GetAllStocks(ctx context.Context, userId *string) ([]models.Stock, error) {
+// 	var stocks []models.Stock
+
+// 	if userId != nil {
+// 		logger.Info(fmt.Sprintf("this is the user id if it exist %v", *userId))
+// 	}
+
+// 	if err := repo.db.WithContext(ctx).
+// 		Preload("DailyPrices", func(db *gorm.DB) *gorm.DB {
+// 			return db.Order("date DESC").Limit(1)
+// 		}).
+// 		Find(&stocks).Error; err != nil {
+// 		logger.Error("Unable to query the stocks from the database")
+// 		return nil, err
+// 	}
+
+// 	return stocks, nil
+
+// }
+
+func (repo *StockRepository) GetAllStocks(ctx context.Context, userId *string) ([]models.Stock, error) {
 	var stocks []models.Stock
 
-	if err := repo.db.WithContext(ctx).
+	query := repo.db.WithContext(ctx).
 		Preload("DailyPrices", func(db *gorm.DB) *gorm.DB {
 			return db.Order("date DESC").Limit(1)
-		}).
-		Find(&stocks).Error; err != nil {
+		})
+
+	if userId != nil {
+		query = query.Preload("SavedStocks", "user_id = ?", *userId)
+	}
+
+	if err := query.Find(&stocks).Error; err != nil {
 		logger.Error("Unable to query the stocks from the database")
 		return nil, err
 	}

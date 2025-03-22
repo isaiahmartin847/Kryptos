@@ -31,11 +31,18 @@ func (s *StockService) GetByTicker(ctx context.Context, ticker string) (models.S
 	return stock, nil
 }
 
-func (s *StockService) GetAllStocks(ctx context.Context) ([]models.Stock, error) {
-
-	stocks, err := s.StockRepo.GetAllStocks(ctx)
+func (s *StockService) GetAllStocks(ctx context.Context, userId *string) ([]models.Stock, error) {
+	stocks, err := s.StockRepo.GetAllStocks(ctx, userId)
 	if err != nil {
 		return nil, err
+	}
+
+	if userId != nil {
+		for i := range stocks {
+			if len(stocks[i].SavedStocks) > 0 {
+				stocks[i].IsSaved = true
+			}
+		}
 	}
 
 	return stocks, nil
