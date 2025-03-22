@@ -54,7 +54,6 @@ const SavedStockSideSheet = () => {
               </p>
             </div>
           ) : (
-            // handle non-empty items array
             <div className="mx-4 mt-5 space-y-3">
               {savedStocksData?.data.items.map((item) => {
                 return (

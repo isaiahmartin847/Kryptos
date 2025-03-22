@@ -67,3 +67,16 @@ func (s *StockService) SaveStock(ctx context.Context, saveStockData *models.Save
 	return nil
 
 }
+
+// DELETE FUNCTIONS
+
+func (s *StockService) DeleteSavedStock(ctx context.Context, savedStockId int64) error {
+	err := s.StockRepo.DeleteSavedStock(ctx, savedStockId)
+
+	if err != nil {
+		logger.Error("Unable to Delete the saved stock with id: %v", savedStockId)
+		return err
+	}
+
+	return nil
+}

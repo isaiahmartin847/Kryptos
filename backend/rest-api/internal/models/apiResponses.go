@@ -16,3 +16,8 @@ type ApiResponse[T any] struct {
 	Status string  `json:"status"`
 	Data   Data[T] `json:"data"`
 }
+
+type ApiMsgResponse struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}

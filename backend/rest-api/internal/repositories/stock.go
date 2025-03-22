@@ -68,11 +68,25 @@ func (repo *StockRepository) SaveStock(ctx context.Context, stock *models.SavedS
 	if err := repo.db.WithContext(ctx).Create(stock).Error; err != nil {
 
 		logger.Error("Unable to create saved stock",
-			slog.String("source", "SaveStock"),
 			slog.String("error", err.Error()),
 		)
 
 		return err
 	}
 	return nil
+}
+
+// Delete operation
+
+func (repo *StockRepository) DeleteSavedStock(ctx context.Context, savedStockId int64) error {
+
+	err := repo.db.WithContext(ctx).Where("id = ?", savedStockId).Delete(&models.SavedStock{}).Error
+
+	if err != nil {
+		logger.Error("Unable to delete the saved stock with id: %v", savedStockId)
+		return err
+	}
+
+	return nil
+
 }

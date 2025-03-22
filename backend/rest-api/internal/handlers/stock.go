@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
@@ -136,5 +137,37 @@ func (h *Handler) SaveStock(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusCreated, response)
+
+}
+
+// DELETE FUNCTIONS
+
+func (h *Handler) DeleteSavedStock(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	savedStockIdParam := c.Param("id")
+
+	savedStockId, err := strconv.ParseInt(savedStockIdParam, 10, 64)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, models.Error{
+			Code:    http.StatusBadRequest,
+			Message: fmt.Sprintf("Invalid param: 'savedStockId' must be a integer. Error: %v", err),
+		})
+	}
+
+	err = h.StockService.DeleteSavedStock(ctx, savedStockId)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "An unexpected internal server error occurred",
+		})
+	}
+
+	return c.JSON(http.StatusOK, models.ApiMsgResponse{
+		Status:  "success",
+		Message: fmt.Sprintf("Saved stock with id %v has been deleted.", savedStockId),
+	})
 
 }

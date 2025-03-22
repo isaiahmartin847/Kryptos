@@ -44,6 +44,8 @@ func (s *Server) ConfigureRoutes() {
 	s.echo.GET("/stock", s.handler.GetAllStocks)
 	s.echo.GET("/saved", s.handler.GetSavedStocks)
 
+	s.echo.DELETE("/saved/:id", s.handler.DeleteSavedStock)
+
 }
 
 func (s *Server) Start(addr string) error {
