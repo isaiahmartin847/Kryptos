@@ -1,4 +1,4 @@
-import { BookmarkCheck, PanelRightClose } from "lucide-react";
+import { BookmarkCheck, BookmarkX, PanelRightClose } from "lucide-react";
 import {
   Drawer,
   DrawerClose,
@@ -44,7 +44,17 @@ const SavedStockSideSheet = () => {
                   return <SkeletonStockCard key={index} />;
                 })}
             </div>
+          ) : savedStocksData?.data.items.length === 0 ? (
+            // handle empty state
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <BookmarkX size={48} className="mb-3 text-neutral-400" />
+              <p className="text-lg font-medium">No saved stocks yet</p>
+              <p className="mt-2 text-neutral-500">
+                When you save stocks, they&apos;ll appear here for quick access.
+              </p>
+            </div>
           ) : (
+            // handle non-empty items array
             <div className="mx-4 mt-5 space-y-3">
               {savedStocksData?.data.items.map((item) => {
                 return (
