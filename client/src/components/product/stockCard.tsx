@@ -80,8 +80,11 @@ const StockCard = ({
   const handleSave = (e: MouseEvent<HTMLButtonElement>) => {
     // the event prevent avoids the Link pushing you to the stock chart page
     e.preventDefault();
-    console.log("hit");
-    mutateSaveStock(stockId);
+    if (!isSaved) {
+      mutateSaveStock(stockId);
+    } else {
+      console.log("Remove saved stock");
+    }
   };
 
   useEffect(() => {
