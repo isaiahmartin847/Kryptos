@@ -10,11 +10,13 @@ import {
 import { useSavedStocks } from "@/providers/savedStocksProvider";
 import { SkeletonStockCard } from "./skeletonComponents";
 import StockCard from "./stockCard";
+import { useStocks } from "@/providers/stocksProvider";
 
 const SavedStockSideSheet = () => {
   const { isSavedStockError, isSavedStockLoading, savedStocksData } =
     useSavedStocks();
 
+  const { savedStocks, isStocksError, isStocksLoading } = useStocks();
   // savedStocksData?.data.items.length === 0
   return (
     <Drawer direction="right">
@@ -31,12 +33,12 @@ const SavedStockSideSheet = () => {
           </div>
         </DrawerHeader>
         <div>
-          {isSavedStockError ? (
+          {isStocksError ? (
             // handle error
             <div className="p-4 text-center text-lg">
               Oops! Something went wrong while fetching your saved stocks.
             </div>
-          ) : isSavedStockLoading ? (
+          ) : isStocksLoading ? (
             // handle loading
             <div className="mx-4 mt-5 space-y-3">
               {Array(5)
@@ -56,19 +58,20 @@ const SavedStockSideSheet = () => {
             </div>
           ) : (
             <div className="mx-4 mt-5 space-y-3">
-              {savedStocksData?.data.items.map((item) => {
+              {savedStocks.map((item) => {
                 return (
                   <StockCard
                     key={item.id}
-                    color={item.stock.color}
-                    iconName={item.stock.icon_type}
-                    name={item.stock.name}
-                    marketCap={item.stock.daily_prices[0].market_cap}
-                    price={item.stock.daily_prices[0].price}
-                    percentageChange={item.stock.daily_prices[0].percent_change}
-                    ticker={item.stock.ticker}
-                    stockId={item.stock.id}
-                    isSaved={item.stock.is_saved}
+                    color={item.color}
+                    iconName={item.icon_type}
+                    name={item.name}
+                    marketCap={item.daily_prices[0].market_cap}
+                    price={item.daily_prices[0].price}
+                    percentageChange={item.daily_prices[0].percent_change}
+                    ticker={item.ticker}
+                    stockId={item.id}
+                    isSaved={item.is_saved}
+                    savedStock={item.saved_stocks}
                   />
                 );
               })}

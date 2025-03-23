@@ -32,14 +32,12 @@ export default function SubdomainLayout({
 
       <SignedIn>
         <ReactQueryProvider>
-          <SavedStockProvider>
-            <StocksProvider>
-              <main className="h-screen w-screen bg-primaryColor bg-cover bg-center text-textColor">
-                <Navbar />
-                {children}
-              </main>
-            </StocksProvider>
-          </SavedStockProvider>
+          <StocksProvider>
+            <main className="h-screen w-screen bg-primaryColor bg-cover bg-center text-textColor">
+              <Navbar />
+              {children}
+            </main>
+          </StocksProvider>
         </ReactQueryProvider>
       </SignedIn>
     </ClerkProvider>

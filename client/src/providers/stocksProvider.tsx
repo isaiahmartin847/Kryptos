@@ -11,6 +11,7 @@ interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
   mutateSaveStock: (stockId: number) => void;
   mutateRemoveSavedStock: (savedStockId: number) => void;
+  savedStocks: Stock[];
   isStocksLoading: boolean;
   isStocksError: boolean;
 }
@@ -63,15 +64,18 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       queryClient.invalidateQueries({ queryKey: ["stocks"] });
     },
     onError: (error) => {
-      console.log("Huge error");
       console.log(error.message);
     },
   });
+
+  const savedStocks =
+    stocks?.data.items.filter((stock) => stock.is_saved) || [];
 
   return (
     <StockContext.Provider
       value={{
         stocks,
+        savedStocks,
         isStocksLoading,
         isStocksError,
         mutateSaveStock,
