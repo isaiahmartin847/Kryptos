@@ -9,7 +9,7 @@ type Stock struct {
 	DailyPrices    []DailyPrice    `gorm:"foreignKey:StockID" json:"daily_prices,omitempty"`
 	PriceForecasts []PriceForecast `gorm:"foreignKey:StockID" json:"price_forecasts,omitempty"`
 
-	SavedStocks []SavedStock `gorm:"foreignKey:StockID" json:"-"`
+	SavedStocks []SavedStock `gorm:"foreignKey:StockID" json:"saved_stocks,omitempty"`
 
 	IsSaved bool `gorm:"-" json:"is_saved"`
 }
