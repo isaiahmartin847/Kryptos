@@ -33,6 +33,8 @@ const Main = () => {
                   iconName={item.icon_type}
                   name={item.name}
                   ticker={item.ticker}
+                  isSaved={item.is_saved}
+                  stockId={item.id}
                   percentageChange={item.daily_prices[0].percent_change}
                 />
               );

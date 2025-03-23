@@ -2,6 +2,8 @@ import React, { Suspense } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { MoveDown, MoveUp } from "lucide-react";
+import { useStocks } from "@/providers/stocksProvider";
+import { Button } from "../ui/button";
 
 // Define supported icon libraries with correct paths
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,6 +51,8 @@ interface Props {
   name: string;
   ticker: string;
   percentageChange: number;
+  isSaved: boolean;
+  stockId: number;
 }
 
 const formatNumber = (num: number) => {
@@ -65,9 +69,16 @@ const StockCard = ({
   color,
   name,
   ticker,
+  isSaved,
   percentageChange,
+  stockId,
 }: Props) => {
+  const { mutateSaveStock } = useStocks();
   const Icon = getIconComponent(iconName);
+
+  const handleSave = () => {
+    mutateSaveStock(stockId);
+  };
 
   return (
     <Card>
@@ -108,6 +119,8 @@ const StockCard = ({
               )}
               {percentageChange.toFixed(1)}%
             </span>
+
+            <Button onClick={handleSave}>{isSaved ? "saved" : "save"}</Button>
           </div>
         </CardContent>
       </Link>

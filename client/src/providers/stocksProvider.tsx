@@ -3,7 +3,7 @@ import { saveStock } from "@/apiFunctions/postFunctions";
 import { ApiResponse } from "@/types/requestBody";
 import { Stock } from "@/types/stocks";
 import { useUser } from "@clerk/nextjs";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 interface StocksType {
@@ -21,6 +21,7 @@ const StockContext = createContext<StocksType | undefined>(undefined);
 
 export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
   const { user } = useUser();
+  const queryClient = useQueryClient();
 
   const {
     data: stocks,
@@ -45,6 +46,9 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       } else {
         return saveStock(user.id, stockId);
       }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stocks"] });
     },
   });
 
