@@ -7,7 +7,7 @@ export interface Stock {
   ticker: string;
   icon_type: string;
   daily_prices: DailyPrice[];
-  saved_stocks: SavedStock[];
+  saved_stocks?: SavedStock[];
   is_saved: boolean;
 }
 

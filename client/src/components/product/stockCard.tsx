@@ -5,6 +5,7 @@ import { Bookmark, MoveDown, MoveUp } from "lucide-react";
 import { useStocks } from "@/providers/stocksProvider";
 import { Button } from "../ui/button";
 import { MouseEvent } from "react";
+import { SavedStock } from "@/types/stocks";
 
 // Define supported icon libraries with correct paths
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,6 +55,7 @@ interface Props {
   percentageChange: number;
   isSaved: boolean;
   stockId: number;
+  savedStock: SavedStock[] | undefined;
 }
 
 const formatNumber = (num: number) => {
@@ -73,6 +75,7 @@ const StockCard = ({
   isSaved,
   percentageChange,
   stockId,
+  savedStock,
 }: Props) => {
   const { mutateSaveStock } = useStocks();
   const Icon = getIconComponent(iconName);
@@ -83,13 +86,13 @@ const StockCard = ({
     if (!isSaved) {
       mutateSaveStock(stockId);
     } else {
-      console.log("Remove saved stock");
+      if (savedStock) {
+        console.log(`this is the saved stock id ${savedStock[0].id}`);
+      } else {
+        console.log("Remove saved stock");
+      }
     }
   };
-
-  useEffect(() => {
-    console.log(isSaved);
-  }, []);
 
   return (
     <Card>

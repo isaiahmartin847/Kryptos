@@ -35,6 +35,7 @@ const Main = () => {
                   ticker={item.ticker}
                   isSaved={item.is_saved}
                   stockId={item.id}
+                  savedStock={item.saved_stocks}
                   percentageChange={item.daily_prices[0].percent_change}
                 />
               );

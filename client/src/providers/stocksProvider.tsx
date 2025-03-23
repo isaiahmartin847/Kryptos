@@ -1,3 +1,4 @@
+import { deleteSavedStock } from "@/apiFunctions/DeleteFunctions";
 import { fetchStocks } from "@/apiFunctions/getFunctions";
 import { saveStock } from "@/apiFunctions/postFunctions";
 import { ApiResponse } from "@/types/requestBody";
@@ -9,6 +10,7 @@ import React, { createContext, ReactNode, useContext, useState } from "react";
 interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
   mutateSaveStock: (stockId: number) => void;
+  mutateRemoveSavedStock: (savedStockId: number) => void;
   isStocksLoading: boolean;
   isStocksError: boolean;
 }
@@ -52,9 +54,24 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     },
   });
 
+  const { mutate: mutateRemoveSavedStock } = useMutation({
+    mutationFn: (savedStockId: number) => {
+      return deleteSavedStock(savedStockId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["stocks"] });
+    },
+  });
+
   return (
     <StockContext.Provider
-      value={{ stocks, isStocksLoading, isStocksError, mutateSaveStock }}
+      value={{
+        stocks,
+        isStocksLoading,
+        isStocksError,
+        mutateSaveStock,
+        mutateRemoveSavedStock,
+      }}
     >
       {children}
     </StockContext.Provider>

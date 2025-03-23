@@ -1,6 +1,6 @@
 const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
 
-const DeleteSavedStock = async (savedStockId: number): Promise<any> => {
+export const deleteSavedStock = async (savedStockId: number): Promise<any> => {
   const response = await fetch(`${apiUrl}/save/${savedStockId}`, {
     method: "DELETE",
   });
