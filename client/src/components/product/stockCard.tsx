@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Bookmark, MoveDown, MoveUp } from "lucide-react";
@@ -78,7 +78,27 @@ const StockCard = ({
   savedStock,
 }: Props) => {
   const { mutateSaveStock, mutateRemoveSavedStock } = useStocks();
-  const Icon = getIconComponent(iconName);
+  // const Icon = getIconComponent(iconName);
+
+  const MemoizedIcon = useMemo(() => {
+    const Icon = getIconComponent(iconName);
+
+    const IconComponent = () => {
+      return Icon ? (
+        <Suspense
+          fallback={
+            <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
+          }
+        >
+          <Icon size={24} color={color} className="text-xl" />
+        </Suspense>
+      ) : (
+        <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
+      );
+    };
+
+    return React.memo(IconComponent);
+  }, [iconName, color]);
 
   const handleSave = (e: MouseEvent<HTMLButtonElement>) => {
     // the event prevent avoids the Link pushing you to the stock chart page
@@ -100,20 +120,11 @@ const StockCard = ({
       <Link href={`/chart/${ticker.toLowerCase()}`}>
         <CardContent className="cursor-pointer rounded-xl bg-primaryColor p-3 hover:bg-primaryColor/70">
           <div className="flex w-full items-center justify-between">
-            {Icon ? (
-              <div className="flex space-x-3">
-                <Suspense
-                  fallback={
-                    <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
-                  }
-                >
-                  <Icon size={24} color={color} className="text-xl" />
-                </Suspense>
-                <h1 className="font-semibold">{name}</h1>
-              </div>
-            ) : (
-              <div className="h-6 w-6 animate-pulse rounded bg-gray-200" />
-            )}
+            <div className="flex space-x-3">
+              <MemoizedIcon />
+              <h1 className="font-semibold">{name}</h1>
+            </div>
+
             <h1>
               <span className="font-semibold">Price</span>: $
               {formatNumber(price)}
