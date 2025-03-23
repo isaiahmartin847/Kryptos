@@ -1,10 +1,14 @@
 import { fetchStocks } from "@/apiFunctions/getFunctions";
+import { ApiResponse } from "@/types/requestBody";
+import { Stock } from "@/types/stocks";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 interface StocksType {
-  test: boolean;
+  stocks: ApiResponse<Stock> | undefined;
+  isStocksLoading: boolean;
+  isStocksError: boolean;
 }
 
 interface StocksProviderProps {
@@ -25,16 +29,18 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     queryKey: ["stocks"],
     queryFn: () => {
       if (!user?.id) {
-        throw new Error("User is not authenticated");
+        return fetchStocks("");
       } else {
-        fetchStocks(user.id);
+        return fetchStocks(user.id);
       }
     },
     enabled: !!user?.id,
   });
 
   return (
-    <StockContext.Provider value={{ test }}>{children}</StockContext.Provider>
+    <StockContext.Provider value={{ stocks, isStocksLoading, isStocksError }}>
+      {children}
+    </StockContext.Provider>
   );
 };
 
