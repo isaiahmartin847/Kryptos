@@ -51,7 +51,7 @@ const Navbar = () => {
           </Tooltip>
         </TooltipProvider>
 
-        {/* <SavedStockSideSheet /> */}
+        <SavedStockSideSheet />
 
         <UserButton
           appearance={{

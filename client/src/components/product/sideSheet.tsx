@@ -13,11 +13,8 @@ import StockCard from "./stockCard";
 import { useStocks } from "@/providers/stocksProvider";
 
 const SavedStockSideSheet = () => {
-  const { isSavedStockError, isSavedStockLoading, savedStocksData } =
-    useSavedStocks();
-
   const { savedStocks, isStocksError, isStocksLoading } = useStocks();
-  // savedStocksData?.data.items.length === 0
+
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -47,7 +44,7 @@ const SavedStockSideSheet = () => {
                   return <SkeletonStockCard key={index} />;
                 })}
             </div>
-          ) : savedStocksData?.data.items.length === 0 ? (
+          ) : savedStocks.length === 0 ? (
             // handle empty state
             <div className="flex flex-col items-center justify-center p-8 text-center">
               <BookmarkX size={48} className="mb-3 text-neutral-400" />
