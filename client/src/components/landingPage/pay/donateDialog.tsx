@@ -18,6 +18,7 @@ import PaymentForm from "@/components/landingPage/forms/paymentForm";
 import { Loader2 } from "lucide-react";
 import { createPaymentIntent } from "@/apiFunctions/postFunctions";
 
+// TODO remove this and put it in the env
 const stripePublicKey: string =
   "pk_test_51Pm0egLqplUDffhZq85VRxffA4T0tJF8SrMCi6q2pQ8NYiduY7IwNF7htGMhIRM81BmLlnREskpfypASFm5xnUsi00Bl550s7Z";
 
@@ -33,7 +34,6 @@ const DonateDialog = ({ price }: DonateProps) => {
   const { mutate, isPending } = useMutation({
     mutationFn: createPaymentIntent,
     onSuccess: (data) => {
-      console.log(data.client_secret);
       setStripeOptions({
         clientSecret: data.client_secret,
         appearance: {
@@ -52,7 +52,6 @@ const DonateDialog = ({ price }: DonateProps) => {
           },
         },
       });
-      console.log(stripeOptions);
     },
     onError: (error) => {
       console.error("Error creating user:", error);
@@ -66,28 +65,25 @@ const DonateDialog = ({ price }: DonateProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          onClick={handleOpenDialog}
-          variant={"secondary"}>
+        <Button onClick={handleOpenDialog} variant={"secondary"}>
           Donate ${price}
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="w-4/5 min-w-80 h-[700px]"
-        aria-describedby={undefined}>
+        className="h-[700px] w-4/5 min-w-80"
+        aria-describedby={undefined}
+      >
         <DialogHeader className="h-fit">
           <DialogTitle>Payment</DialogTitle>
         </DialogHeader>
         {isPending ? (
-          <div className="flex flex-col items-center h-[100px]">
+          <div className="flex h-[100px] flex-col items-center">
             <Loader2 className="mr-2 h-8 w-8 animate-spin" />
             Processing...
           </div>
         ) : (
           stripeOptions?.clientSecret && (
-            <Elements
-              stripe={StripePromise}
-              options={stripeOptions}>
+            <Elements stripe={StripePromise} options={stripeOptions}>
               <PaymentForm />
             </Elements>
           )

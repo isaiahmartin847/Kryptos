@@ -1,12 +1,14 @@
 import { fetchStocks } from "@/apiFunctions/getFunctions";
+import { saveStock } from "@/apiFunctions/postFunctions";
 import { ApiResponse } from "@/types/requestBody";
 import { Stock } from "@/types/stocks";
 import { useUser } from "@clerk/nextjs";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
 interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
+  mutateSaveStock: (stockId: number) => void;
   isStocksLoading: boolean;
   isStocksError: boolean;
 }
@@ -36,8 +38,20 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     enabled: !!user?.id,
   });
 
+  const { mutate: mutateSaveStock } = useMutation({
+    mutationFn: (stockId: number) => {
+      if (!user?.id) {
+        throw new Error("User is not authenticated");
+      } else {
+        return saveStock(user.id, stockId);
+      }
+    },
+  });
+
   return (
-    <StockContext.Provider value={{ stocks, isStocksLoading, isStocksError }}>
+    <StockContext.Provider
+      value={{ stocks, isStocksLoading, isStocksError, mutateSaveStock }}
+    >
       {children}
     </StockContext.Provider>
   );

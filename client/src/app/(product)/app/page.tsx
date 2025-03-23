@@ -1,11 +1,9 @@
 "use client";
 
-// import { fetchStocks } from "@/apiFunctions/getFunctions";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
-// import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const Main = () => {
@@ -40,8 +38,10 @@ const Main = () => {
               );
             })
           ) : isStocksError ? (
+            // Handle error
             <div>Error</div>
           ) : (
+            // Handle the loading
             <div>Loading...</div>
           )}
         </CardContent>
