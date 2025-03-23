@@ -1,23 +1,21 @@
 "use client";
 
-import { fetchStocks } from "@/apiFunctions/getFunctions";
+// import { fetchStocks } from "@/apiFunctions/getFunctions";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const Main = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["stocks"],
-    queryFn: fetchStocks,
-  });
+  const { stocks, isStocksError, isStocksLoading } = useStocks();
 
   useEffect(() => {
-    if (data) {
-      console.log(data);
+    if (stocks) {
+      console.log(stocks);
     }
-  }, [data]);
+  }, [stocks]);
 
   return (
     <div className="flex h-[calc(100vh-75px)] justify-center">
@@ -26,8 +24,8 @@ const Main = () => {
           <CardTitle>Charts</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 py-4">
-          {!isLoading ? (
-            data?.data.items.map((item: Stock) => {
+          {!isStocksLoading ? (
+            stocks?.data.items.map((item: Stock) => {
               return (
                 <StockCard
                   key={item.id}
@@ -41,7 +39,7 @@ const Main = () => {
                 />
               );
             })
-          ) : isError ? (
+          ) : isStocksError ? (
             <div>Error</div>
           ) : (
             <div>Loading...</div>

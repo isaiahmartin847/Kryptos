@@ -18,7 +18,6 @@ interface StocksProviderProps {
 const StockContext = createContext<StocksType | undefined>(undefined);
 
 export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
-  const [test, isTest] = useState<boolean>(true);
   const { user } = useUser();
 
   const {
