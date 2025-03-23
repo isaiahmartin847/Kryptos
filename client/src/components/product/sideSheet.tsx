@@ -15,6 +15,7 @@ const SavedStockSideSheet = () => {
   const { isSavedStockError, isSavedStockLoading, savedStocksData } =
     useSavedStocks();
 
+  // savedStocksData?.data.items.length === 0
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -66,6 +67,8 @@ const SavedStockSideSheet = () => {
                     price={item.stock.daily_prices[0].price}
                     percentageChange={item.stock.daily_prices[0].percent_change}
                     ticker={item.stock.ticker}
+                    stockId={item.stock.id}
+                    isSaved={item.stock.is_saved}
                   />
                 );
               })}

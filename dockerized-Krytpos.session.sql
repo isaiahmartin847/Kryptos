@@ -13,7 +13,9 @@ FROM information_schema.columns
 WHERE table_name = 'users';
 
 --@block 
-SELECT * from saved_stock
+-- SELECT * from saved_stock
+DElETE FROM saved_stock
+
 
 --@block 
 SELECT * from price_forecast

@@ -1,9 +1,10 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
-import { MoveDown, MoveUp } from "lucide-react";
+import { Bookmark, MoveDown, MoveUp } from "lucide-react";
 import { useStocks } from "@/providers/stocksProvider";
 import { Button } from "../ui/button";
+import { MouseEvent } from "react";
 
 // Define supported icon libraries with correct paths
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,9 +77,16 @@ const StockCard = ({
   const { mutateSaveStock } = useStocks();
   const Icon = getIconComponent(iconName);
 
-  const handleSave = () => {
+  const handleSave = (e: MouseEvent<HTMLButtonElement>) => {
+    // the event prevent avoids the Link pushing you to the stock chart page
+    e.preventDefault();
+    console.log("hit");
     mutateSaveStock(stockId);
   };
+
+  useEffect(() => {
+    console.log(isSaved);
+  }, []);
 
   return (
     <Card>
@@ -120,7 +128,13 @@ const StockCard = ({
               {percentageChange.toFixed(1)}%
             </span>
 
-            <Button onClick={handleSave}>{isSaved ? "saved" : "save"}</Button>
+            <button onClick={handleSave}>
+              {!isSaved ? (
+                <Bookmark size={23} />
+              ) : (
+                <Bookmark size={23} fill="white" />
+              )}
+            </button>
           </div>
         </CardContent>
       </Link>
