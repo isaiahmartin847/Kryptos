@@ -59,7 +59,12 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       return deleteSavedStock(savedStockId);
     },
     onSuccess: () => {
+      console.log("removed the saved job with the id");
       queryClient.invalidateQueries({ queryKey: ["stocks"] });
+    },
+    onError: (error) => {
+      console.log("Huge error");
+      console.log(error.message);
     },
   });
 

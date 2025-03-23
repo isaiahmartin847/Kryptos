@@ -77,7 +77,7 @@ const StockCard = ({
   stockId,
   savedStock,
 }: Props) => {
-  const { mutateSaveStock } = useStocks();
+  const { mutateSaveStock, mutateRemoveSavedStock } = useStocks();
   const Icon = getIconComponent(iconName);
 
   const handleSave = (e: MouseEvent<HTMLButtonElement>) => {
@@ -88,8 +88,9 @@ const StockCard = ({
     } else {
       if (savedStock) {
         console.log(`this is the saved stock id ${savedStock[0].id}`);
+        mutateRemoveSavedStock(savedStock[0].id);
       } else {
-        console.log("Remove saved stock");
+        console.log("no saved stock exist in the response.");
       }
     }
   };
