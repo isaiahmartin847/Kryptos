@@ -12,19 +12,23 @@ import Navbar from "@/components/product/navbar";
 import { ReactQueryProvider } from "@/providers/reactQueryProvider";
 import { StocksProvider } from "@/providers/stocksProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { useEffect } from "react";
 
 export default function SubdomainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const homeUrl = process.env.NEXT_PUBLIC_HOST_URL;
+  const prefix = process.env.NODE_ENV === "development" ? "http" : "https";
+
   return (
     <ClerkProvider
       appearance={{
         baseTheme: dark,
       }}
       // TODO update this with the real redirect url
-      afterSignOutUrl={"http://localhost:3000/"}
+      afterSignOutUrl={`${prefix}://${homeUrl}/`}
     >
       <SignedOut>
         <RedirectToSignIn />
