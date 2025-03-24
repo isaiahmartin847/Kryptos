@@ -65,7 +65,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       toast({
         title: "Failed to save stock",
         description: `Error: ${error.message}`,
-        variant: "destructive",
+        variant: "error",
       });
       console.log("error on the create");
     },
