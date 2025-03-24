@@ -13,16 +13,10 @@ import {
 import SavedStockSideSheet from "./sideSheet";
 
 const Navbar = () => {
-  const [url, setUrl] = useState<string>("");
+  const homeUrl = process.env.NEXT_PUBLIC_HOST_URL;
+  const prefix = process.env.NODE_ENV === "development" ? "http" : "https";
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      setUrl("http://localhost:3000/");
-    } else if (process.env.NODE_ENV === "production") {
-      // TODO set this with the prod url
-      setUrl("http://PROD");
-    }
-  }, []);
+  const url = `${prefix}://${homeUrl}/`;
 
   return (
     <div className="flex h-[75px] w-full items-center bg-secondaryColor px-7">

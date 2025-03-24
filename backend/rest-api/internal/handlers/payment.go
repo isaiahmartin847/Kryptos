@@ -12,6 +12,7 @@ import (
 )
 
 // TODO update this so you don't init a new stripe client every request
+// TODO fix the problem with the strip key not being passed
 func (h *Handler) Stripe_transaction(c echo.Context) error {
 	transaction := &model.Stripe{}
 	StripeAPIKey := os.Getenv("STRIPE_API_KEY")

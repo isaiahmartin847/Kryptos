@@ -27,7 +27,6 @@ export default function SubdomainLayout({
       appearance={{
         baseTheme: dark,
       }}
-      // TODO update this with the real redirect url
       afterSignOutUrl={`${prefix}://${homeUrl}/`}
     >
       <SignedOut>

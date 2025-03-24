@@ -18,9 +18,7 @@ import PaymentForm from "@/components/landingPage/forms/paymentForm";
 import { Loader2 } from "lucide-react";
 import { createPaymentIntent } from "@/apiFunctions/postFunctions";
 
-// TODO remove this and put it in the env
-const stripePublicKey: string =
-  "pk_test_51Pm0egLqplUDffhZq85VRxffA4T0tJF8SrMCi6q2pQ8NYiduY7IwNF7htGMhIRM81BmLlnREskpfypASFm5xnUsi00Bl550s7Z";
+const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY_TEST;
 
 if (!stripePublicKey) {
   throw new Error("Stripe public key is missing");
