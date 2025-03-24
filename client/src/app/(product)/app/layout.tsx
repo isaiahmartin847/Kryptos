@@ -10,7 +10,6 @@ import { dark } from "@clerk/themes";
 import "@/app/globals.css";
 import Navbar from "@/components/product/navbar";
 import { ReactQueryProvider } from "@/providers/reactQueryProvider";
-import { SavedStockProvider } from "@/providers/savedStocksProvider";
 import { StocksProvider } from "@/providers/stocksProvider";
 import { Toaster } from "@/components/ui/toaster";
 

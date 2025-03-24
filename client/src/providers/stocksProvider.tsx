@@ -67,7 +67,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
         description: `Error: ${error.message}`,
         variant: "error",
       });
-      console.log("error on the create");
     },
   });
 
@@ -76,11 +75,14 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       return deleteSavedStock(savedStockId);
     },
     onSuccess: () => {
-      console.log("removed the saved job with the id");
       queryClient.invalidateQueries({ queryKey: ["stocks"] });
     },
-    onError: (error) => {
-      console.log(error.message);
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to save stock",
+        description: `Error: ${error.message}`,
+        variant: "error",
+      });
     },
   });
 

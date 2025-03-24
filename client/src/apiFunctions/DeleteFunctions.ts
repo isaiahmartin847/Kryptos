@@ -5,9 +5,14 @@ export const deleteSavedStock = async (savedStockId: number): Promise<any> => {
     method: "DELETE",
   });
 
+  console.log(`saved stock id: ${savedStockId} one that was passed ${0}`);
+
   if (!response.ok) {
-    console.log(response);
-    throw new Error("Unable to delete saved stock");
+    const errorData = await response.json().catch(() => null);
+
+    throw new Error(
+      errorData?.message || errorData?.error || "Unable to Save stock",
+    );
   }
 
   return response.json();
