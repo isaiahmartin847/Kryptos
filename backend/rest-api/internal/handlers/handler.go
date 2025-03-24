@@ -7,7 +7,7 @@ import (
 
 type Handler struct {
 	UserService  *service.UserService
-	BtcService   *service.BtcService
+	ChartService *service.ChartService
 	StockService *service.StockService
 	StripeClient *client.API
 }

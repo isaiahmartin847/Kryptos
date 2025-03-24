@@ -8,15 +8,15 @@ import (
 	"github.com/isaiahmartin847/Reg-Maps/logger"
 )
 
-type BtcService struct {
+type ChartService struct {
 	BitcoinRepo *repository.ChartRepository
 }
 
-func NewBtcService(bitcoinRepo *repository.ChartRepository) *BtcService {
-	return &BtcService{BitcoinRepo: bitcoinRepo}
+func NewChartService(bitcoinRepo *repository.ChartRepository) *ChartService {
+	return &ChartService{BitcoinRepo: bitcoinRepo}
 }
 
-func (s *BtcService) GetChartData(ctx context.Context, ticker string) ([]models.ChartData, error) {
+func (s *ChartService) GetChartData(ctx context.Context, ticker string) ([]models.ChartData, error) {
 
 	chartData, err := s.BitcoinRepo.GetChartData(ctx, ticker)
 

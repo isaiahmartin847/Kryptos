@@ -9,7 +9,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// TODO update this so you don't init a new stripe client every request
 func (h *Handler) Stripe_transaction(c echo.Context) error {
 	transaction := &model.Stripe{}
 

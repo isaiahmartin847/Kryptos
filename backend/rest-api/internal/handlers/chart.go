@@ -15,7 +15,7 @@ func (h *Handler) GetChartData(c echo.Context) error {
 
 	logger.Info("this is the ticker: %v", ticker)
 
-	chartData, err := h.BtcService.GetChartData(ctx, ticker)
+	chartData, err := h.ChartService.GetChartData(ctx, ticker)
 	if err != nil {
 		logger.Error("Unable to get the join table of %v prices and forecast, %v", ticker, err)
 		return c.JSON(http.StatusInternalServerError, models.Error{
