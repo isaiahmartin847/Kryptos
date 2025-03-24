@@ -134,7 +134,8 @@ func (h *Handler) SaveStock(c echo.Context) error {
 		logger.Error("Unable to save stock")
 
 		return c.JSON(http.StatusInternalServerError, models.Error{
-			Code:    http.StatusInternalServerError,
+			Code: http.StatusInternalServerError,
+			// TODO fix this error and add some more error handling
 			Message: "Server was unable to save that stock to that user",
 		})
 

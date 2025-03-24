@@ -12,6 +12,7 @@ import Navbar from "@/components/product/navbar";
 import { ReactQueryProvider } from "@/providers/reactQueryProvider";
 import { SavedStockProvider } from "@/providers/savedStocksProvider";
 import { StocksProvider } from "@/providers/stocksProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function SubdomainLayout({
   children,
@@ -33,6 +34,7 @@ export default function SubdomainLayout({
       <SignedIn>
         <ReactQueryProvider>
           <StocksProvider>
+            <Toaster></Toaster>
             <main className="h-screen w-screen bg-primaryColor bg-cover bg-center text-textColor">
               <Navbar />
               {children}

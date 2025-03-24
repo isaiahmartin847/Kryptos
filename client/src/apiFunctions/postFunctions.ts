@@ -13,11 +13,18 @@ export const saveStock = async (
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ stock_id: stockId, user_id: userId }),
+    body: JSON.stringify({ stock_id: 0, user_id: userId }),
+    // body: JSON.stringify({ stock_id: stockId, user_id: userId }),
   });
 
+  console.log(`stock id ${stockId} real id ${0}`);
+
   if (!response.ok) {
-    throw new Error("Unable to Save stock");
+    const errorData = await response.json().catch(() => null);
+
+    throw new Error(
+      errorData?.message || errorData?.error || "Unable to Save stock",
+    );
   }
 
   return response.json();

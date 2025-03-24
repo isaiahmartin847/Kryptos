@@ -1,11 +1,18 @@
 import { deleteSavedStock } from "@/apiFunctions/DeleteFunctions";
 import { fetchStocks } from "@/apiFunctions/getFunctions";
 import { saveStock } from "@/apiFunctions/postFunctions";
+import { useToast } from "@/hooks/use-toast";
 import { ApiResponse } from "@/types/requestBody";
 import { Stock } from "@/types/stocks";
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
@@ -24,6 +31,7 @@ const StockContext = createContext<StocksType | undefined>(undefined);
 
 export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
   const { user } = useUser();
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const {
@@ -52,6 +60,14 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["stocks"] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to save stock",
+        description: `Error: ${error.message}`,
+        variant: "destructive",
+      });
+      console.log("error on the create");
     },
   });
 
