@@ -9,16 +9,16 @@ import (
 )
 
 type ChartService struct {
-	BitcoinRepo *repository.ChartRepository
+	ChartRepo *repository.ChartRepository
 }
 
-func NewChartService(bitcoinRepo *repository.ChartRepository) *ChartService {
-	return &ChartService{BitcoinRepo: bitcoinRepo}
+func NewChartService(chartRepo *repository.ChartRepository) *ChartService {
+	return &ChartService{ChartRepo: chartRepo}
 }
 
 func (s *ChartService) GetChartData(ctx context.Context, ticker string) ([]models.ChartData, error) {
 
-	chartData, err := s.BitcoinRepo.GetChartData(ctx, ticker)
+	chartData, err := s.ChartRepo.GetChartData(ctx, ticker)
 
 	if err != nil {
 		logger.Error("Unable to get the chart data on the service layer error: %v", err)
