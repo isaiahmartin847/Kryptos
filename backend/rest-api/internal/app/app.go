@@ -29,20 +29,20 @@ func InitializeDependencies(db *gorm.DB) (*handler.Handler, error) {
 
 	// Initialize repositories
 	userRepo := repositories.NewUserRepository(db)
-	// bitcoinRepo := repositories.NewChartRepository(db)
+	chartRepo := repositories.NewChartRepository(db) //
 	stockRepo := repositories.NewStockRepository(db)
 
 	// Initialize services
 	userService := service.NewUserService(userRepo)
-	// bitcoinService := service.NewBtcService(bitcoinRepo)
+	chartService := service.NewChartService(chartRepo)
 	stockService := service.NewStockService(stockRepo)
 
 	// Initialize handler
 	handler := &handler.Handler{
-		UserService: userService,
-		// BtcService:   bitcoinService,
+		UserService:  userService,
 		StockService: stockService,
 		StripeClient: stripeClient,
+		ChartService: chartService,
 	}
 
 	return handler, nil

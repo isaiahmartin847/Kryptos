@@ -77,7 +77,8 @@ const StockCard = ({
   stockId,
   savedStock,
 }: Props) => {
-  const { mutateSaveStock, mutateRemoveSavedStock } = useStocks();
+  const { mutateSaveStock, mutateRemoveSavedStock, isSaveStockPending } =
+    useStocks();
   // const Icon = getIconComponent(iconName);
 
   const MemoizedIcon = useMemo(() => {
@@ -146,7 +147,7 @@ const StockCard = ({
               {percentageChange.toFixed(1)}%
             </span>
 
-            <button onClick={handleSave}>
+            <button onClick={handleSave} disabled={isSaveStockPending}>
               {!isSaved ? (
                 <Bookmark size={23} />
               ) : (

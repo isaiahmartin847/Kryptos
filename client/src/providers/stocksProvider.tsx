@@ -6,13 +6,7 @@ import { ApiResponse } from "@/types/requestBody";
 import { Stock } from "@/types/stocks";
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useContext } from "react";
 
 interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
@@ -21,6 +15,7 @@ interface StocksType {
   savedStocks: Stock[];
   isStocksLoading: boolean;
   isStocksError: boolean;
+  isSaveStockPending: boolean;
 }
 
 interface StocksProviderProps {
@@ -50,25 +45,26 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     enabled: !!user?.id,
   });
 
-  const { mutate: mutateSaveStock } = useMutation({
-    mutationFn: (stockId: number) => {
-      if (!user?.id) {
-        throw new Error("User is not authenticated");
-      } else {
-        return saveStock(user.id, stockId);
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["stocks"] });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Failed to save stock",
-        description: `Error: ${error.message}`,
-        variant: "error",
-      });
-    },
-  });
+  const { mutate: mutateSaveStock, isPending: isSaveStockPending } =
+    useMutation({
+      mutationFn: (stockId: number) => {
+        if (!user?.id) {
+          throw new Error("User is not authenticated");
+        } else {
+          return saveStock(user.id, stockId);
+        }
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["stocks"] });
+      },
+      onError: (error: Error) => {
+        toast({
+          title: "Failed to save stock",
+          description: `Error: ${error.message}`,
+          variant: "error",
+        });
+      },
+    });
 
   const { mutate: mutateRemoveSavedStock } = useMutation({
     mutationFn: (savedStockId: number) => {
@@ -96,6 +92,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
         savedStocks,
         isStocksLoading,
         isStocksError,
+        isSaveStockPending,
         mutateSaveStock,
         mutateRemoveSavedStock,
       }}

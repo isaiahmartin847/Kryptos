@@ -15,6 +15,7 @@ WHERE table_name = 'users';
 --@block 
 SELECT * from saved_stock
 -- DElETE FROM saved_stock
+-- DROP TABLE saved_stock
 
 --@block
 SELECT indexname, indexdef 
