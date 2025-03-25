@@ -58,6 +58,17 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 
 	// If the userId query param is not empty, assign it to userId
 	if userIdQuery != "" {
+
+		prefix := strings.Split(userIdQuery, "_")
+
+		if prefix[0] != "user" {
+			logger.Error("User failed to pass in a correct user ID.")
+			return c.JSON(http.StatusBadRequest, models.Error{
+				Code:    http.StatusBadRequest,
+				Message: "The user given was not correct.",
+			})
+		}
+
 		userId = &userIdQuery
 	}
 
