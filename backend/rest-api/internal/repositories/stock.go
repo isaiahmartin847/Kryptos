@@ -2,10 +2,13 @@ package repositories
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log/slog"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/logger"
+	"github.com/jackc/pgx/v5/pgconn"
 	"gorm.io/gorm"
 )
 
@@ -76,7 +79,16 @@ func (repo *StockRepository) SaveStock(ctx context.Context, stock *models.SavedS
 			slog.String("error", err.Error()),
 		)
 
-		return err
+		// return err
+		if pgError, ok := err.(*pgconn.PgError); ok && pgError.Code == "23505" {
+			// handle duplicate entry
+			logger.Error(fmt.Sprintf("duplicate entry stock id: %v, user id: %v", stock.StockID, stock.UserID))
+			return errors.New("duplicate entry: There is already a saved stock with these values")
+		} else {
+			// handle other
+			return err
+		}
+
 	}
 	return nil
 }

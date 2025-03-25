@@ -72,8 +72,6 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 		userId = &userIdQuery
 	}
 
-	// TODO create a checker for the user id
-
 	stocks, err := h.StockService.GetAllStocks(ctx, userId)
 	if err != nil {
 		logger.Error("Unable to get the stocks")
@@ -134,8 +132,9 @@ func (h *Handler) SaveStock(c echo.Context) error {
 	var reqBody models.SavedStock
 
 	if err := c.Bind(&reqBody); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "Invalid request payload",
+		return c.JSON(http.StatusBadRequest, models.Error{
+			Code:    http.StatusBadRequest,
+			Message: "Invalid request payload",
 		})
 	}
 

@@ -13,8 +13,14 @@ FROM information_schema.columns
 WHERE table_name = 'users';
 
 --@block 
--- SELECT * from saved_stock
-DElETE FROM saved_stock
+SELECT * from saved_stock
+-- DElETE FROM saved_stock
+
+--@block
+SELECT indexname, indexdef 
+FROM pg_indexes 
+WHERE tablename = 'saved_stock' 
+AND indexname = 'idx_stock_user';
 
 
 --@block 
