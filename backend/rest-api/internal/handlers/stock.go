@@ -141,7 +141,13 @@ func (h *Handler) SaveStock(c echo.Context) error {
 	err := h.StockService.SaveStock(ctx, &reqBody)
 
 	if err != nil {
-		logger.Error("Unable to save stock")
+
+		if strings.Contains(err.Error(), "duplicate entry") {
+			return c.JSON(http.StatusConflict, models.Error{
+				Code:    http.StatusConflict,
+				Message: err.Error(),
+			})
+		}
 
 		return c.JSON(http.StatusInternalServerError, models.Error{
 			Code: http.StatusInternalServerError,
