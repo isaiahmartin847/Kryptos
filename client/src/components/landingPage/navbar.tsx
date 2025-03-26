@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Navbar = () => {
   return (
-    <div className="flex h-[75px] w-full bg-secondaryColor items-center justify-between px-7">
+    <div className="flex h-[75px] w-full items-center justify-between bg-secondaryColor px-7">
       <div className="w-[200px]">
         <Link href="/">
           <Image
@@ -12,19 +12,21 @@ const Navbar = () => {
             alt="Logo"
             height={52}
             width={54}
+            priority={true}
           />
         </Link>
       </div>
 
-      <div className="hidden sm:flex-1 sm:flex justify-center">
-        <h1 className="lg:text-5xl text-3xl font-semibold ">Kryptos AI</h1>
+      <div className="hidden justify-center sm:flex sm:flex-1">
+        <h1 className="text-3xl font-semibold lg:text-5xl">Kryptos AI</h1>
       </div>
 
-      <div className="w-[200px] flex items-center space-x-3 justify-end">
+      <div className="flex w-[200px] items-center justify-end space-x-3">
         <MoreDropdownMenu />
         <Link
-          className="text-lg underline italic hover:text-primaryAccentColor cursor-pointer"
-          href="http://app.localhost:3000">
+          className="cursor-pointer text-lg italic underline hover:text-primaryAccentColor"
+          href="http://app.localhost:3000"
+        >
           Sign In
         </Link>
       </div>

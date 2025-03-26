@@ -26,7 +26,13 @@ const Navbar = () => {
     <div className="flex h-[75px] w-full items-center bg-secondaryColor px-7">
       <div className="w-[200px]">
         <Link href="/">
-          <Image src="/Logo.png" alt="Logo" height={52} width={54} />
+          <Image
+            src="/Logo.png"
+            alt="Logo"
+            height={52}
+            width={54}
+            priority={true}
+          />
         </Link>
       </div>
 
