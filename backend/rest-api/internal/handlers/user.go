@@ -8,6 +8,40 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+func (h *Handler) HasUserAcceptedTerms(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	userId := c.QueryParam("userId")
+
+	if userId == "" {
+		return c.JSON(http.StatusBadRequest, models.Error{
+			Code:    http.StatusBadRequest,
+			Message: "The User id provider was not correct",
+		})
+	}
+	// TODO add more userId checking
+
+	AcceptedTerms, err := h.UserService.HasUserAcceptedTerms(ctx, userId)
+
+	if err != nil {
+		logger.Error("Unable to get accepted terms err: %v", err)
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "There was a problem when getting the accepted terms data",
+		})
+	}
+
+	return c.JSON(http.StatusOK, models.ApiResponse[models.UserTerms]{
+		Status: "success",
+		Data: models.Data[models.UserTerms]{
+			Item: AcceptedTerms,
+			Meta: models.Meta{Version: "1.0"},
+		},
+	})
+
+}
+
+// this is the endpoint for the clerk webhook for when a user is created
 func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ctx := c.Request().Context()

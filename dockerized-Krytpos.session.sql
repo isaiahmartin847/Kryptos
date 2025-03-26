@@ -13,7 +13,8 @@ FROM information_schema.columns
 WHERE table_name = 'users';
 
 --@block 
-SELECT * from saved_stock
+SELECT * FROM users
+-- SELECT * from saved_stock
 -- DElETE FROM saved_stock
 -- DROP TABLE saved_stock
 
