@@ -4,19 +4,23 @@ import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { House } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Tooltip } from "@radix-ui/react-tooltip"; // Make sure you're using Radix UI Tooltip
+import { Tooltip } from "@radix-ui/react-tooltip";
+
 import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
 import SavedStockSideSheet from "./sideSheet";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
+
   const homeUrl = process.env.NEXT_PUBLIC_HOST_URL;
   const prefix = process.env.NODE_ENV === "development" ? "http" : "https";
 
-  const url = `${prefix}://${homeUrl}/`;
+  const url = pathname.length > 1 ? "/" : `${prefix}://${homeUrl}/`;
 
   return (
     <div className="flex h-[75px] w-full items-center bg-secondaryColor px-7">
