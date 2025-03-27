@@ -1,19 +1,28 @@
 "use client";
 
+import { fetchHasAcceptedTerms } from "@/apiFunctions/getFunctions";
 import StockCard from "@/components/product/stockCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
+import { useUser } from "@clerk/nextjs";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const Main = () => {
   const { stocks, isStocksError, isStocksLoading } = useStocks();
+  const { user } = useUser();
 
-  useEffect(() => {
-    if (stocks) {
-      console.log(stocks);
-    }
-  }, [stocks]);
+  const { data } = useQuery({
+    queryKey: ["AcceptedTerms"],
+    queryFn: () => {
+      if (user?.id) {
+        return fetchHasAcceptedTerms(user.id);
+      }
+      throw new Error("User id doesn't exist.");
+    },
+    enabled: !!user?.id,
+  });
 
   return (
     <div className="flex h-[calc(100vh-75px)] justify-center">

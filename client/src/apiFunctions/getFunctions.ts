@@ -1,5 +1,6 @@
 import { Bitcoin } from "@/types/bitcoin";
 import { ApiResponse, ChartData } from "@/types/requestBody";
+import { FetchHasAcceptedTerms } from "@/types/responses";
 import { SavedStock, Stock } from "@/types/stocks";
 
 const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
@@ -62,6 +63,20 @@ export const fetchSavedStocks = async (
   if (!response.ok) {
     console.error("Unable to fetch the saved stocks for this user");
     throw new Error("Network response was not ok");
+  }
+
+  return response.json();
+};
+
+export const fetchHasAcceptedTerms = async (
+  userId: string,
+): Promise<ApiResponse<FetchHasAcceptedTerms>> => {
+  const response = await fetch(`${apiUrl}/user/terms?userId=${userId}`);
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to fetch the stock data. Msg:${response.statusText}`,
+    );
   }
 
   return response.json();

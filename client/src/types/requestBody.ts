@@ -6,6 +6,7 @@ interface Meta {
 
 interface Data<T> {
   items: T[];
+  item?: T;
   stock?: Stock;
   meta: Meta;
 }
