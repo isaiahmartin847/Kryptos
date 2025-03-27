@@ -31,6 +31,9 @@ func (s *Server) ConfigureMiddleware() {
 func (s *Server) ConfigureRoutes() {
 
 	stockGroup := s.echo.Group("/stock")
+	userGroup := s.echo.Group("/user")
+
+	userGroup.GET("/terms", s.handler.GetTerm)
 
 	stockGroup.GET("/", s.handler.GetAllStocks)
 	stockGroup.GET("/:ticker", s.handler.GetStockByTicker)
@@ -40,7 +43,6 @@ func (s *Server) ConfigureRoutes() {
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
 	s.echo.POST("/stock/save", s.handler.SaveStock)
 
-	s.echo.GET("/user/terms", s.handler.HasUserAcceptedTerms)
 	s.echo.GET("/chart", s.handler.GetChartData)
 	s.echo.GET("/stock", s.handler.GetAllStocks)
 	s.echo.GET("/saved", s.handler.GetSavedStocks)

@@ -37,7 +37,7 @@ func (r *UserRepository) HasUserAcceptedTerms(ctx context.Context, userId string
 	return userTerms, nil
 }
 
-func (r *UserRepository) GetTerms(ctx context.Context) (*models.TermsAndConditions, error) {
+func (r *UserRepository) GetTerm(ctx context.Context) (*models.TermsAndConditions, error) {
 	var terms models.TermsAndConditions
 
 	if err := r.db.WithContext(ctx).Order("Created_at desc").First(&terms).Error; err != nil {

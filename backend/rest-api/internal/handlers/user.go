@@ -41,6 +41,30 @@ func (h *Handler) HasUserAcceptedTerms(c echo.Context) error {
 
 }
 
+func (h *Handler) GetTerm(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	latestTerms, err := h.UserService.UserRepo.GetTerm(ctx)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "Unable to fetch the Terms and conditions",
+		})
+	}
+
+	return c.JSON(http.StatusOK, models.ApiResponse[models.TermsAndConditions]{
+		Status: "success",
+		Data: models.Data[models.TermsAndConditions]{
+			Item: latestTerms,
+			Meta: models.Meta{
+				Version: "1.0",
+			},
+		},
+	})
+
+}
+
 // this is the endpoint for the clerk webhook for when a user is created
 func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 	return func(c echo.Context) error {
