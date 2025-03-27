@@ -57,22 +57,14 @@ export const TermsAndConditions = () => {
   };
 
   useEffect(() => {
-    if (!hasTermsData?.data.item?.has_accepted_terms) {
+    if (hasTermsData?.data && !hasTermsData.data.item?.has_accepted_terms) {
       setIsOpen(true);
     }
-
-    if (hasTermsData) {
-      console.log(hasTermsData);
-    }
-
-    if (termsData) {
-      console.log(termsData);
-    }
-  }, [hasTermsData, termsData]);
+  }, [hasTermsData]);
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="max-w-[470px]">
+      <DialogContent className="max-w-[470px] [&>button]:hidden">
         <DialogTitle>Terms & Conditions</DialogTitle>
         <div>{termsData?.data.item?.content}</div>
         <div className="flex items-center space-x-2">

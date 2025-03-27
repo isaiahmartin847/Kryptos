@@ -73,7 +73,7 @@ export const fetchHasAcceptedTerms = async (
   userId: string,
 ): Promise<ApiResponse<FetchHasAcceptedTerms>> => {
   const response = await fetch(
-    `${apiUrl}/user/terms/hasterms?userId=${userId}`,
+    `${apiUrl}/user/terms/has-terms?userId=${userId}`,
   );
 
   if (!response.ok) {
