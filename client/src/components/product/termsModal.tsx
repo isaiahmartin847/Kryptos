@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
-import { fetchHasAcceptedTerms } from "@/apiFunctions/getFunctions";
+import {
+  fetchHasAcceptedTerms,
+  fetchTermsAndConditions,
+} from "@/apiFunctions/getFunctions";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
@@ -15,7 +18,7 @@ export const TermsAndConditions = () => {
 
   const { user } = useUser();
 
-  const { data } = useQuery({
+  const { data: hasTermsData } = useQuery({
     queryKey: ["AcceptedTerms"],
     queryFn: () => {
       if (user?.id) {
@@ -26,11 +29,25 @@ export const TermsAndConditions = () => {
     enabled: !!user?.id,
   });
 
+  const { data: termsData } = useQuery({
+    queryKey: ["terms"],
+    queryFn: fetchTermsAndConditions,
+    enabled: !hasTermsData?.data.item?.has_accepted_terms,
+  });
+
   useEffect(() => {
-    if (data) {
+    if (!hasTermsData?.data.item?.has_accepted_terms) {
       setIsOpen(true);
     }
-  }, [data]);
+
+    if (hasTermsData) {
+      console.log(hasTermsData);
+    }
+
+    if (termsData) {
+      console.log(termsData);
+    }
+  }, [hasTermsData, termsData]);
 
   return (
     <Dialog open={isOpen}>

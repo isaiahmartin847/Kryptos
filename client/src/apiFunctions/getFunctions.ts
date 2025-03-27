@@ -1,4 +1,5 @@
 import { Bitcoin } from "@/types/bitcoin";
+import { TermsAndConditions } from "@/types/misc";
 import { ApiResponse, ChartData } from "@/types/requestBody";
 import { FetchHasAcceptedTerms } from "@/types/responses";
 import { SavedStock, Stock } from "@/types/stocks";
@@ -71,11 +72,27 @@ export const fetchSavedStocks = async (
 export const fetchHasAcceptedTerms = async (
   userId: string,
 ): Promise<ApiResponse<FetchHasAcceptedTerms>> => {
-  const response = await fetch(`${apiUrl}/user/terms?userId=${userId}`);
+  const response = await fetch(
+    `${apiUrl}/user/terms/hasterms?userId=${userId}`,
+  );
 
   if (!response.ok) {
     throw new Error(
       `Unable to fetch the stock data. Msg:${response.statusText}`,
+    );
+  }
+
+  return response.json();
+};
+
+export const fetchTermsAndConditions = async (): Promise<
+  ApiResponse<TermsAndConditions>
+> => {
+  const response = await fetch(`${apiUrl}/user/terms`);
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to get the terms and service msg: ${response.statusText}`,
     );
   }
 

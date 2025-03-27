@@ -4,9 +4,9 @@ import "time"
 
 type TermsAndConditions struct {
 	ID        uint      `gorm:"primary_key" json:"id"`
-	Version   string    `gorm:"not null;type:string"`
-	Content   string    `gorm:"not null;type:text"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
+	Version   string    `gorm:"not null;type:string" json:"version"`
+	Content   string    `gorm:"not null;type:text" json:"content"`
+	CreatedAt time.Time `gorm:"autoCreateTime" json:"created_at"`
 }
 
 type SignedTerms struct {
