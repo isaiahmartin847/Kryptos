@@ -19,6 +19,7 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 	}
 }
 
+// GET
 func (r *UserRepository) HasUserAcceptedTerms(ctx context.Context, userId string) (*models.UserTerms, error) {
 	var user models.User
 
@@ -35,6 +36,34 @@ func (r *UserRepository) HasUserAcceptedTerms(ctx context.Context, userId string
 
 	return userTerms, nil
 }
+
+func (r *UserRepository) GetTerms(ctx context.Context) (*models.TermsAndConditions, error) {
+	var terms models.TermsAndConditions
+
+	if err := r.db.WithContext(ctx).Order("Created_at desc").First(&terms).Error; err != nil {
+		logger.Error("Unable to get the latest terms and conditions")
+		return nil, err
+	}
+
+	return &terms, nil
+
+}
+
+func (r *UserRepository) GetSignedTerm(ctx context.Context, userId string) (*models.SignedTerms, error) {
+	var signedTerm models.SignedTerms
+
+	if err := r.db.WithContext(ctx).Order("created_at desc").Where("user_id = ?", userId).First(&signedTerm).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			logger.Error("No record of this signed terms was found")
+		}
+		return nil, err
+	}
+
+	return &signedTerm, nil
+
+}
+
+// POST
 
 func (r *UserRepository) Create(ctx context.Context, user *models.User) (*models.User, error) {
 	if err := r.db.WithContext(ctx).Create(user).Error; err != nil {

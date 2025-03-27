@@ -18,6 +18,11 @@ SELECT * FROM users
 -- DElETE FROM saved_stock
 -- DROP TABLE saved_stock
 
+--@block 
+SELECT * FROM terms_and_conditions
+
+
+
 --@block
 SELECT indexname, indexdef 
 FROM pg_indexes 
