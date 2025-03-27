@@ -53,8 +53,8 @@ export default function DoubleChart() {
       const tempData = data.data.items.map((obj) => {
         return {
           // Format to 2 decimal places
-          bitcoin: parseFloat((obj.daily_price * 10).toFixed(2)),
-          forecast: parseFloat((obj.forecasted_price * 10).toFixed(2)),
+          bitcoin: parseFloat(obj.daily_price.toFixed(0)),
+          forecast: parseFloat(obj.forecasted_price.toFixed(0)),
           date: new Date(obj.date).toLocaleDateString("en-US", {
             year: "2-digit",
             month: "short",
