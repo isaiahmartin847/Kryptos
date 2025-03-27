@@ -11,7 +11,7 @@ type TermsAndConditions struct {
 
 type SignedTerms struct {
 	ID                 uint               `gorm:"primaryKey" json:"id"`
-	AgreedToTerms      bool               `gorm:"not null" json:"agreed_to_terms"`
+	AgreedToTerms      bool               `gorm:"not null;default:true" json:"agreed_to_terms"`
 	CreatedAt          time.Time          `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt          time.Time          `gorm:"autoUpdateTime" json:"updated_at"`
 	TermsID            uint               `gorm:"not null" json:"terms_id"`

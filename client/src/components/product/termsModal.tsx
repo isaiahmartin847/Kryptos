@@ -51,9 +51,9 @@ export const TermsAndConditions = () => {
 
   return (
     <Dialog open={isOpen}>
-      <DialogContent>
+      <DialogContent className="max-w-[470px]">
         <DialogTitle>Terms & Conditions</DialogTitle>
-
+        <div>{termsData?.data.item?.content}</div>
         <div className="flex items-center space-x-2">
           <Checkbox
             id="terms"

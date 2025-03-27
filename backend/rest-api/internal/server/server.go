@@ -35,6 +35,7 @@ func (s *Server) ConfigureRoutes() {
 
 	userGroup.GET("/terms", s.handler.GetTerm)
 	userGroup.GET("/terms/hasterms", s.handler.HasUserAcceptedTerms)
+	userGroup.POST("/terms", s.handler.CreateSignedTerm)
 
 	stockGroup.GET("/", s.handler.GetAllStocks)
 	stockGroup.GET("/:ticker", s.handler.GetStockByTicker)

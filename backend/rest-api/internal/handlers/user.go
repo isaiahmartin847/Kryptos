@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
@@ -93,4 +94,35 @@ func (h *Handler) UserWebhookPayload() echo.HandlerFunc {
 
 		return c.JSON(http.StatusCreated, "success")
 	}
+}
+
+func (h *Handler) CreateSignedTerm(c echo.Context) error {
+	ctx := c.Request().Context()
+
+	reqBody := &models.SignedTerms{}
+
+	if err := c.Bind(reqBody); err != nil {
+		logger.Error("Request body was not correct %v", *reqBody)
+
+		return c.JSON(http.StatusBadRequest, models.Error{
+			Code:    http.StatusBadRequest,
+			Message: "The data that was in the request body was incorrect",
+		})
+	}
+
+	signedTerm, err := h.UserService.UserRepo.CreateSignedTerm(ctx, reqBody)
+
+	if err != nil {
+		logger.Error("Unable to create signed terms error: %v", err)
+		return c.JSON(http.StatusInternalServerError, models.Error{
+			Code:    http.StatusInternalServerError,
+			Message: "There was a internal server error",
+		})
+	}
+
+	return c.JSON(http.StatusCreated, models.ApiMsgResponse{
+		Status:  "success",
+		Message: fmt.Sprintf("Created the signed term with the id: %v", signedTerm.ID),
+	})
+
 }
