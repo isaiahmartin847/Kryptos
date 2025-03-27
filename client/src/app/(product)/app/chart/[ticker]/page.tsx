@@ -63,7 +63,6 @@ export default function DoubleChart() {
         };
       });
 
-      console.log(data);
       setChartData(tempData);
     }
   }, [data]);

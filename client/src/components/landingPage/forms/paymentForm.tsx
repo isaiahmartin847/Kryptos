@@ -35,12 +35,11 @@ const PaymentForm = () => {
 
       if (error) {
         setErrorMessage(
-          error.message ?? "An error occurred while processing your payment."
+          error.message ?? "An error occurred while processing your payment.",
         );
         setIsProcessing(false);
       } else if (paymentIntent?.status === "succeeded") {
         // Handle successful payment
-        console.log("Payment succeeded:", paymentIntent);
         setIsSuccess(true);
       }
     } catch (err) {
@@ -51,14 +50,12 @@ const PaymentForm = () => {
   };
 
   return isSuccess ? (
-    <div className="flex flex-col items-center h-[400px]">
+    <div className="flex h-[400px] flex-col items-center">
       <h1 className="text-2xl font-semibold">Payment Success</h1>
       <p className="text-[13px]">Thank you for your support!</p>
     </div>
   ) : (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <PaymentElement />
 
       {errorMessage && (
@@ -71,7 +68,8 @@ const PaymentForm = () => {
         variant={"secondary"}
         type="submit"
         disabled={!stripe || isProcessing}
-        className="w-full">
+        className="w-full"
+      >
         {isProcessing ? (
           <div className="flex items-center justify-center">
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -7,7 +7,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { useSavedStocks } from "@/providers/savedStocksProvider";
+
 import { SkeletonStockCard } from "./skeletonComponents";
 import StockCard from "./stockCard";
 import { useStocks } from "@/providers/stocksProvider";

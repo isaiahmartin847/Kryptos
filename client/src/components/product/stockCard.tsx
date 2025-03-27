@@ -108,7 +108,6 @@ const StockCard = ({
       mutateSaveStock(stockId);
     } else {
       if (savedStock) {
-        console.log(`this is the saved stock id ${savedStock[0].id}`);
         mutateRemoveSavedStock(savedStock[0].id);
       } else {
         console.log("no saved stock exist in the response.");

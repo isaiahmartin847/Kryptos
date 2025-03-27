@@ -5,8 +5,6 @@ export const deleteSavedStock = async (savedStockId: number): Promise<any> => {
     method: "DELETE",
   });
 
-  console.log(`saved stock id: ${savedStockId} one that was passed ${0}`);
-
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
 
