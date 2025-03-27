@@ -2,6 +2,7 @@
 
 import { fetchHasAcceptedTerms } from "@/apiFunctions/getFunctions";
 import StockCard from "@/components/product/stockCard";
+import { TermsAndServiceModal } from "@/components/product/termsModal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
@@ -26,6 +27,7 @@ const Main = () => {
 
   return (
     <div className="flex h-[calc(100vh-75px)] justify-center">
+      <TermsAndServiceModal />
       <Card className="mt-40 h-fit w-3/4">
         <CardHeader className="border-b-2 border-neutral-400">
           <CardTitle>Charts</CardTitle>
@@ -51,6 +53,7 @@ const Main = () => {
             })
           ) : isStocksError ? (
             // Handle error
+            // TODO
             <div>Error</div>
           ) : (
             // Handle the loading
