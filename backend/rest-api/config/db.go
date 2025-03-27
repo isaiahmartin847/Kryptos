@@ -30,7 +30,14 @@ func ConnectDatabase() (*gorm.DB, error) {
 	logger.Info("Connected to the database successfully!")
 
 	// Run migrations
-	err = db.AutoMigrate(&models.User{}, &models.Stock{}, &models.DailyPrice{}, &models.PriceForecast{}, &models.SavedStock{})
+	err = db.AutoMigrate(
+		&models.User{},
+		&models.Stock{},
+		&models.DailyPrice{},
+		&models.PriceForecast{},
+		&models.SavedStock{},
+		&models.TermsAndConditions{},
+		&models.SignedTerms{})
 	if err != nil {
 		return nil, fmt.Errorf("error running migrations: %w", err)
 	}

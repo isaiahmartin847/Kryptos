@@ -9,7 +9,7 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 
-export const TermsAndServiceModal = () => {
+export const TermsAndConditions = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
@@ -35,7 +35,7 @@ export const TermsAndServiceModal = () => {
   return (
     <Dialog open={isOpen}>
       <DialogContent>
-        <DialogTitle>Terms & Service</DialogTitle>
+        <DialogTitle>Terms & Conditions</DialogTitle>
 
         <div className="flex items-center space-x-2">
           <Checkbox
