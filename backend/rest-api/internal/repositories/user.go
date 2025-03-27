@@ -72,3 +72,12 @@ func (r *UserRepository) Create(ctx context.Context, user *models.User) (*models
 	}
 	return user, nil
 }
+
+func (r *UserRepository) CreateSignedTerm(ctx context.Context, signedTerm *models.SignedTerms) (*models.SignedTerms, error) {
+	if err := r.db.WithContext(ctx).Create(signedTerm).Error; err != nil {
+		logger.Error("failed to create a signed term with the user id of %v", signedTerm.UserID)
+		return nil, err
+	}
+
+	return signedTerm, nil
+}
