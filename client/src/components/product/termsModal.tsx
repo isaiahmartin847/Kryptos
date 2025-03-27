@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useUser } from "@clerk/nextjs";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   fetchHasAcceptedTerms,
   fetchTermsAndConditions,
@@ -11,6 +11,8 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
+import { signTerms } from "@/apiFunctions/postFunctions";
+import { Loader2 } from "lucide-react";
 
 export const TermsAndConditions = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -34,6 +36,25 @@ export const TermsAndConditions = () => {
     queryFn: fetchTermsAndConditions,
     enabled: !hasTermsData?.data.item?.has_accepted_terms,
   });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["singTerms"],
+    mutationFn: () => {
+      if (!user?.id || !termsData?.data.item?.id) {
+        throw new Error("unable to accept terms due to missing ID's");
+      }
+      return signTerms(user?.id, termsData?.data.item?.id);
+    },
+    onSuccess: () => setIsOpen(false),
+  });
+
+  const handleClick = () => {
+    if (!isChecked) {
+      console.log("must agree to terms");
+      return;
+    }
+    mutate();
+  };
 
   useEffect(() => {
     if (!hasTermsData?.data.item?.has_accepted_terms) {
@@ -75,11 +96,9 @@ export const TermsAndConditions = () => {
             <Button
               variant={"secondary"}
               disabled={!isChecked}
-              onClick={() => {
-                setIsOpen(false);
-              }}
+              onClick={handleClick}
             >
-              close
+              {!isPending ? "Close" : <Loader2 className="animate-spin" />}
             </Button>
           </DialogClose>
         </div>

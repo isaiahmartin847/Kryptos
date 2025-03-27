@@ -19,7 +19,9 @@ SELECT * FROM users
 -- DROP TABLE saved_stock
 
 --@block 
-SELECT * FROM terms_and_conditions
+SELECT * FROM signed_terms
+-- DElETE FROM signed_terms
+
 
 
 

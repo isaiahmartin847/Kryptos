@@ -20,18 +20,23 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 }
 
 // GET
-func (r *UserRepository) HasUserAcceptedTerms(ctx context.Context, userId string) (*models.UserTerms, error) {
-	var user models.User
+func (r *UserRepository) HasUserSignedTerms(ctx context.Context, userId string) (*models.UserTerms, error) {
+	var signedTerm models.SignedTerms
 
 	// Query the users table and select only the AcceptedTerms field
-	if err := r.db.WithContext(ctx).Where("id = ?", userId).First(&user).Error; err != nil {
-		// handle error (e.g., if user not found)
+	if err := r.db.WithContext(ctx).Where("user_id = ?", userId).First(&signedTerm).Error; err != nil {
+
+		if err == gorm.ErrRecordNotFound {
+
+			return &models.UserTerms{AcceptedTerms: false}, nil
+		}
+
 		return nil, err
 	}
 
 	// Create the UserTerms object to return only the AcceptedTerms field
 	userTerms := &models.UserTerms{
-		AcceptedTerms: user.AcceptedTerms,
+		AcceptedTerms: signedTerm.AgreedToTerms,
 	}
 
 	return userTerms, nil

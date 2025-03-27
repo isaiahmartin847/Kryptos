@@ -34,7 +34,7 @@ func (s *Server) ConfigureRoutes() {
 	userGroup := s.echo.Group("/user")
 
 	userGroup.GET("/terms", s.handler.GetTerm)
-	userGroup.GET("/terms/hasterms", s.handler.HasUserAcceptedTerms)
+	userGroup.GET("/terms/has-terms", s.handler.HasUserAcceptedTerms)
 	userGroup.POST("/terms", s.handler.CreateSignedTerm)
 
 	stockGroup.GET("/", s.handler.GetAllStocks)

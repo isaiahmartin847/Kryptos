@@ -1,4 +1,5 @@
 import { ApiResponse } from "@/types/requestBody";
+import { MsgResponse } from "@/types/responses";
 import { SavedStock } from "@/types/stocks";
 import Stripe from "stripe";
 
@@ -41,6 +42,25 @@ export const createPaymentIntent = async (
 
   if (!response.ok) {
     throw new Error(`Unable to create payment intent`);
+  }
+
+  return response.json();
+};
+
+export const signTerms = async (
+  userId: string,
+  termsId: number,
+): Promise<MsgResponse> => {
+  const response = await fetch(`${apiUrl}/user/terms`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ terms_id: termsId, user_id: userId }),
+  });
+
+  if (!response) {
+    throw new Error("Unable to agree to terms");
   }
 
   return response.json();

@@ -18,7 +18,7 @@ func NewUserService(userRepo *repository.UserRepository) *UserService {
 }
 
 func (s *UserService) HasUserAcceptedTerms(ctx context.Context, userId string) (*models.UserTerms, error) {
-	userTerms, err := s.UserRepo.HasUserAcceptedTerms(ctx, userId)
+	userTerms, err := s.UserRepo.HasUserSignedTerms(ctx, userId)
 
 	if err != nil {
 		return nil, err
