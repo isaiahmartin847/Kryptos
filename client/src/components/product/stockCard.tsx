@@ -130,7 +130,7 @@ const StockCard = ({
               <span className="font-semibold">Price</span>: $
               {formatNumber(price)}
             </h1>
-            <h1>
+            <h1 className="hidden lg:block">
               <span className="font-semibold">Market Cap</span>: $
               {formatNumber(marketCap)}
             </h1>

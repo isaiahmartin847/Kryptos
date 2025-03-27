@@ -12,6 +12,7 @@ interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
   mutateSaveStock: (stockId: number) => void;
   mutateRemoveSavedStock: (savedStockId: number) => void;
+  refetchStocks: () => void;
   savedStocks: Stock[];
   isStocksLoading: boolean;
   isStocksError: boolean;
@@ -33,6 +34,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     data: stocks,
     isLoading: isStocksLoading,
     isError: isStocksError,
+    refetch: refetchStocks,
   } = useQuery({
     queryKey: ["stocks"],
     queryFn: () => {
@@ -92,6 +94,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
         savedStocks,
         isStocksLoading,
         isStocksError,
+        refetchStocks,
         isSaveStockPending,
         mutateSaveStock,
         mutateRemoveSavedStock,
