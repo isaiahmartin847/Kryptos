@@ -10,7 +10,50 @@ WHERE table_schema = 'public';
 --@block
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
-WHERE table_name = 'users';
+WHERE table_name = 'terms_and_conditions';
+
+--@block
+INSERT INTO terms_and_conditions (version, content) 
+VALUES 
+('1.0', 'These Terms and Conditions ("Terms") govern your use of the Kryptos web and mobile application ("App"), including the features, services, and content provided through the App. By accessing or using the App, you agree to be bound by these Terms and our Privacy Policy. If you do not agree with these Terms, you should not use the App.
+
+1. General Use
+1.1 License to Use the App: Subject to your compliance with these Terms, we grant you a limited, non-exclusive, non-transferable, and revocable license to use the App on your personal devices for your personal use. You may not use the App for any unlawful or prohibited purpose.
+
+1.2 Account Registration: To access certain features of the App, you may be required to create an account. You agree to provide accurate, current, and complete information during the registration process and to keep your account information up to date.
+
+2. Services Provided
+2.1 Stock Data: The App provides real-time and historical stock market data, as well as forecasts related to stock performance. This data is aggregated from third-party sources and is intended for informational purposes only. While we strive to ensure the accuracy of the information provided, we do not guarantee its accuracy, completeness, or reliability.
+
+2.2 Forecasts: The App provides stock forecasts based on historical data and algorithms. These forecasts are purely for informational purposes and are not guarantees of future performance. We do not warrant that the predictions will be accurate, complete, or reliable.
+
+2.3 Third-Party Content: The App may include links to third-party websites or services that are not owned or controlled by Kryptos. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services.
+
+3. Financial Disclaimer
+3.1 Not Financial Advice: The content provided by the App, including but not limited to stock data, forecasts, or analysis, is for informational purposes only. It is not intended as financial, investment, or trading advice. You should not rely on any of the information presented in the App to make any investment decisions.
+
+3.2 Investment Risk: Investing in stocks and other financial instruments involves significant risk. You should consult with a qualified financial advisor before making any investment decisions. Kryptos is not responsible for any financial losses or damages arising from your use of the App or reliance on any information provided.
+
+4. User Responsibilities
+4.1 Account Security: You are responsible for maintaining the confidentiality of your account and password. You agree to notify us immediately if you suspect any unauthorized access to your account.
+
+4.2 Prohibited Use: You may not use the App in any way that violates any applicable local, state, national, or international law or regulation. You may not attempt to gain unauthorized access to any part of the App, or interfere with or disrupt the functioning of the App.
+
+5. Privacy and Data Collection
+5.1 Privacy Policy: Your use of the App is also governed by our Privacy Policy, which outlines how we collect, use, and protect your personal information. By using the App, you consent to the collection and use of your data as outlined in the Privacy Policy.
+
+5.2 Data Storage: We may collect and store certain information about your use of the App, including browsing activity, user preferences, and other data. We are committed to securing your data and complying with applicable data protection laws.
+
+6. Limitation of Liability
+6.1 No Liability for Losses: Kryptos shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising out of your use or inability to use the App, including but not limited to damages for loss of profits, goodwill, use, data, or other intangible losses.
+
+6.2 No Warranty: The App is provided "as is" and "as available," without any warranties, express or implied. Kryptos does not warrant that the App will be uninterrupted, error-free, or secure. We disclaim all warranties to the fullest extent permitted by law.
+
+7. Modifications to the Terms
+7.1 Amendments: Kryptos reserves the right to modify or update these Terms at any time. We will notify users of any significant changes to these Terms via email or through a prominent notice in the App.
+
+8. Intellectual Property
+8.1 Ownership: All content, features, and functionality available on the App, including but not limited to text, graphics, logos, images, and software, are the property of Kryptos and are protected by applicable intellectual property laws. You may not copy, modify, distribute, or otherwise use any part of the App without the express written permission of Kryptos.');
 
 --@block 
 SELECT * FROM users

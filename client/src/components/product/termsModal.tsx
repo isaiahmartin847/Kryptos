@@ -49,11 +49,6 @@ export const TermsAndConditions = () => {
   });
 
   const handleClick = () => {
-    // if (!isChecked) {
-    //   console.log("must agree to terms");
-    //   return;
-    // }
-
     !isChecked ? console.log("must agree to terms") : mutate();
   };
 
@@ -63,11 +58,31 @@ export const TermsAndConditions = () => {
     }
   }, [hasTermsData]);
 
+  // Function to format content with proper HTML line breaks and paragraphs
+  const formatContent = (content: string) => {
+    // First replace literal "\n" strings with actual newline characters
+    const formattedContent = content.replace(/\\n/g, "\n");
+
+    return formattedContent.split("\n\n").map((paragraph, index) => (
+      <p key={index} className="mb-4">
+        {paragraph.split("\n").map((line, lineIndex) => (
+          <span key={lineIndex}>
+            {line}
+            <br />
+          </span>
+        ))}
+      </p>
+    ));
+  };
+
   return (
     <Dialog open={isOpen}>
       <DialogContent className="max-w-[470px] [&>button]:hidden">
         <DialogTitle>Terms & Conditions</DialogTitle>
-        <div>{termsData?.data.item?.content}</div>
+        <div className="max-h-[60vh] overflow-y-auto">
+          {termsData?.data.item?.content &&
+            formatContent(termsData.data.item.content)}
+        </div>
         <div className="flex items-center space-x-2">
           <Checkbox
             id="terms"
