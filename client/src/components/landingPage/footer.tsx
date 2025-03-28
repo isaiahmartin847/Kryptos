@@ -26,7 +26,7 @@ const LandingPageFooter = () => {
         <div>
           <h1 className="text-xl font-semibold">Policies</h1>
           <div className="flex flex-col text-[12px]">
-            <Link className="hover:underline" href={"/terms-of-service"}>
+            <Link className="hover:underline" href={"/terms-and-conditions"}>
               Terms of service
             </Link>
           </div>
