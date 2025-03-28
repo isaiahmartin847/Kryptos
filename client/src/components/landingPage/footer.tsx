@@ -14,14 +14,14 @@ const LandingPageFooter = () => {
           priority={true}
         />
         {/* company div */}
-        <div>
-          <h1 className="text-xl font-semibold">Company</h1>
-          <div className="flex flex-col text-[12px]">
-            <Link className="hover:underline" href={"/about-us"}>
-              About us
-            </Link>
-          </div>
-        </div>
+        {/* <div> */}
+        {/* <h1 className="text-xl font-semibold">Company</h1> */}
+        {/* <div className="flex flex-col text-[12px]"> */}
+        {/* <Link className="hover:underline" href={"/about-us"}> */}
+        {/* About us */}
+        {/* </Link> */}
+        {/* </div> */}
+        {/* </div> */}
         {/* Policies div */}
         <div>
           <h1 className="text-xl font-semibold">Policies</h1>
@@ -38,9 +38,9 @@ const LandingPageFooter = () => {
             <Link className="hover:underline" href={"/pricing"}>
               Pricing
             </Link>
-            <Link className="hover:underline" href={"/about-page"}>
+            {/* <Link className="hover:underline" href={"/about-page"}>
               About
-            </Link>
+            </Link> */}
             <Link className="hover:underline" href={"/"}>
               Home
             </Link>

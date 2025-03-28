@@ -4,17 +4,19 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div>
-      <div className="flex flex-col items-center space-y-4 mt-40 text-center">
-        <h1 className="md:text-5xl text-3xl text-textColor font-bold">
+      <div className="mt-40 flex flex-col items-center space-y-4 text-center">
+        <h1 className="text-3xl font-bold text-textColor md:text-5xl">
           Welcome to Kryptos AI
         </h1>
-        <p className="text-mutedColor md:text-xl text-lg  text-center lg:w-1/4 md:w-2/4 w-3/4">
-          The cool morning air carried the scent of fresh rain as the sun peeked
-          over the horizon. Birds chirped in the distance, signaling the start
-          of a new day. The grass glistened with dew, and the sky slowly turned
+        <p className="w-3/4 text-center text-lg text-mutedColor md:w-2/4 md:text-xl lg:w-1/4">
+          Our AI-driven platform leverages retrieval augmentations and advanced
+          generative models to forecast stock prices. By utilizing the latest
+          technology, we offer a fresh perspective on how AI, when done right,
+          can be a valuable tool for making smarter decisions in the stock and
+          crypto markets.
         </p>
       </div>
-      <div className="flex w-full justify-center mt-8 ">
+      <div className="mt-8 flex w-full justify-center">
         <Link href="http://app.localhost:3000/sign-up">
           <Button variant="secondary">Get Started</Button>
         </Link>
