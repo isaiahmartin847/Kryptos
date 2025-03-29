@@ -24,9 +24,7 @@ services:
     command: ["postgres", "-c", "ssl=off"]
 
   rest-api:
-    build:
-      context: ./backend/rest-api
-      dockerfile: Dockerfile
+    image: ghcr.io/isaiahmartin847/kryptos-rest-api:latest
     container_name: rest-api
     ports:
       - "8080:8080"
@@ -34,14 +32,16 @@ services:
       - ./backend/rest-api:/app
     networks:
       - kryptos-network
-    env_file: .env # Load environment variables from .env file
+    env_file: .env
     environment:
-      - POSTGRES_HOST=${POSTGRES_HOST} # Should resolve to "postgres"
+      - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_SSLMODE=disable
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+      - STRIPE_SECRET_KEY_TEST=${STRIPE_SECRET_KEY_TEST}
     depends_on:
       - postgres
 
@@ -64,6 +64,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_SSLMODE=disable
+      - OPENAI_KEY=${OPENAI_KEY}
     depends_on:
       - postgres
 

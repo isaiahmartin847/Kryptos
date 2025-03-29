@@ -32,7 +32,7 @@ WORKDIR /root/
 COPY --from=builder /app/rest-api .
 
 # Copy the .env file for testing purposes (you can remove this later)
-COPY .env .env
+# COPY .env .env
 
 # Expose the port the REST API will run on
 EXPOSE 8080
