@@ -22,7 +22,12 @@ func NewServer(h *handler.Handler) *Server {
 func (s *Server) ConfigureMiddleware() {
 	// change CORS to not let any url hit the end api
 	s.echo.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
+		AllowOrigins: []string{
+			"http://app.localhost:3000",
+			"http://localhost:3000",
+			"https://kryptosai.pro",
+			"https://app.kryptosai.pro",
+		},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders: []string{"Content-Type", "Authorization"},
 	}))
