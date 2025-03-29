@@ -46,9 +46,7 @@ services:
       - postgres
 
   worker-server:
-    build:
-      context: ./backend/worker-server
-      dockerfile: Dockerfile
+    image: ghcr.io/isaiahmartin847/kryptos-worker-server:latest
     container_name: worker-server
     ports:
       - "8081:8080"
