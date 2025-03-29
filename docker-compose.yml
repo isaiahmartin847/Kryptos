@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   postgres:
     image: postgres:17
@@ -69,16 +70,23 @@ services:
     container_name: nginx
     ports:
       - "80:80"
-      # Uncomment the following line for HTTPS on port 443
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/certs:/etc/letsencrypt # change to letsencrypt to match certbot.
+      - ./nginx/www:/var/www/certbot # change to certbot to match certbot
     networks:
       - kryptos-network
     depends_on:
       - rest-api
-
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./nginx/certs:/etc/letsencrypt # change to letsencrypt to match nginx.
+      - ./nginx/www:/var/www/certbot # change to certbot to match nginx.
+    command: certonly --webroot -w /var/www/certbot --email isaiahmartindev@gmail.com -d api.kryptosai.pro --agree-tos --no-interactive # replace your-email and your domain.
+    depends_on:
+      - nginx
 networks:
   kryptos-network:
     driver: bridge
