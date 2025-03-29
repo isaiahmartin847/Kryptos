@@ -4,9 +4,6 @@ FROM golang:1.23-alpine AS builder
 # Install required build tools
 RUN apk add --no-cache git
 
-# Install Air for hot reloading from the correct repository
-RUN go install github.com/air-verse/air@latest
-
 # Set working directory
 WORKDIR /app
 
@@ -19,17 +16,26 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-# Development stage
-FROM builder AS dev
+# Build a static Go binary for the REST API (cmd/app is your entry point)
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o rest-api ./cmd/app
+
+# Final production stage
+FROM alpine:latest
+
+# Add ca-certificates for HTTPS requests
+RUN apk --no-cache add ca-certificates
 
 # Set working directory
-WORKDIR /app
+WORKDIR /root/
 
-# Copy the existing Air configuration
-COPY .air.toml .
+# Copy the binary from the builder stage
+COPY --from=builder /app/rest-api .
 
-# Expose port
+# Copy the .env file for testing purposes (you can remove this later)
+COPY .env .env
+
+# Expose the port the REST API will run on
 EXPOSE 8080
 
-# Command to run the application with Air
-CMD ["air"]
+# Run the REST API application
+CMD ["./rest-api"]
