@@ -44,6 +44,7 @@ const PaymentForm = () => {
       }
     } catch (err) {
       setErrorMessage("An unexpected error occurred. Please try again.");
+      console.log(err);
     } finally {
       setIsProcessing(false);
     }

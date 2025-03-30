@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { BookText, Globe, House, Wallet } from "lucide-react";
+import { House, Wallet } from "lucide-react";
 import Link from "next/link";
 
 const MoreDropdownMenu = () => {

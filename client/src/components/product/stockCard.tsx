@@ -1,9 +1,8 @@
-import React, { Suspense, useEffect, useMemo } from "react";
+import React, { Suspense, useMemo } from "react";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Bookmark, MoveDown, MoveUp } from "lucide-react";
 import { useStocks } from "@/providers/stocksProvider";
-import { Button } from "../ui/button";
 import { MouseEvent } from "react";
 import { SavedStock } from "@/types/stocks";
 

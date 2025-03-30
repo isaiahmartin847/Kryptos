@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { House } from "lucide-react";
-import { useEffect, useState } from "react";
+
 import { Tooltip } from "@radix-ui/react-tooltip";
 
 import {
