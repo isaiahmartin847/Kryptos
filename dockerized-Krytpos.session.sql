@@ -115,6 +115,13 @@ VALUES
 (51500, '2024-03-02 00:00:00+00', '2024-03-01 12:00:00+00', 1);
 
 
+--@block
+DELETE FROM daily_price
+WHERE id IN (32, 33);
+
+--@block
+SELECT * From daily_price
+
 --@block 
 SELECT 
     price_forecast.price AS forecasted_price, 

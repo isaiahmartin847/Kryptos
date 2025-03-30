@@ -1,13 +1,12 @@
 "use client";
 
-import { fetchHasAcceptedTerms } from "@/apiFunctions/getFunctions";
 import { SkeletonStockCard } from "@/components/product/skeletonComponents";
 import StockCard from "@/components/product/stockCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
-import { X, XCircle } from "lucide-react";
+import { XCircle } from "lucide-react";
 
 const Main = () => {
   const { stocks, isStocksError, isStocksLoading, refetchStocks } = useStocks();

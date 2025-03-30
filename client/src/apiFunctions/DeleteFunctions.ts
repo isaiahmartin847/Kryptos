@@ -1,6 +1,10 @@
+import { MsgResponse } from "@/types/responses";
+
 const apiUrl = process.env.NEXT_PUBLIC_REST_API_URL;
 
-export const deleteSavedStock = async (savedStockId: number): Promise<any> => {
+export const deleteSavedStock = async (
+  savedStockId: number,
+): Promise<MsgResponse> => {
   const response = await fetch(`${apiUrl}/saved/${savedStockId}`, {
     method: "DELETE",
   });

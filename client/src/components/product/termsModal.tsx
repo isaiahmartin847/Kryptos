@@ -49,7 +49,11 @@ export const TermsAndConditions = () => {
   });
 
   const handleClick = () => {
-    !isChecked ? console.log("must agree to terms") : mutate();
+    if (!isChecked) {
+      console.log("must agree to terms");
+      return;
+    }
+    mutate();
   };
 
   useEffect(() => {

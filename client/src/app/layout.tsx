@@ -1,8 +1,6 @@
 // app/layout.tsx (root layout)
 import type { Metadata } from "next";
 import "./globals.css";
-import LandingPageFooter from "@/components/landingPage/footer";
-import Navbar from "@/components/landingPage/navbar";
 
 export const metadata: Metadata = {
   title: "Kryptos AI",
