@@ -26,6 +26,8 @@ func (s *Server) ConfigureMiddleware() {
 			"http://192.168.1.247:3000",
 			"https://kryptosai.pro",
 			"https://app.kryptosai.pro",
+			"http://app.localhost:3000",
+			"http://localhost:3000",
 		},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders: []string{"Content-Type", "Authorization"},

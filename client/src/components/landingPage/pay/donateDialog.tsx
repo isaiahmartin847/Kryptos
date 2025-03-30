@@ -1,7 +1,7 @@
 "use client";
 
 import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { useMutation } from "@tanstack/react-query";
 
 import {
@@ -26,30 +26,55 @@ if (!stripePublicKey) {
 
 const StripePromise = loadStripe(stripePublicKey);
 
+// Define proper types for the Stripe options
+interface StripeAppearance {
+  theme: string;
+  variables: {
+    colorBackground: string;
+    colorText: string;
+    colorInputBackground: string;
+    colorPrimary: string;
+  };
+  rules: {
+    [selector: string]: {
+      [property: string]: string;
+    };
+  };
+}
+
+interface CustomStripeElementsOptions {
+  clientSecret: string;
+  appearance: StripeAppearance;
+}
+
 const DonateDialog = ({ price }: DonateProps) => {
-  const [stripeOptions, setStripeOptions] = useState<any>({});
+  const [stripeOptions, setStripeOptions] =
+    useState<CustomStripeElementsOptions | null>(null);
 
   const { mutate, isPending } = useMutation({
     mutationFn: createPaymentIntent,
     onSuccess: (data) => {
-      setStripeOptions({
-        clientSecret: data.client_secret,
-        appearance: {
-          theme: "flat",
-          variables: {
-            colorBackground: "#1E1E1E",
-            colorText: "#E0E0E0",
-            colorInputBackground: "#1F1F1F",
-            colorPrimary: "#E0E0E0",
-          },
-          rules: {
-            ".Input": {
-              padding: "12px",
-              borderRadius: "4px",
+      // Check if client_secret is not null before setting stripeOptions
+      if (data.client_secret) {
+        setStripeOptions({
+          clientSecret: data.client_secret,
+          appearance: {
+            theme: "flat",
+            variables: {
+              colorBackground: "#1E1E1E",
+              colorText: "#E0E0E0",
+              colorInputBackground: "#1F1F1F",
+              colorPrimary: "#E0E0E0",
+            },
+            rules: {
+              ".Input": {
+                padding: "12px",
+                borderRadius: "4px",
+              },
             },
           },
-        },
-      });
+        });
+      }
     },
     onError: (error) => {
       console.error("Error creating user:", error);
@@ -80,8 +105,11 @@ const DonateDialog = ({ price }: DonateProps) => {
             Processing...
           </div>
         ) : (
-          stripeOptions?.clientSecret && (
-            <Elements stripe={StripePromise} options={stripeOptions}>
+          stripeOptions && (
+            <Elements
+              stripe={StripePromise}
+              options={stripeOptions as StripeElementsOptions}
+            >
               <PaymentForm />
             </Elements>
           )
