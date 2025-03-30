@@ -1,7 +1,14 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+
 export default function Home() {
+
+  const homeUrl = process.env.NEXT_PUBLIC_HOST_URL;
+  const prefix = process.env.NODE_ENV === "development" ? "http" : "https";
+
+  const url = `${prefix}://app.${homeUrl}`
+
   return (
     <div>
       <div className="mt-40 flex flex-col items-center space-y-4 text-center">
@@ -17,7 +24,7 @@ export default function Home() {
         </p>
       </div>
       <div className="mt-8 flex w-full justify-center">
-        <Link href="http://app.localhost:3000/sign-up">
+        <Link href={url}>
           <Button variant="secondary">Get Started</Button>
         </Link>
       </div>
