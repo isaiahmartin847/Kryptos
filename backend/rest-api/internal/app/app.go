@@ -31,6 +31,7 @@ func InitializeDependencies(db *gorm.DB) (*handler.Handler, error) {
 	userRepo := repositories.NewUserRepository(db)
 	chartRepo := repositories.NewChartRepository(db)
 	stockRepo := repositories.NewStockRepository(db)
+	// miscRepo := repositories.NewMiscRepository(db)
 
 	// Initialize services
 	userService := service.NewUserService(userRepo)

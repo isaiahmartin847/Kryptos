@@ -52,7 +52,7 @@ func (s *Server) ConfigureRoutes() {
 	s.echo.GET("/chart", s.handler.GetChartData)
 	s.echo.GET("/stock", s.handler.GetAllStocks)
 	s.echo.GET("/saved", s.handler.GetSavedStocks)
-
+	s.echo.GET("/health", s.handler.HealthCheck)
 	s.echo.DELETE("/saved/:id", s.handler.DeleteSavedStock)
 
 }

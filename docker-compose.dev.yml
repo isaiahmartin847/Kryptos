@@ -4,7 +4,7 @@ services:
   postgres:
     image: postgres:17
     container_name: postgres
-    env_file: .env # Load environment variables from .env file
+    env_file: .env
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -34,14 +34,7 @@ services:
       - ./backend/rest-api:/app
     networks:
       - kryptos-network
-    env_file: .env # Load environment variables from .env file
-    environment:
-      - POSTGRES_HOST=${POSTGRES_HOST} # Should resolve to "postgres"
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_SSLMODE=disable
+    env_file: .env
     depends_on:
       - postgres
 
@@ -57,39 +50,23 @@ services:
     networks:
       - kryptos-network
     env_file: .env
-    environment:
-      - POSTGRES_HOST=${POSTGRES_HOST}
-      - POSTGRES_PORT=${POSTGRES_PORT}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_SSLMODE=disable
     depends_on:
       - postgres
 
-  # client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    container_name: client
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./client:/app
-    networks:
-      - kryptos-network
-    env_file: .env # Load environment variables from .env file
-    environment:
-      - NEXT_PUBLIC_REST_API_URL=${NEXT_PUBLIC_REST_API_URL}
-      - NEXT_PUBLIC_WS_API_URL=${NEXT_PUBLIC_WS_API_URL}
-      - NEXT_PUBLIC_NAME=${NEXT_PUBLIC_NAME}
-      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
-      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      - STRIPE_PUBLIC_KEY_TEST=${STRIPE_PUBLIC_KEY_TEST}
-      - STRIPE_SECRET_KEY_TEST=${STRIPE_SECRET_KEY_TEST}
-      - OPENAI_KEY=${OPENAI_KEY}
-    depends_on:
-      - rest-api
+# client:
+#   build:
+#     context: ./client
+#     dockerfile: Dockerfile
+#   container_name: client
+#   ports:
+#     - "3000:3000"
+#   volumes:
+#     - ./client:/app
+#   networks:
+#     - kryptos-network
+#   env_file: .env
+#   depends_on:
+#     - rest-api
 
 networks:
   kryptos-network:
