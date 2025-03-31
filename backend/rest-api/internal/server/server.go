@@ -23,9 +23,10 @@ func (s *Server) ConfigureMiddleware() {
 	// change CORS to not let any url hit the end api
 	s.echo.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{
-			"http://192.168.1.247:3000",
 			"https://kryptosai.pro",
 			"https://app.kryptosai.pro",
+			"https://webhooks.clerk.dev",
+			"http://192.168.1.247:3000",
 			"http://app.localhost:3000",
 			"http://localhost:3000",
 		},
