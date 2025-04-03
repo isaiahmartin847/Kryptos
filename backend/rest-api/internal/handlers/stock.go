@@ -197,6 +197,7 @@ func (h *Handler) DeleteSavedStock(c echo.Context) error {
 
 	logger.Info(fmt.Sprintf("Deleting saved stock with id: %v", savedStockId))
 
+	// this could be causing some issue since it not going through a service layer.
 	err = h.StockService.DeleteSavedStock(ctx, savedStockId)
 
 	if err != nil {

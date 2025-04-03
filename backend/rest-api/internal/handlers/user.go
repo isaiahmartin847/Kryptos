@@ -15,6 +15,7 @@ func (h *Handler) HasUserAcceptedTerms(c echo.Context) error {
 	userId := c.QueryParam("userId")
 
 	if userId == "" {
+		logger.Error("user id was not provided server is unable to check if terms where checked")
 		return c.JSON(http.StatusBadRequest, models.Error{
 			Code:    http.StatusBadRequest,
 			Message: "The User id provider was not correct",
@@ -32,6 +33,7 @@ func (h *Handler) HasUserAcceptedTerms(c echo.Context) error {
 		})
 	}
 
+	logger.Info(fmt.Sprintf("was able to check if user has signed terms response %v", AcceptedTerms))
 	return c.JSON(http.StatusOK, models.ApiResponse[models.UserTerms]{
 		Status: "success",
 		Data: models.Data[models.UserTerms]{
@@ -110,6 +112,8 @@ func (h *Handler) CreateSignedTerm(c echo.Context) error {
 		})
 	}
 
+	logger.Info(fmt.Sprintf("creating signed terms with user id of: %v", reqBody))
+
 	signedTerm, err := h.UserService.UserRepo.CreateSignedTerm(ctx, reqBody)
 
 	if err != nil {
@@ -119,6 +123,8 @@ func (h *Handler) CreateSignedTerm(c echo.Context) error {
 			Message: "There was a internal server error",
 		})
 	}
+
+	logger.Info(fmt.Sprintf("was able to create signed term %v", signedTerm))
 
 	return c.JSON(http.StatusCreated, models.ApiMsgResponse{
 		Status:  "success",
