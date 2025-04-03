@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
 import { XCircle } from "lucide-react";
-import { useEffect } from "react";
 
 const Main = () => {
   const { stocks, isStocksError, isStocksLoading, refetchStocks } = useStocks();
