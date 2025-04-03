@@ -5,7 +5,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const nextConfig: NextConfig = {
-  /* Add your Next.js config options here */
+  experimental: {
+    // Allow requests from app.localhost
+    allowedDevOrigins: ["http://app.localhost:3000"],
+  },
 };
 
 export default nextConfig;
