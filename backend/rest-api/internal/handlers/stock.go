@@ -195,6 +195,8 @@ func (h *Handler) DeleteSavedStock(c echo.Context) error {
 		})
 	}
 
+	logger.Info(fmt.Sprintf("Deleting saved stock with id: %v", savedStockId))
+
 	err = h.StockService.DeleteSavedStock(ctx, savedStockId)
 
 	if err != nil {
@@ -205,6 +207,7 @@ func (h *Handler) DeleteSavedStock(c echo.Context) error {
 		})
 	}
 
+	logger.Info(("deleted saved stock"))
 	return c.JSON(http.StatusOK, models.ApiMsgResponse{
 		Status:  "success",
 		Message: fmt.Sprintf("Saved stock with id %v has been deleted.", savedStockId),
