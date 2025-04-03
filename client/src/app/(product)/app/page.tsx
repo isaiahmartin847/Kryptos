@@ -7,9 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
 import { XCircle } from "lucide-react";
+import { useEffect } from "react";
 
 const Main = () => {
   const { stocks, isStocksError, isStocksLoading, refetchStocks } = useStocks();
+
+  useEffect(() => {
+    if (stocks) {
+      console.log(`this is the stock data in the page: ${stocks}`);
+    }
+  }, [stocks]);
 
   return (
     <div className="flex h-[calc(100vh-75px)] justify-center">

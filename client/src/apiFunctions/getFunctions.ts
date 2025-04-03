@@ -53,6 +53,8 @@ export const fetchStocks = async (
     throw new Error("Network response was not ok");
   }
 
+  console.log(`this is the data in the fetch function: ${response.json()}`);
+
   return response.json();
 };
 
