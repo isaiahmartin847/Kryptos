@@ -20,12 +20,14 @@ const formatContent = (content: string) => {
 
 const TermsPage = async () => {
   // Determine if we're on the server or client side
-  const isServer = typeof window === "undefined";
+  // const isServer = typeof window === "undefined";
 
   // Use the appropriate base URL based on environment
-  const baseUrl = isServer
-    ? "http://rest-api:8080"
-    : process.env.NEXT_PUBLIC_REST_API_URL;
+  // const baseUrl = isServer
+  //   ? "http://rest-api:8080"
+  //   : "'https://api.kryptosai.pro/terms'";
+
+  const baseUrl = process.env.NEXT_PUBLIC_REST_API_URL;
 
   if (!baseUrl) {
     throw new Error("API URL is not defined.");
