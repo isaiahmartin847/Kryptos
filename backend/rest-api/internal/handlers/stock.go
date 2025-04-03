@@ -147,6 +147,8 @@ func (h *Handler) SaveStock(c echo.Context) error {
 
 	if err != nil {
 
+		logger.Error(fmt.Sprintf("Unable to save stock with this data error was not nil: %v", reqBody))
+
 		if strings.Contains(err.Error(), "duplicate entry") {
 			return c.JSON(http.StatusConflict, models.Error{
 				Code:    http.StatusConflict,
@@ -161,6 +163,8 @@ func (h *Handler) SaveStock(c echo.Context) error {
 		})
 
 	}
+
+	logger.Info(fmt.Sprintf("created the saved stock here is the values: %v", reqBody))
 
 	response := models.ApiResponse[models.SavedStock]{
 		Status: "success",
@@ -184,6 +188,7 @@ func (h *Handler) DeleteSavedStock(c echo.Context) error {
 	savedStockId, err := strconv.ParseInt(savedStockIdParam, 10, 64)
 
 	if err != nil {
+		logger.Error(fmt.Sprintf("Error Invalid param: %v", savedStockIdParam))
 		return c.JSON(http.StatusBadRequest, models.Error{
 			Code:    http.StatusBadRequest,
 			Message: fmt.Sprintf("Invalid param: 'savedStockId' must be a integer. Error: %v", err),
@@ -193,6 +198,7 @@ func (h *Handler) DeleteSavedStock(c echo.Context) error {
 	err = h.StockService.DeleteSavedStock(ctx, savedStockId)
 
 	if err != nil {
+		logger.Error(fmt.Sprintf("Unable to delete the stock with this ID: %v error: %v", savedStockId, err))
 		return c.JSON(http.StatusInternalServerError, models.Error{
 			Code:    http.StatusInternalServerError,
 			Message: "An unexpected internal server error occurred",
