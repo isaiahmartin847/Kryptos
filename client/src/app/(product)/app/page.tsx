@@ -12,12 +12,6 @@ import { useEffect } from "react";
 const Main = () => {
   const { stocks, isStocksError, isStocksLoading, refetchStocks } = useStocks();
 
-  useEffect(() => {
-    if (stocks) {
-      console.log(`this is the stock data in the page: ${stocks}`);
-    }
-  }, [stocks]);
-
   return (
     <div className="flex h-[calc(100vh-75px)] justify-center">
       <Card className="mt-40 h-fit w-full md:w-3/4">

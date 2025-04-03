@@ -45,6 +45,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       }
     },
     enabled: !!user?.id,
+    staleTime: 0,
   });
 
   const { mutate: mutateSaveStock, isPending: isSaveStockPending } =
