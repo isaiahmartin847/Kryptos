@@ -44,14 +44,14 @@ func (s *Server) ConfigureRoutes() {
 	userGroup.GET("/terms/has-terms", s.handler.HasUserAcceptedTerms)
 	userGroup.POST("/terms", s.handler.CreateSignedTerm)
 
-	stockGroup.GET("/", s.handler.GetAllStocks)
+	// stockGroup.GET("/", s.handler.GetAllStocks)
 	stockGroup.GET("/:ticker", s.handler.GetStockByTicker)
 
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
-	s.echo.POST("/stock/save", s.handler.SaveStock)
 
+	s.echo.GET("/stock", s.handler.GetAllStocks)
 	s.echo.GET("/chart", s.handler.GetChartData)
 	s.echo.GET("/saved", s.handler.GetSavedStocks)
 	s.echo.GET("/health", s.handler.HealthCheck)

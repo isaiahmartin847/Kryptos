@@ -84,7 +84,7 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 
 	}
 
-	logger.Info(fmt.Sprintf("user ID: %v", userId))
+	logger.Info(fmt.Sprintf("user ID: %v", *userId))
 
 	logger.Info(fmt.Sprintf("stocks returned: %v", stocks))
 
