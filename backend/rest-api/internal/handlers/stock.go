@@ -69,6 +69,7 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 			})
 		}
 
+		logger.Info("querying the data with a user ID")
 		userId = &userIdQuery
 	}
 
@@ -82,6 +83,10 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 		})
 
 	}
+
+	logger.Info(fmt.Sprintf("user ID: %v", userId))
+
+	logger.Info(fmt.Sprintf("stocks returned: %v", stocks))
 
 	response := models.ApiResponse[models.Stock]{
 		Status: "success",
