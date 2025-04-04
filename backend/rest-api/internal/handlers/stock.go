@@ -69,8 +69,10 @@ func (h *Handler) GetAllStocks(c echo.Context) error {
 			})
 		}
 
-		logger.Info("querying the data with a user ID")
 		userId = &userIdQuery
+		logger.Info(fmt.Sprintf("querying the stock data with a user ID: %v", *userId))
+	} else {
+		logger.Info("User Id is not in the parameter")
 	}
 
 	stocks, err := h.StockService.GetAllStocks(ctx, userId)

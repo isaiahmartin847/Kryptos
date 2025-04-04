@@ -42,7 +42,7 @@ func (s *StockService) GetAllStocks(ctx context.Context, userId *string) ([]mode
 		for i := range stocks {
 			logger.Info(fmt.Sprintf("looping stocks stocks data: %v", stocks[i]))
 			if len(stocks[i].SavedStocks) > 0 {
-				logger.Info(fmt.Sprintf("user with id: %v have stock with id: %v saved", userId, stocks[i].ID))
+				logger.Info(fmt.Sprintf("user with id: %v has stock with id: %v saved", *userId, stocks[i].ID))
 				stocks[i].IsSaved = true
 			}
 		}

@@ -50,6 +50,7 @@ func (s *Server) ConfigureRoutes() {
 	// General routes
 	s.echo.POST("/user-created-payload", s.handler.UserWebhookPayload())
 	s.echo.POST("/payment-intent", s.handler.Stripe_transaction)
+	s.echo.POST("/stock/save", s.handler.SaveStock)
 
 	s.echo.GET("/stock", s.handler.GetAllStocks)
 	s.echo.GET("/chart", s.handler.GetChartData)
