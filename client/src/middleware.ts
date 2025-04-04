@@ -9,8 +9,8 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
     const pathname = request.nextUrl.pathname;
 
     // Handle app subdomain routing first
-    if (hostname === "app.kryptosai.pro") {
-      // if (hostname === "app.localhost:3000") {
+    // if (hostname === "app.kryptosai.pro") {
+    if (hostname === "app.localhost:3000") {
       const url = new URL(request.url);
       if (!pathname.startsWith("/app")) {
         url.pathname = `/app${pathname === "/" ? "" : pathname}`;
