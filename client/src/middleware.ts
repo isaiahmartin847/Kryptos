@@ -3,14 +3,16 @@ import { NextRequest } from "next/server";
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextFetchEvent } from "next/server";
 
+const homeUrl = process.env.NEXT_PUBLIC_HOST_URL;
+const url = `app.${homeUrl}`;
+
 export async function middleware(request: NextRequest, event: NextFetchEvent) {
   try {
     const hostname = request.headers.get("host");
     const pathname = request.nextUrl.pathname;
 
-    // Handle app subdomain routing first
-    if (hostname === "app.kryptosai.pro") {
-      // if (hostname === "app.localhost:3000") {
+    console.log(url);
+    if (hostname === url) {
       const url = new URL(request.url);
       if (!pathname.startsWith("/app")) {
         url.pathname = `/app${pathname === "/" ? "" : pathname}`;
