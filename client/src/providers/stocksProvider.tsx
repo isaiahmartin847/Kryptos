@@ -68,6 +68,10 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
         }
       },
       onSuccess: () => {
+        toast({
+          title: "Saved stock",
+          variant: "default",
+        });
         queryClient.invalidateQueries({ queryKey: ["stocks"] });
       },
       onError: (error: Error) => {
@@ -85,10 +89,14 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["stocks"] });
+      toast({
+        title: "Unsaved stock",
+        variant: "default",
+      });
     },
     onError: (error: Error) => {
       toast({
-        title: "Failed to save stock",
+        title: "Failed to delete stock",
         description: `Error: ${error.message}`,
         variant: "error",
       });

@@ -36,8 +36,8 @@ export default function SubdomainLayout({
 
       <SignedIn>
         <ReactQueryProvider>
+          <Toaster></Toaster>
           <StocksProvider>
-            <Toaster></Toaster>
             <main className="h-screen w-screen bg-primaryColor bg-cover bg-center text-textColor">
               <TermsAndConditions />
               <Navbar />
