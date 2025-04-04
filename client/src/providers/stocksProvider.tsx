@@ -6,7 +6,7 @@ import { ApiResponse } from "@/types/requestBody";
 import { Stock } from "@/types/stocks";
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { createContext, ReactNode, useContext } from "react";
+import React, { createContext, ReactNode, useContext, useEffect } from "react";
 
 interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
@@ -47,6 +47,16 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     enabled: !!user?.id,
     staleTime: 0,
   });
+
+  useEffect(() => {
+    if (stocks) {
+      console.log("Stocks data updated:", stocks);
+      console.log(
+        "Saved stocks:",
+        stocks.data.items.filter((stock) => stock.is_saved),
+      );
+    }
+  }, [stocks]);
 
   const { mutate: mutateSaveStock, isPending: isSaveStockPending } =
     useMutation({
