@@ -32,6 +32,7 @@ func (h *Handler) HasUserAcceptedTerms(c echo.Context) error {
 			Message: "There was a problem when getting the accepted terms data",
 		})
 	}
+	c.Response().Header().Set("Cache-Control", "no-store")
 
 	logger.Info(fmt.Sprintf("was able to check if user has signed terms response %v", AcceptedTerms))
 	return c.JSON(http.StatusOK, models.ApiResponse[models.UserTerms]{

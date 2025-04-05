@@ -36,6 +36,8 @@ func (h *Handler) GetStockByTicker(c echo.Context) error {
 		})
 	}
 
+	c.Response().Header().Set("Cache-Control", "no-store")
+
 	response := models.ApiResponse[models.Stock]{
 		Status: "success",
 		Data: models.Data[models.Stock]{
