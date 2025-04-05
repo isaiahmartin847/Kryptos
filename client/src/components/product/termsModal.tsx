@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { signTerms } from "@/apiFunctions/postFunctions";
 import { Loader2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 export const TermsAndConditions = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -50,7 +51,10 @@ export const TermsAndConditions = () => {
 
   const handleClick = () => {
     if (!isChecked) {
-      console.log("must agree to terms");
+      toast({
+        title: "Must agree to terms.",
+        variant: "default",
+      });
       return;
     }
     mutate();

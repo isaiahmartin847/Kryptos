@@ -30,7 +30,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch stocks data with React Query
   const {
     data: stocks,
     isLoading: isStocksLoading,
@@ -45,20 +44,8 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       return fetchStocks(user.id);
     },
     enabled: !!user?.id,
-    staleTime: 1000 * 30, // 30 seconds
-    refetchInterval: 1000 * 60, // 1 minute
-    refetchOnWindowFocus: true,
+    refetchInterval: 6000 * 60, // 1 minute
   });
-
-  useEffect(() => {
-    if (stocks) {
-      console.log("Stocks data updated:", stocks);
-      console.log(
-        "Saved stocks:",
-        stocks.data.items.filter((stock: Stock) => stock.is_saved),
-      );
-    }
-  }, [stocks]);
 
   // Mutation for saving a stock
   const { mutate: mutateSaveStock, isPending: isSaveStockPending } =

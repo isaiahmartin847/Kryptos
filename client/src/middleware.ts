@@ -11,7 +11,6 @@ export async function middleware(request: NextRequest, event: NextFetchEvent) {
     const hostname = request.headers.get("host");
     const pathname = request.nextUrl.pathname;
 
-    console.log(url);
     if (hostname === url) {
       const url = new URL(request.url);
       if (!pathname.startsWith("/app")) {

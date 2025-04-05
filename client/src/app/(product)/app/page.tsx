@@ -1,6 +1,5 @@
 "use client";
 
-import { fetchStocks } from "@/apiFunctions/getFunctions";
 import { SkeletonStockCard } from "@/components/product/skeletonComponents";
 import StockCard from "@/components/product/stockCard";
 import { Button } from "@/components/ui/button";
@@ -14,25 +13,11 @@ const Main = () => {
   const { stocks, isStocksError, isStocksLoading, refetchStocks } = useStocks();
   const { user } = useUser();
 
-  const handleClick = async () => {
-    if (!user?.id) {
-      console.log("user Id doesn't exist");
-    } else {
-      try {
-        const data = await fetchStocks(user.id);
-        console.log("Fetched stocks:", data);
-      } catch (error) {
-        console.error("Error fetching stocks:", error);
-      }
-    }
-  };
-
   return (
     <div className="flex h-[calc(100vh-75px)] justify-center">
       <Card className="mt-40 h-fit w-full md:w-3/4">
         <CardHeader className="border-b-2 border-neutral-400">
           <CardTitle>Charts</CardTitle>
-          <Button onClick={handleClick}>fetch stocks</Button>
         </CardHeader>
         <CardContent className="space-y-3 py-4">
           {!isStocksLoading ? (
