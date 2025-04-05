@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"math"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	repository "github.com/isaiahmartin847/Reg-Maps/internal/repositories"
@@ -23,6 +24,10 @@ func (s *ChartService) GetChartData(ctx context.Context, ticker string) ([]model
 	if err != nil {
 		logger.Error("Unable to get the chart data on the service layer error: %v", err)
 		return nil, err
+	}
+
+	for i := range chartData {
+		chartData[i].DailyPrice = math.Floor(chartData[i].DailyPrice*100) / 100
 	}
 
 	return chartData, nil

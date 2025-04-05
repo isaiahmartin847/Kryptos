@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/isaiahmartin847/Reg-Maps/internal/models"
 	"github.com/isaiahmartin847/Reg-Maps/internal/repositories"
@@ -40,9 +39,7 @@ func (s *StockService) GetAllStocks(ctx context.Context, userId *string) ([]mode
 
 	if userId != nil {
 		for i := range stocks {
-			logger.Info(fmt.Sprintf("looping stocks stocks data: %v", stocks[i]))
 			if len(stocks[i].SavedStocks) > 0 {
-				logger.Info(fmt.Sprintf("user with id: %v has stock with id: %v saved", *userId, stocks[i].ID))
 				stocks[i].IsSaved = true
 			}
 		}
