@@ -11,6 +11,7 @@ import "@/app/globals.css";
 import Navbar from "@/components/product/navbar";
 import { ReactQueryProvider } from "@/providers/reactQueryProvider";
 import { StocksProvider } from "@/providers/stocksProvider";
+import { SavedStocksProvider } from "@/providers/savedStocksProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 import { TermsAndConditions } from "@/components/product/termsModal";
@@ -38,11 +39,13 @@ export default function SubdomainLayout({
         <ReactQueryProvider>
           <Toaster></Toaster>
           <StocksProvider>
-            <main className="h-screen w-screen bg-primaryColor bg-cover bg-center text-textColor">
-              <TermsAndConditions />
-              <Navbar />
-              {children}
-            </main>
+            <SavedStocksProvider>
+              <main className="h-screen w-screen bg-primaryColor bg-cover bg-center text-textColor">
+                <TermsAndConditions />
+                <Navbar />
+                {children}
+              </main>
+            </SavedStocksProvider>
           </StocksProvider>
         </ReactQueryProvider>
       </SignedIn>

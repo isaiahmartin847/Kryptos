@@ -46,18 +46,9 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     },
     enabled: !!user?.id,
     staleTime: 1000 * 30, // 30 seconds
-    refetchInterval: 1000 * 30, // 30 seconds
+    refetchInterval: 1000 * 60, // 1 minute
     refetchOnWindowFocus: true,
-    refetchOnMount: true,
-    refetchOnReconnect: true,
   });
-
-  // Add a useEffect to force refetch in production
-  useEffect(() => {
-    if (process.env.NODE_ENV === "production" && user?.id) {
-      refetchStocks();
-    }
-  }, [user?.id, refetchStocks]);
 
   useEffect(() => {
     if (stocks) {

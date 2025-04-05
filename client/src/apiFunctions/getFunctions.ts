@@ -46,7 +46,9 @@ export const fetchStockByTicker = async (
 export const fetchStocks = async (
   userId: string,
 ): Promise<ApiResponse<Stock>> => {
-  const response = await fetch(`${apiUrl}/stock?userId=${userId}`);
+  const response = await fetch(`${apiUrl}/stock?userId=${userId}`, {
+    cache: "no-store",
+  });
 
   if (!response.ok) {
     console.error("Unable to fetch the stocks", response.statusText);
