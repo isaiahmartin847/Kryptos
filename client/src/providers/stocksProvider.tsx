@@ -39,10 +39,9 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     queryKey: ["stocks"],
     queryFn: () => {
       if (!user?.id) {
-        return fetchStocks("");
-      } else {
-        return fetchStocks(user.id);
+        throw new Error("User ID is required to fetch stocks.");
       }
+      return fetchStocks(user.id);
     },
     enabled: !!user?.id,
     staleTime: 0,
