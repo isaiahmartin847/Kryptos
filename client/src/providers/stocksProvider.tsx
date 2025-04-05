@@ -37,7 +37,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     isError: isStocksError,
     refetch: refetchStocks,
   } = useQuery({
-    queryKey: ["stocks"],
+    queryKey: ["stocks", user?.id],
     queryFn: () => {
       if (!user?.id) {
         throw new Error("User ID is required to fetch stocks.");
@@ -45,9 +45,11 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       return fetchStocks(user.id);
     },
     enabled: !!user?.id,
-    staleTime: 0,
+    staleTime: 1000 * 30, // 30 seconds
+    refetchInterval: 1000 * 30, // 30 seconds
     refetchOnWindowFocus: true,
-    refetchInterval: 30000,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   useEffect(() => {
