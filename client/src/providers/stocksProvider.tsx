@@ -36,7 +36,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     isLoading: isStocksLoading,
     isError: isStocksError,
     refetch: refetchStocks,
-  } = useQuery({
+  } = useQuery<ApiResponse<Stock>>({
     queryKey: ["stocks", user?.id],
     queryFn: () => {
       if (!user?.id) {
@@ -52,12 +52,19 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     refetchOnReconnect: true,
   });
 
+  // Add a useEffect to force refetch in production
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production" && user?.id) {
+      refetchStocks();
+    }
+  }, [user?.id, refetchStocks]);
+
   useEffect(() => {
     if (stocks) {
       console.log("Stocks data updated:", stocks);
       console.log(
         "Saved stocks:",
-        stocks.data.items.filter((stock) => stock.is_saved),
+        stocks.data.items.filter((stock: Stock) => stock.is_saved),
       );
     }
   }, [stocks]);
