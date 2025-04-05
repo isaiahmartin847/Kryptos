@@ -45,6 +45,8 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     },
     enabled: !!user?.id,
     staleTime: 0,
+    refetchOnWindowFocus: true,
+    refetchInterval: 30000,
   });
 
   useEffect(() => {
@@ -88,6 +90,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["stocks"] });
+      refetchStocks();
       toast({
         title: "Unsaved stock",
         variant: "default",
