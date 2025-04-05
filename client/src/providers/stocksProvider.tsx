@@ -1,12 +1,12 @@
+import { createContext, ReactNode, useContext, useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { saveStock } from "@/apiFunctions/postFunctions";
 import { deleteSavedStock } from "@/apiFunctions/DeleteFunctions";
 import { fetchStocks } from "@/apiFunctions/getFunctions";
-import { saveStock } from "@/apiFunctions/postFunctions";
 import { useToast } from "@/hooks/use-toast";
 import { ApiResponse } from "@/types/requestBody";
 import { Stock } from "@/types/stocks";
 import { useUser } from "@clerk/nextjs";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { createContext, ReactNode, useContext, useEffect } from "react";
 
 interface StocksType {
   stocks: ApiResponse<Stock> | undefined;
@@ -30,6 +30,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Fetch stocks data with React Query
   const {
     data: stocks,
     isLoading: isStocksLoading,
@@ -59,31 +60,57 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     }
   }, [stocks]);
 
+  // Mutation for saving a stock
   const { mutate: mutateSaveStock, isPending: isSaveStockPending } =
     useMutation({
       mutationFn: (stockId: number) => {
         if (!user?.id) {
           throw new Error("User is not authenticated");
-        } else {
-          return saveStock(user.id, stockId);
         }
+        return saveStock(user.id, stockId);
+      },
+      onMutate: async (stockId: number) => {
+        // Optimistically update the stock to "saved" before the mutation completes
+        await queryClient.cancelQueries({ queryKey: ["stocks"] });
+
+        const previousStocks = queryClient.getQueryData<ApiResponse<Stock>>([
+          "stocks",
+        ]);
+
+        queryClient.setQueryData<ApiResponse<Stock>>(["stocks"], (old) => {
+          if (old) {
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                items: old.data.items.map((stock) =>
+                  stock.id === stockId ? { ...stock, is_saved: true } : stock,
+                ),
+              },
+            };
+          }
+          return old;
+        });
+
+        return { previousStocks };
+      },
+      onError: (err, variables, context) => {
+        // Rollback the optimistic update in case of an error
+        queryClient.setQueryData(["stocks"], context?.previousStocks);
+      },
+      onSettled: () => {
+        // Always refetch after mutation (whether success or error)
+        queryClient.refetchQueries({ queryKey: ["stocks"] });
       },
       onSuccess: () => {
         toast({
           title: "Saved stock",
           variant: "default",
         });
-        queryClient.invalidateQueries({ queryKey: ["stocks"] });
-      },
-      onError: (error: Error) => {
-        toast({
-          title: "Failed to save stock",
-          description: `Error: ${error.message}`,
-          variant: "error",
-        });
       },
     });
 
+  // Mutation for removing a saved stock
   const { mutate: mutateRemoveSavedStock } = useMutation({
     mutationFn: (savedStockId: number) => {
       return deleteSavedStock(savedStockId);
@@ -126,11 +153,11 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
   );
 };
 
-// This is the useHook
+// Custom hook to access stocks context
 export const useStocks = (): StocksType => {
   const context = useContext(StockContext);
   if (!context) {
-    throw new Error("useSavedStocks must be used within an AppProvider");
+    throw new Error("useStocks must be used within a StocksProvider");
   }
   return context;
 };
