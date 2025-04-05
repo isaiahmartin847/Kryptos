@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect } from "react";
+import { createContext, ReactNode, useContext } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { saveStock } from "@/apiFunctions/postFunctions";
 import { deleteSavedStock } from "@/apiFunctions/DeleteFunctions";

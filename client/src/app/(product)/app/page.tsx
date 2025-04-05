@@ -6,12 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStocks } from "@/providers/stocksProvider";
 import { Stock } from "@/types/stocks";
-import { useUser } from "@clerk/nextjs";
 import { XCircle } from "lucide-react";
 
 const Main = () => {
   const { stocks, isStocksError, isStocksLoading, refetchStocks } = useStocks();
-  const { user } = useUser();
 
   return (
     <div className="flex h-[calc(100vh-75px)] justify-center">
