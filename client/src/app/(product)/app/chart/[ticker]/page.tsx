@@ -13,6 +13,8 @@ import { fetchChartData } from "@/apiFunctions/getFunctions";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CircleXIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // Function to format the date as "Jan 1 25"
 const formatDate = (dateString: string) => {
@@ -30,7 +32,7 @@ export default function DoubleChart() {
   const param = useParams();
   const ticker = (param.ticker as string)?.toUpperCase() ?? "";
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["ChartData"],
     queryFn: () => fetchChartData(ticker.toUpperCase()),
     enabled: !!ticker,
@@ -70,11 +72,11 @@ export default function DoubleChart() {
 
   return (
     <div className="flex h-[calc(100%-75px)] items-center justify-center">
-      {true ? (
+      {isLoading ? (
+        // handle error
         <Card className="h-4/5 w-full text-textColor xl:w-3/4">
           <CardHeader>
             <CardTitle>
-              {" "}
               <Skeleton className="h-6 w-60 rounded-[5px]" />
             </CardTitle>
           </CardHeader>
@@ -83,7 +85,22 @@ export default function DoubleChart() {
           </CardContent>
         </Card>
       ) : isError ? (
-        <div>error</div>
+        // handle error
+        <Card className="h-4/5 w-full text-textColor xl:w-3/4">
+          <CardContent className="flex h-[650px] flex-col items-center justify-center space-y-3">
+            <CircleXIcon size={70} color="red" />
+            <h1 className="text-2xl">Unable to fetch chart Data.</h1>
+            <Button
+              variant={"outline"}
+              className="rounded"
+              onClick={() => {
+                refetch();
+              }}
+            >
+              Retry
+            </Button>
+          </CardContent>
+        </Card>
       ) : (
         <Card className="w-full text-textColor xl:w-3/4">
           <CardHeader>
