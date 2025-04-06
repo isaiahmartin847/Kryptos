@@ -129,9 +129,9 @@ export default function DoubleChart() {
                   tickCount={10}
                   domain={[
                     (dataMin: number | undefined) =>
-                      dataMin ? dataMin * 0.95 : 0,
+                      dataMin ? Number((dataMin * 0.95).toFixed(2)) : 0,
                     (dataMax: number | undefined) =>
-                      dataMax ? dataMax * 1.05 : 100,
+                      dataMax ? Number((dataMax * 1.05).toFixed(2)) : 100,
                   ]}
                 />
                 <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
