@@ -44,7 +44,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       return fetchStocks(user.id);
     },
     enabled: !!user?.id,
-    refetchInterval: 6000 * 60, // 1 minute
+    refetchInterval: 10000 * 60,
   });
 
   // Mutation for saving a stock
@@ -89,12 +89,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
         // Always refetch after mutation (whether success or error)
         queryClient.refetchQueries({ queryKey: ["stocks"] });
       },
-      onSuccess: () => {
-        toast({
-          title: "Saved stock",
-          variant: "default",
-        });
-      },
     });
 
   // Mutation for removing a saved stock
@@ -104,11 +98,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["stocks"] });
-      refetchStocks();
-      toast({
-        title: "Unsaved stock",
-        variant: "default",
-      });
+      // refetchStocks();
     },
     onError: (error: Error) => {
       toast({
