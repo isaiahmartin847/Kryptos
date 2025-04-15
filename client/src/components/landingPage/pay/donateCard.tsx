@@ -7,12 +7,12 @@ import DonateDialog from "./donateDialog";
 
 const DonateCard = ({ price }: DonateProps) => {
   return (
-    <Card className="w-[325] h-[400]">
+    <Card className="h-[400px] w-[325px]">
       <CardHeader>
         <h1 className="text-2xl font-semibold">Donate</h1>
         <div>
           <h1 className="text-[32px] font-semibold">${price}</h1>
-          <p className="text-xs ">one time payment</p>
+          <p className="text-xs">one time payment</p>
         </div>
       </CardHeader>
       <CardHeader className="pt-0">
