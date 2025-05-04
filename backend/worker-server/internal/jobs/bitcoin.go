@@ -30,9 +30,6 @@ func (j *Job) InsertNewDailyPrice(stockID int64) {
 		return
 	}
 
-	fmt.Print(strings.ToLower(stock.Name))
-	logger.Info(strings.ToLower(stock.Name))
-
 	latestDbPrice, err := j.repo.GetLatestPrice(stockID)
 	if err != nil {
 		logger.Error("Error: unable to query the latest price")

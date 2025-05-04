@@ -55,6 +55,7 @@ func main() {
 
 	scheduler.Every(1).Day().Do(func() {
 		JobsInstance.InsertNewDailyPrice(1)
+		JobsInstance.InsertNewDailyPrice(2)
 	})
 
 	// scheduler.Every(1).Minute().Do(func() {
