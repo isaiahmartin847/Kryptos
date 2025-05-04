@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"worker-server/internal/models"
 	"worker-server/logger"
 
@@ -12,6 +13,7 @@ type DbRepository interface {
 	GetLatestPrice(stockID int64) (*models.DailyPrice, error)
 	GetLastThirtyDaysPrices(stockID int64) ([]models.DailyPrice, error)
 	GetAllStockForecast() ([]models.BtcPrediction, error)
+	GetStockById(stockID int64) (*models.Stock, error)
 
 	// insertions
 	InsertNewStockData(response *models.BtcFetchResponse, PercentChange float64, stockID int64) error
@@ -34,6 +36,17 @@ func (r *repository) GetLatestPrice(stockID int64) (*models.DailyPrice, error) {
 		return nil, err
 	}
 	return &latestDbPrice, nil
+}
+
+func (r *repository) GetStockById(stockID int64) (*models.Stock, error) {
+	var stock models.Stock
+
+	if err := r.db.Where("id = ?", stockID).First(&stock).Error; err != nil {
+		logger.Error(fmt.Sprintf("Error: Unable to get the stock with id %v", stockID))
+		return nil, err
+	}
+
+	return &stock, nil
 }
 
 func (r *repository) GetLastThirtyDaysPrices(stockID int64) ([]models.DailyPrice, error) {

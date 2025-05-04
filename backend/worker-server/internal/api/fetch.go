@@ -11,8 +11,8 @@ import (
 	"worker-server/logger"
 )
 
-func GetTodaysBtcPrice() (*models.BtcFetchResponse, error) {
-	response, err := http.Get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=0&interval=daily")
+func GetTodaysBtcPrice(coinName string) (*models.BtcFetchResponse, error) {
+	response, err := http.Get(fmt.Sprintf("https://api.coingecko.com/api/v3/coins/%s/market_chart?vs_currency=usd&days=0&interval=daily", coinName))
 
 	if err != nil {
 		logger.Error("Error: unable to fetch the btc data. %v", err)

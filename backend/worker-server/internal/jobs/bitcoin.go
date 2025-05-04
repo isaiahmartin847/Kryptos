@@ -11,7 +11,7 @@ import (
 
 func GetBtcPrice() (*models.BtcFetchResponse, error) {
 
-	btcPrice, err := api.GetTodaysBtcPrice()
+	btcPrice, err := api.GetTodaysBtcPrice("bitcoin")
 	if err != nil {
 		logger.Error("Failed to get the bitcoin price %v", err)
 		return nil, err
