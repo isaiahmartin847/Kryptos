@@ -3,15 +3,16 @@ package jobs
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 	"worker-server/internal/api"
 	"worker-server/internal/models"
 	"worker-server/logger"
 )
 
-func GetBtcPrice() (*models.BtcFetchResponse, error) {
+func GetBtcPrice(coinName string) (*models.BtcFetchResponse, error) {
 
-	btcPrice, err := api.GetTodaysBtcPrice("bitcoin")
+	btcPrice, err := api.GetTodaysBtcPrice(coinName)
 	if err != nil {
 		logger.Error("Failed to get the bitcoin price %v", err)
 		return nil, err
@@ -23,13 +24,22 @@ func GetBtcPrice() (*models.BtcFetchResponse, error) {
 
 func (j *Job) InsertNewDailyPrice(stockID int64) {
 
+	stock, err := j.repo.GetStockById(stockID)
+	if err != nil {
+		logger.Error("Error: unable to query the latest price")
+		return
+	}
+
+	fmt.Print(strings.ToLower(stock.Name))
+	logger.Info(strings.ToLower(stock.Name))
+
 	latestDbPrice, err := j.repo.GetLatestPrice(stockID)
 	if err != nil {
 		logger.Error("Error: unable to query the latest price")
 		return
 	}
 
-	latestStockPrice, err := GetBtcPrice()
+	latestStockPrice, err := GetBtcPrice(strings.ToLower(stock.Name))
 	if err != nil {
 		logger.Error("Error: unable to get the latest bitcoin price error: %v", err)
 		return
