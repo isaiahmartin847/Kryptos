@@ -56,7 +56,9 @@ export default function DoubleChart() {
       const chartData = data.data.items.map((obj) => {
         return {
           // Format to 2 decimal places
-          bitcoin: parseFloat(obj.daily_price.toFixed(0)),
+          [data?.data?.stock?.name || "stock"]: parseFloat(
+            obj.daily_price.toFixed(0),
+          ),
           forecast: parseFloat(obj.forecasted_price.toFixed(0)),
           date: new Date(obj.date).toLocaleDateString("en-US", {
             year: "2-digit",
@@ -136,7 +138,7 @@ export default function DoubleChart() {
                 />
                 <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
                 <Line
-                  dataKey="bitcoin"
+                  dataKey={data?.data?.stock?.name || "stock"}
                   type="linear"
                   strokeWidth={2}
                   dot={false}

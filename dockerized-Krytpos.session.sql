@@ -7,7 +7,7 @@ FROM information_schema.tables
 WHERE table_schema = 'public';
 
 
---@block
+--@blockgs
 SELECT column_name, data_type, is_nullable, column_default
 FROM information_schema.columns
 WHERE table_name = 'terms_and_conditions';
@@ -133,7 +133,7 @@ DELETE FROM daily_price
 WHERE id IN (32, 33);
 
 --@block
-SELECT * From daily_price
+SELECT * From price_forecast
 
 --@block 
 SELECT 
@@ -149,6 +149,12 @@ JOIN
                    AND price_forecast.date = daily_price.date
 WHERE 
     stock.ticker = 'BTC';
+
+--@block 
+INSERT INTO daily_price (price, market_cap, created_at, date, volume, stock_id)
+VALUES
+-- Match the third forecast date (2025-05-06)
+(96635.25, 570030000000, 1746393600000, '2025-05-06', 25000000000, 1);
 
 
 --@block
@@ -243,72 +249,12 @@ SELECT * FROM stock
 DElETE FROM stock WHERE id = 1
 
 --@block
---@block
-SELECT
-    'stock' AS source,
-    id AS stock_id,
-    color,
-    name,
-    ticker,
-    icon_type,
-    NULL::bigint AS created_at,
-    NULL::timestamp AS updated_at,
-    NULL::integer AS daily_price_id,
-    NULL::numeric AS daily_price,
-    NULL::timestamp AS daily_price_date,
-    NULL::bigint AS market_cap,
-    NULL::bigint AS volume,
-    NULL::integer AS forecast_id,
-    NULL::numeric AS forecast_price,
-    NULL::timestamp AS forecast_date
-FROM stock
-WHERE ticker = 'ETH'
-
-UNION ALL
-
-SELECT
-    'daily_price' AS source,
-    s.id AS stock_id,
-    NULL::varchar AS color,
-    NULL::varchar AS name,
-    s.ticker,
-    NULL::varchar AS icon_type,
-    dp.created_at,
-    NULL::timestamp AS updated_at,
-    dp.id AS daily_price_id,
-    dp.price AS daily_price,
-    dp.date AS daily_price_date,
-    dp.market_cap,
-    dp.volume,
-    NULL::integer AS forecast_id,
-    NULL::numeric AS forecast_price,
-    NULL::timestamp AS forecast_date
-FROM daily_price dp
-JOIN stock s ON dp.stock_id = s.id
-WHERE s.ticker = 'ETH'
-
-UNION ALL
-
-SELECT
-    'forecast' AS source,
-    s.id AS stock_id,
-    NULL::varchar AS color,
-    NULL::varchar AS name,
-    s.ticker,
-    NULL::varchar AS icon_type,
-    EXTRACT(EPOCH FROM pf.created_at)::bigint AS created_at,
-    NULL::timestamp AS updated_at,
-    NULL::integer AS daily_price_id,
-    NULL::numeric AS daily_price,
-    NULL::timestamp AS daily_price_date,
-    NULL::bigint AS market_cap,
-    NULL::bigint AS volume,
-    pf.id AS forecast_id,
-    pf.price AS forecast_price,
-    pf.date AS forecast_date
-FROM price_forecast pf
-JOIN stock s ON pf.stock_id = s.id
-WHERE s.ticker = 'ETH';
+SELECT price_forecast.price AS forecasted_price, daily_price.price, daily_price.date
+FROM daily_price
+JOIN stock ON stock.id = daily_price.stock_id
+JOIN price_forecast ON price_forecast.stock_id = stock.id AND DATE(price_forecast.date) = DATE(daily_price.date)
+WHERE stock.ticker = 'ETH'
+ORDER BY daily_price.date ASC
 
 --@block
 SELECT column_name, data_type 
