@@ -239,6 +239,16 @@ VALUES
 DELETE FROM price_forecast
 WHERE stock_id = 2;
 
+--@block
+INSERT INTO daily_price (price, market_cap, created_at, date, volume, stock_id) VALUES
+(2.14, 224430000000, 1746220800000, '2025-05-05', 243860000, 3);
+
+
+--@block
+INSERT INTO price_forecast (price, date, created_at, stock_id)
+VALUES 
+(2.10, '2024-03-01 00:00:00+00', '2024-05-05 12:00:00+00', 3);
+
 
 
 
@@ -265,3 +275,20 @@ WHERE table_name = 'stock' AND column_name = 'id';
 SELECT column_name, data_type 
 FROM information_schema.columns 
 WHERE table_name = 'daily_price' AND column_name = 'stock_id';
+
+
+----------------------------- For Prod DB
+INSERT INTO stock (color, name, ticker, icon_type)  
+VALUES  
+    ('#627EEA', 'Ethereum', 'ETH', 'SiEthereum');
+
+--@block 
+INSERT INTO stock (color, name, ticker, icon_type)  
+VALUES  
+    ('#627EEA', 'Ethereum', 'ETH', 'SiEthereum'),
+    ('#3C3C3D', 'XRP', 'XRP', 'SiXrp');
+
+
+INSERT INTO daily_price (price, market_cap, created_at, date, volume, stock_id) VALUES
+(1830.70, 224430000000, 1746220800000, '2025-05-04', 243860000, 2),
+(1833.93, 225520000000, 1746134400000, '2025-05-03', 251340000, 2),

@@ -39,7 +39,7 @@ func (repo *StockRepository) GetAllStocks(ctx context.Context, userId *string) (
 	query := repo.db.WithContext(ctx).
 		Preload("DailyPrices", func(db *gorm.DB) *gorm.DB {
 			// change this to the number of stocks
-			return db.Order("date DESC").Limit(2)
+			return db.Order("date DESC").Limit(5)
 		})
 
 	if userId != nil {
