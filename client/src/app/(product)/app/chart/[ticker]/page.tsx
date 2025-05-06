@@ -135,7 +135,9 @@ export default function DoubleChart() {
                     (dataMax: number | undefined) =>
                       dataMax ? Number((dataMax * 1.05).toFixed(2)) : 100,
                   ]}
+                  tickFormatter={(value) => `$${value}`}
                 />
+
                 <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
                 <Line
                   dataKey={data?.data?.stock?.name || "stock"}
