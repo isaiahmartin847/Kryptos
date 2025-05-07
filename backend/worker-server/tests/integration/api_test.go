@@ -38,7 +38,7 @@ func TestGetTodaysBtcPrice(t *testing.T) {
 	t.Run("fetch_current_price", func(t *testing.T) {
 		t.Parallel()
 
-		response, err := api.GetTodaysBtcPrice()
+		response, err := api.GetTodaysBtcPrice("bitcoin")
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -57,7 +57,7 @@ func TestGetTodaysBtcPrice(t *testing.T) {
 
 		// Test making multiple requests to check reliability
 		for i := 0; i < 3; i++ {
-			response, err := api.GetTodaysBtcPrice()
+			response, err := api.GetTodaysBtcPrice("bitcoin")
 			if err != nil {
 				t.Errorf("request %d failed: %v", i+1, err)
 				continue
