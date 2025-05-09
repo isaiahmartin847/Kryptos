@@ -236,8 +236,8 @@ VALUES
 
 
 --@block
-DELETE FROM price_forecast
-WHERE stock_id = 2;
+DELETE FROM stock
+WHERE id = 3;
 
 --@block
 INSERT INTO daily_price (price, market_cap, created_at, date, volume, stock_id) VALUES
