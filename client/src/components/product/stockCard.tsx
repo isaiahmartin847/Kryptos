@@ -119,23 +119,24 @@ const StockCard = ({
       <Link href={`/chart/${ticker.toLowerCase()}`}>
         <CardContent className="cursor-pointer rounded-xl bg-primaryColor p-3 hover:bg-primaryColor/70">
           <div className="flex w-full items-center justify-between">
-            <div className="flex space-x-3">
+            <div className="flex w-32 space-x-3">
               <MemoizedIcon />
               <h1 className="font-semibold">{name}</h1>
             </div>
 
-            <h1>
+            <h1 className="w-48">
               <span className="font-semibold">Price</span>: $
               {formatNumber(price)}
             </h1>
-            <h1 className="hidden lg:block">
+
+            <h1 className="hidden w-[185px] lg:block">
               <span className="font-semibold">Market Cap</span>: $
               {formatNumber(marketCap)}
             </h1>
 
             {/* this is preset make it variable to if the stock is up or down  */}
             <span
-              className={`${Boolean(percentageChange > 0) ? "text-green-500" : "text-red-500"} flex`}
+              className={`${Boolean(percentageChange > 0) ? "text-green-500" : "text-red-500"} flex w-20`}
             >
               {Boolean(percentageChange > 0) ? (
                 <MoveUp color="green" />
