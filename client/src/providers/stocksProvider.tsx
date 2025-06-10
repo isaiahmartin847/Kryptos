@@ -96,16 +96,63 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
     mutationFn: (savedStockId: number) => {
       return deleteSavedStock(savedStockId);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["stocks"] });
-      // refetchStocks();
+    onMutate: async (savedStockId: number) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["stocks", user?.id] });
+
+      const previousStocks = queryClient.getQueryData<ApiResponse<Stock>>([
+        "stocks",
+        user?.id,
+      ]);
+
+      // Optimistically update the stock to "not saved"
+      queryClient.setQueryData<ApiResponse<Stock>>(
+        ["stocks", user?.id],
+        (old) => {
+          if (old) {
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                items: old.data.items.map((stock) => {
+                  // Check if this stock has the saved stock we're removing
+                  const hasSavedStock = stock.saved_stocks?.some(
+                    (savedStock) => savedStock.id === savedStockId,
+                  );
+
+                  if (hasSavedStock) {
+                    return {
+                      ...stock,
+                      is_saved: false,
+                      saved_stocks: stock.saved_stocks?.filter(
+                        (savedStock) => savedStock.id !== savedStockId,
+                      ),
+                    };
+                  }
+                  return stock;
+                }),
+              },
+            };
+          }
+          return old;
+        },
+      );
+
+      return { previousStocks };
     },
-    onError: (error: Error) => {
+    onError: (error: Error, variables, context) => {
+      // Rollback the optimistic update on error
+      queryClient.setQueryData(["stocks", user?.id], context?.previousStocks);
+
       toast({
         title: "Failed to delete stock",
         description: `Error: ${error.message}`,
         variant: "error",
       });
+    },
+    onSettled: () => {
+      // Refetch to ensure data consistency
+      queryClient.refetchQueries({ queryKey: ["stocks", user?.id] });
     },
   });
 

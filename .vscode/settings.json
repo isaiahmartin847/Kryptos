@@ -29,6 +29,16 @@
       "database": "postgres",
       "username": "postgres",
       "password": "kryptos"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "infisical",
+      "database": "infisical",
+      "username": "infisical",
+      "password": "infisical"
     }
   ],
   "cSpell.words": ["certbot", "kryptosai", "starlization", "varuble"]
