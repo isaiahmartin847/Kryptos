@@ -10,11 +10,11 @@ import { dark } from "@clerk/themes";
 import "@/app/globals.css";
 import Navbar from "@/components/product/navbar";
 import { ReactQueryProvider } from "@/providers/reactQueryProvider";
-import { StocksProvider } from "@/providers/stocksProvider";
 import { SavedStocksProvider } from "@/providers/savedStocksProvider";
 import { Toaster } from "@/components/ui/toaster";
 
 import { TermsAndConditions } from "@/components/product/termsModal";
+import { StocksProvider } from "@/providers/stocksProvider";
 
 export default function SubdomainLayout({
   children,

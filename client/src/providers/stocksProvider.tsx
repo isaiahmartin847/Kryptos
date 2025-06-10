@@ -57,37 +57,38 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
         return saveStock(user.id, stockId);
       },
       onMutate: async (stockId: number) => {
-        // Optimistically update the stock to "saved" before the mutation completes
-        await queryClient.cancelQueries({ queryKey: ["stocks"] });
+        await queryClient.cancelQueries({ queryKey: ["stocks", user?.id] });
 
         const previousStocks = queryClient.getQueryData<ApiResponse<Stock>>([
           "stocks",
+          user?.id,
         ]);
 
-        queryClient.setQueryData<ApiResponse<Stock>>(["stocks"], (old) => {
-          if (old) {
-            return {
-              ...old,
-              data: {
-                ...old.data,
-                items: old.data.items.map((stock) =>
-                  stock.id === stockId ? { ...stock, is_saved: true } : stock,
-                ),
-              },
-            };
-          }
-          return old;
-        });
+        queryClient.setQueryData<ApiResponse<Stock>>(
+          ["stocks", user?.id],
+          (old) => {
+            if (old) {
+              return {
+                ...old,
+                data: {
+                  ...old.data,
+                  items: old.data.items.map((stock) =>
+                    stock.id === stockId ? { ...stock, is_saved: true } : stock,
+                  ),
+                },
+              };
+            }
+            return old;
+          },
+        );
 
         return { previousStocks };
       },
       onError: (err, variables, context) => {
-        // Rollback the optimistic update in case of an error
-        queryClient.setQueryData(["stocks"], context?.previousStocks);
+        queryClient.setQueryData(["stocks", user?.id], context?.previousStocks);
       },
       onSettled: () => {
-        // Always refetch after mutation (whether success or error)
-        queryClient.refetchQueries({ queryKey: ["stocks"] });
+        queryClient.refetchQueries({ queryKey: ["stocks", user?.id] });
       },
     });
 
@@ -97,7 +98,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       return deleteSavedStock(savedStockId);
     },
     onMutate: async (savedStockId: number) => {
-      // Cancel any outgoing refetches
       await queryClient.cancelQueries({ queryKey: ["stocks", user?.id] });
 
       const previousStocks = queryClient.getQueryData<ApiResponse<Stock>>([
@@ -105,7 +105,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
         user?.id,
       ]);
 
-      // Optimistically update the stock to "not saved"
       queryClient.setQueryData<ApiResponse<Stock>>(
         ["stocks", user?.id],
         (old) => {
@@ -115,7 +114,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
               data: {
                 ...old.data,
                 items: old.data.items.map((stock) => {
-                  // Check if this stock has the saved stock we're removing
                   const hasSavedStock = stock.saved_stocks?.some(
                     (savedStock) => savedStock.id === savedStockId,
                   );
@@ -141,7 +139,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       return { previousStocks };
     },
     onError: (error: Error, variables, context) => {
-      // Rollback the optimistic update on error
       queryClient.setQueryData(["stocks", user?.id], context?.previousStocks);
 
       toast({
@@ -151,7 +148,6 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
       });
     },
     onSettled: () => {
-      // Refetch to ensure data consistency
       queryClient.refetchQueries({ queryKey: ["stocks", user?.id] });
     },
   });
@@ -177,7 +173,7 @@ export const StocksProvider: React.FC<StocksProviderProps> = ({ children }) => {
   );
 };
 
-// Custom hook to access stocks context
+// Add this hook export that was missing:
 export const useStocks = (): StocksType => {
   const context = useContext(StockContext);
   if (!context) {
