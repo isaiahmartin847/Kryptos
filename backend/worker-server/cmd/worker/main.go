@@ -58,10 +58,6 @@ func main() {
 		JobsInstance.InsertNewDailyPrice(2)
 	})
 
-	scheduler.Every(10).Second().Do(func() {
-		JobsInstance.InsertNewForecastedPrice(1)
-	})
-
 	scheduler.StartAsync()
 
 	quit := make(chan os.Signal, 1)
