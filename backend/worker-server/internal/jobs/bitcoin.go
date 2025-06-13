@@ -90,6 +90,7 @@ func (j *Job) GeneratePrice(stockData []models.DailyPrice, callCount int) (float
 		if callCount > 5 {
 			return 0, fmt.Errorf("AI was unable to come up with a stock price that was within a difference of %v percent", 20)
 		}
+
 		return j.GeneratePrice(stockData, callCount+1)
 	}
 
