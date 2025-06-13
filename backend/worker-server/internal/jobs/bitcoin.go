@@ -73,7 +73,6 @@ func (j *Job) GeneratePrice(stockData []models.DailyPrice, callCount int) (float
 		logger.Error("Error: unable to create a prediction %v", err)
 		return 0, err
 	}
-	logger.Info("Successfully generated AI prediction: %s", prediction)
 
 	predictionFloat, err := strconv.ParseFloat(prediction, 64)
 	if err != nil {
@@ -98,14 +97,12 @@ func (j *Job) GeneratePrice(stockData []models.DailyPrice, callCount int) (float
 }
 
 func (j *Job) InsertNewForecastedPrice(stockID int64) {
-	logger.Info("Starting InsertNewForecastedPrice for stockID: %d", stockID)
 
 	lastThirtyDaysData, err := j.repo.GetLastThirtyDaysPrices(stockID)
 	if err != nil {
 		logger.Error("Error: Unable to get the last thirty days %v", err)
 		return
 	}
-	logger.Info("Successfully retrieved last 30 days data. Number of records: %d", len(lastThirtyDaysData))
 
 	forecastedPrice, err := j.GeneratePrice(lastThirtyDaysData, 1)
 	if err != nil {
@@ -113,21 +110,16 @@ func (j *Job) InsertNewForecastedPrice(stockID int64) {
 		return
 	}
 
-	logger.Info("Latest BTC price from data: %v", lastThirtyDaysData[0])
-	fmt.Printf("latest btc price, %v", lastThirtyDaysData[0])
-
 	predictionData := models.PriceForecast{
 		Price:   uint(forecastedPrice),
 		StockID: uint(stockID),
 		Date:    time.Now().Add(24 * time.Hour),
 	}
-	logger.Info("Created prediction data: Price=%d, StockID=%d, Date=%v",
-		predictionData.Price, predictionData.StockID, predictionData.Date)
 
 	err = j.repo.InsertNewStockForecast(&predictionData)
 	if err != nil {
 		logger.Error("Error: Failed to insert new stock forecast: %v", err)
 		return
 	}
-	logger.Info("Successfully inserted new stock forecast into database")
+
 }

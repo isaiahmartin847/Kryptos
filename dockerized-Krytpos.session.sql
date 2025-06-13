@@ -343,24 +343,9 @@ INSERT INTO daily_price (price, market_cap, created_at, date, volume, stock_id) 
 (2.1077, 120000000000, 1744982400000, '2025-04-18', 450000000, 3);
 
 
---@block
--- Forecasts for Ethereum (2) and XRP (3)
-INSERT INTO price_forecast (price, date, created_at, stock_id)
-VALUES 
-(1807, '2025-05-06 00:00:00+00', '2025-05-05 12:00:00+00', 2),
-(1795, '2025-05-07 00:00:00+00', '2025-05-06 12:00:00+00', 2),
-(2.2277, '2025-05-06 00:00:00+00', '2025-05-05 12:00:00+00', 3),
-(2.03, '2025-05-07 00:00:00+00', '2025-05-06 12:00:00+00', 3);
-
+  --@block
+DELETE FROM daily_price
+WHERE id = 25
 
 --@block
-SELECT * 
-FROM price_forecast 
-WHERE price_forecast.date IN ('2025-03-28', '2025-03-24', '2025-05-05');
-
---@block
-INSERT INTO price_forecast (price, date, stock_id) 
-VALUES 
-  (100000, '2025-03-24', 1),
-  (100000, '2025-03-28', 1),
-  (100000, '2025-05-05', 1);
+SELECT * From price_forecast
