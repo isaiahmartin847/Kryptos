@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -60,9 +59,7 @@ func main() {
 	})
 
 	scheduler.Every(10).Second().Do(func() {
-		logger.Debug("this is the every min")
-		fmt.Println("this happens every minute")
-
+		JobsInstance.InsertNewForecastedPrice(1)
 	})
 
 	scheduler.StartAsync()
