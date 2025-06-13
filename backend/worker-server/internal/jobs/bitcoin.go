@@ -85,6 +85,9 @@ func (j *Job) InsertNewForecastedPrice(stockID int64) {
 		return
 	}
 
+	logger.Info("latest btc price, %v", lastThirtyDaysData[0])
+	fmt.Printf("latest btc price, %v", lastThirtyDaysData[0])
+
 	predictionData := models.PriceForecast{
 		Price:   uint(predictionFloat),
 		StockID: uint(stockID),
