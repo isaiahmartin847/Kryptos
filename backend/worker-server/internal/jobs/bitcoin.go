@@ -2,6 +2,7 @@ package jobs
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -66,6 +67,35 @@ func (j *Job) InsertNewDailyPrice(stockID int64) {
 
 }
 
+func (j *Job) GeneratePrice(stockData []models.DailyPrice, callCount int) (float64, error) {
+	prediction, err := j.aiClient.GenerateResponse(stockData)
+	if err != nil {
+		logger.Error("Error: unable to create a prediction %v", err)
+		return 0, err
+	}
+	logger.Info("Successfully generated AI prediction: %s", prediction)
+
+	predictionFloat, err := strconv.ParseFloat(prediction, 64)
+	if err != nil {
+		logger.Error("Error: converting string to float: %v", err)
+		return 0, err
+	}
+
+	latestPrice := stockData[0].Price
+
+	priceDiff := math.Abs(predictionFloat - float64(latestPrice))
+	percentDiff := (priceDiff / float64(latestPrice)) * 100
+
+	if percentDiff > 25 {
+		if callCount > 5 {
+			return 0, fmt.Errorf("AI was unable to come up with a stock price that was within a difference of %v percent", 20)
+		}
+		return j.GeneratePrice(stockData, callCount+1)
+	}
+
+	return predictionFloat, nil
+}
+
 func (j *Job) InsertNewForecastedPrice(stockID int64) {
 	logger.Info("Starting InsertNewForecastedPrice for stockID: %d", stockID)
 
@@ -76,25 +106,17 @@ func (j *Job) InsertNewForecastedPrice(stockID int64) {
 	}
 	logger.Info("Successfully retrieved last 30 days data. Number of records: %d", len(lastThirtyDaysData))
 
-	prediction, err := j.aiClient.GenerateResponse(lastThirtyDaysData)
+	forecastedPrice, err := j.GeneratePrice(lastThirtyDaysData, 1)
 	if err != nil {
-		logger.Error("Error: unable to create a prediction %v", err)
+		logger.Error("Unable to generate price forecast: %v", err)
 		return
 	}
-	logger.Info("Successfully generated AI prediction: %s", prediction)
-
-	predictionFloat, err := strconv.ParseFloat(prediction, 64)
-	if err != nil {
-		logger.Error("Error: converting string to float: %v", err)
-		return
-	}
-	logger.Info("Successfully converted prediction to float: %f", predictionFloat)
 
 	logger.Info("Latest BTC price from data: %v", lastThirtyDaysData[0])
 	fmt.Printf("latest btc price, %v", lastThirtyDaysData[0])
 
 	predictionData := models.PriceForecast{
-		Price:   uint(predictionFloat),
+		Price:   uint(forecastedPrice),
 		StockID: uint(stockID),
 		Date:    time.Now().Add(24 * time.Hour),
 	}
